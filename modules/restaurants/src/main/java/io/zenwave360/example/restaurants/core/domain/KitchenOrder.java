@@ -27,6 +27,10 @@ public class KitchenOrder implements Serializable {
 
     @Field
     @NotNull
+    private String orderId;
+
+    @Field
+    @NotNull
     private String restaurantId;
 
     @Field

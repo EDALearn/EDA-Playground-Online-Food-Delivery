@@ -9,7 +9,8 @@ public class OnOrderEventConsumer extends AbstractBaseConsumer implements IOnOrd
 
     public void onOrderEvent(OrderEvent payload, OrderEventHeaders headers) {
         log.debug("Received command request for onOrderEvent: {} with headers {}", payload, headers);
-        // TODO: service.onOrderEvent(mapper.asEntity(payload));
+        var kitchenOrderInput = mapper.asKitchenOrder(payload);
+        restaurantOrdersService.createKitchenOrder(kitchenOrderInput);
     };
 
 }

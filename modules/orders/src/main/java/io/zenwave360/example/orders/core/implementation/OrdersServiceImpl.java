@@ -1,16 +1,15 @@
 package io.zenwave360.example.orders.core.implementation;
 
 import io.zenwave360.example.orders.core.domain.*;
-import io.zenwave360.example.orders.core.domain.events.OrderStatusUpdated;
 import io.zenwave360.example.orders.core.implementation.mappers.*;
 import io.zenwave360.example.orders.core.inbound.*;
 import io.zenwave360.example.orders.core.inbound.dtos.*;
 import io.zenwave360.example.orders.core.outbound.events.IOrdersEventsProducer;
 import io.zenwave360.example.orders.core.outbound.mongodb.*;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +35,9 @@ public class OrdersServiceImpl implements OrdersService {
         this.ordersEventsProducer = ordersEventsProducer;
     }
 
-    public CustomerOrder getOrder(String id) {
-        log.debug("Request getOrder: {}", id);
-        var customerOrder = customerOrderRepository.findById(id).orElseThrow();
-        // TODO: implement this method
-        customerOrder = customerOrderRepository.save(customerOrder);
+    public Optional<CustomerOrder> getCustomerOrder(String id) {
+        log.debug("Request get CustomerOrder: {}", id);
+        var customerOrder = customerOrderRepository.findById(id);
         return customerOrder;
     }
 
@@ -52,8 +49,6 @@ public class OrdersServiceImpl implements OrdersService {
         // emit events
         var orderEvent = orderEventMapper.asOrderEvent(customerOrder);
         ordersEventsProducer.onOrderEvent(orderEvent);
-        var orderStatusEvent = orderEventMapper.asOrderStatusUpdated(customerOrder, null);
-        ordersEventsProducer.onOrderStatusUpdated(orderStatusEvent);
 
         return customerOrder;
     }

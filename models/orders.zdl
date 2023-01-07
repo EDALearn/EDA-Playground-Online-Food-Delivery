@@ -7,6 +7,7 @@ config {
     targetFolder "modules/orders"
     persistence mongodb
 
+    // these are code generation plugins for ZenWave IntelliJ Plugin, for models you can skip to 'entities' section
     plugins {
 
         ZDLToOpenAPIPlugin {
@@ -36,6 +37,23 @@ config {
             openApiModelPackage "{{basePackage}}.adapters.web.model"
             openApiModelNameSuffix DTO
         }
+
+        SpringCloudStreams3AdaptersPlugin {
+            apiId "restaurants"
+            role client
+            specFile "modules/restaurants/src/main/resources/apis/asyncapi.yml"
+            zdlFile "models/orders.zdl"
+            modelPackage "{{basePackage}}.client.{{apiId}}.events.dtos"
+            consumerApiPackage "{{basePackage}}.client.{{apiId}}.events.consumer"
+        }
+        SpringCloudStreams3AdaptersPlugin {
+            apiId "delivery"
+            role client
+            specFile "modules/delivery/src/main/resources/apis/asyncapi.yml"
+            zdlFile "models/orders.zdl"
+            modelPackage "{{basePackage}}.client.{{apiId}}.events.dtos"
+            consumerApiPackage "{{basePackage}}.client.{{apiId}}.events.consumer"
+
     }
 }
 
@@ -132,7 +150,7 @@ enum DeliveryStatus {
 @rest("/orders")
 service OrdersService for (CustomerOrder) {
     @get("/{orderId}")
-    getOrder(id) CustomerOrder
+    getCustomerOrder(id) CustomerOrder?
     @post
     createOrder(CustomerOrder) CustomerOrder withEvents OrderEvent
     @put("/{orderId}")

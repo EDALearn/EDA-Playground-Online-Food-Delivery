@@ -7,6 +7,7 @@ config {
     targetFolder "modules/delivery"
     persistence mongodb
 
+    // these are code generation plugins for ZenWave IntelliJ Plugin, for models you can skip to 'entities' section
     plugins {
 
         ZDLToOpenAPIPlugin {
@@ -134,7 +135,7 @@ service DeliveryService for (Delivery) {
     listDeliveries() Delivery[]
 }
 
-@asyncapi({channel: "DeliveryStatusChannel", topic: "delivery.status-topic"})
+@asyncapi({channel: "DeliveryStatusChannel", topic: "delivery.delivery_status"})
 event DeliveryStatusUpdated {
     customerOrderId String required
     deliveryId String required

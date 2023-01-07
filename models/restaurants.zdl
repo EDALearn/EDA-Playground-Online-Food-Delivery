@@ -8,6 +8,7 @@ config {
     targetFolder "modules/restaurants"
     persistence mongodb
 
+    // these are code generation plugins for ZenWave IntelliJ Plugin, for models you can skip to 'entities' section
     plugins {
 
         ZDLToOpenAPIPlugin {
@@ -80,6 +81,7 @@ entity MenuItem {
 
 @aggregate
 entity KitchenOrder {
+    orderId String required
     restaurantId String required
     date LocalDateTime required
     items MenuItem[] required
@@ -164,7 +166,7 @@ service RestaurantOrdersService for (KitchenOrder) {
     createKitchenOrder(KitchenOrderInput) KitchenOrder withEvents KitchenOrderStatusUpdated
 
     @asyncapi({api: OrdersAsyncAPI, channel: "OrderUpdatesChannel"})
-    onOrderStatusUpdated(id, OrderStatusUpdated) KitchenOrder withEvents KitchenOrderStatusUpdated
+    onOrderStatusUpdated(OrderStatusUpdated) withEvents KitchenOrderStatusUpdated
 
     @put("/{orderId}/status")
     updateKitchenOrderStatus(id, KitchenOrderStatusInput) KitchenOrder withEvents KitchenOrderStatusUpdated
@@ -173,7 +175,7 @@ service RestaurantOrdersService for (KitchenOrder) {
     searchKitchenOrders(KitchenOrdersFilter) KitchenOrder[]
 }
 
-@asyncapi({channel: "KitchenOrdersStatusChannel", topic: "kitchen-orders.status-topic"})
+@asyncapi({channel: "KitchenOrdersStatusChannel", topic: "restaurants.kitchen_order_status"})
 event KitchenOrderStatusUpdated {
     customerOrderId String required
     kitchenOrderId String required

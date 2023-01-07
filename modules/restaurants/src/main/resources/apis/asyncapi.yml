@@ -11,7 +11,7 @@ defaultContentType: application/json
 
 channels:
   KitchenOrdersStatusChannel:
-    address: "kitchen-orders.status-topic"
+    address: "restaurants.kitchen_order_status"
     messages:
       KitchenOrderStatusUpdatedMessage:
         $ref: '#/components/messages/KitchenOrderStatusUpdatedMessage'
@@ -46,7 +46,7 @@ components:
           kafka_messageKey:
             type: string
             description: This header value will be populated automatically at runtime
-            x-runtime-expression: $message.payload#/id
+            x-runtime-expression: $message.payload#/customerOrderId
           tracingId:
             type: string
             description: This header value will be populated automatically at runtime

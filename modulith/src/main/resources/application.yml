@@ -25,28 +25,42 @@ spring:
     function:
       definition: >-
         on-order-event;on-order-status-updated;do-cancel-order;restaurants_on-order-event;
-        restaurants_on-order-status-updated;
-        delivery_on-order-event;delivery_on-order-status-updated;
+        restaurants_on-kitchen-order-status-updated;delivery_on-delivery-status-updated;
+        restaurants_on-order-status-updated;on-kitchen-order-status-updated;
+        delivery_on-order-event;delivery_on-order-status-updated;on-delivery-status-updated;
     stream:
       bindings:
+        ## Orders Module Bindings
         do-cancel-order-in-0:
           destination: orders.cancel_orders
-          group: orders-consumer-0
+          group: orders.consumer
         on-order-event-out-0:
           destination: orders.orders
         on-order-status-updated-out-0:
           destination: orders.order_updates
+        restaurants_on-kitchen-order-status-updated-in-0:
+          destination: restaurants.kitchen_order_status
+          group: orders.consumer
+        delivery_on-delivery-status-updated-in-0:
+          destination: delivery.delivery_status
+          group: orders.consumer
 
+        ## Restaurants Module Bindings
         restaurants_on-order-event-in-0:
           destination: orders.orders
-          group: restaurants_consumer
+          group: restaurants.consumer
         restaurants_on-order-status-updated-in-0:
           destination: orders.order_updates
-          group: restaurants_consumer
+          group: restaurants.consumer
+        on-kitchen-order-status-updated-out-0:
+          destination: restaurants.kitchen_order_status
 
+        ## Delivery Module Bindings
         delivery_on-order-event-in-0:
           destination: orders.orders
-          group: delivery_consumer
+          group: delivery.consumer
         delivery_on-order-status-updated-in-0:
           destination: orders.order_updates
-          group: delivery_consumer
+          group: delivery.consumer
+        on-delivery-status-updated-out-0:
+          destination: delivery.delivery_status

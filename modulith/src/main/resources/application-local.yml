@@ -6,4 +6,4 @@ logging:
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
     org.springframework.data.mongodb.MongoTransactionManager: DEBUG
 
-MONGODB_URI: mongodb://localhost:27017/customers
+MONGODB_URI: mongodb://localhost:27017/online-food-delivery

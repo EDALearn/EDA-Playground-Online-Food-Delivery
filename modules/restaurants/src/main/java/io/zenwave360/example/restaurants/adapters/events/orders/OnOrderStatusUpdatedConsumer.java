@@ -9,7 +9,10 @@ public class OnOrderStatusUpdatedConsumer extends AbstractBaseConsumer implement
 
     public void onOrderStatusUpdated(OrderStatusUpdated payload, OrderStatusUpdatedHeaders headers) {
         log.debug("Received command request for onOrderStatusUpdated: {} with headers {}", payload, headers);
-        // TODO: service.onOrderStatusUpdated(mapper.asEntity(payload));
+        var orderStatusUpdated = new io.zenwave360.example.restaurants.core.inbound.dtos.OrderStatusUpdated()
+                .setOrderId(payload.getId())
+                .setStatus(payload.getStatus().toString());
+        restaurantOrdersService.onOrderStatusUpdated(orderStatusUpdated);
     };
 
 }

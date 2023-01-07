@@ -10,7 +10,7 @@ defaultContentType: application/json
 
 channels:
   DeliveryStatusChannel:
-    address: "delivery.status-topic"
+    address: "delivery.delivery_status"
     messages:
       DeliveryStatusUpdatedMessage:
         $ref: '#/components/messages/DeliveryStatusUpdatedMessage'
@@ -45,7 +45,7 @@ components:
           kafka_messageKey:
             type: string
             description: This header value will be populated automatically at runtime
-            x-runtime-expression: $message.payload#/id
+            x-runtime-expression: $message.payload#/customerOrderId
           tracingId:
             type: string
             description: This header value will be populated automatically at runtime

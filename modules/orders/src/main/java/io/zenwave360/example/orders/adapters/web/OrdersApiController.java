@@ -42,8 +42,11 @@ public class OrdersApiController implements OrdersApi {
 
   @Override
   public ResponseEntity<CustomerOrderDTO> getOrder(String orderId) {
-    CustomerOrder customerOrder = ordersService.getOrder(orderId);
-    CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder);
+    Optional<CustomerOrder> customerOrder = ordersService.getCustomerOrder(orderId);
+    if(customerOrder.isEmpty()) {
+      return ResponseEntity.status(404).build();
+    }
+    CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder.get());
     return ResponseEntity.status(200).body(responseDTO);
   }
 

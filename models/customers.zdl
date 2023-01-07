@@ -8,6 +8,7 @@ config {
     targetFolder "modules/customers"
     persistence mongodb
 
+    // these are code generation plugins for ZenWave IntelliJ Plugin, for models you can skip to 'entities' section
     plugins {
 
         ZDLToOpenAPIPlugin {

@@ -15,8 +15,10 @@ public interface DeliveryService {
      */
     public Delivery createDelivery(DeliveryInput input);
 
-    /** */
-    public Delivery onOrderStatusUpdated(String id, OrderStatusUpdated input);
+    /**
+     *
+     */
+    public void onOrderStatusUpdated(OrderStatusUpdated input);
 
     /** */
     public Delivery updateDeliveryStatus(String id, DeliveryStatusInput input);

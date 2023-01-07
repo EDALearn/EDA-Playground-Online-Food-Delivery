@@ -16,7 +16,7 @@ public interface RestaurantOrdersService {
     public KitchenOrder createKitchenOrder(KitchenOrderInput input);
 
     /** */
-    public KitchenOrder onOrderStatusUpdated(String id, OrderStatusUpdated input);
+    public void onOrderStatusUpdated(OrderStatusUpdated input);
 
     /** */
     public KitchenOrder updateKitchenOrderStatus(String id, KitchenOrderStatusInput input);

@@ -10,6 +10,7 @@ public abstract class AbstractBaseConsumer {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     protected RestaurantOrdersService restaurantOrdersService;
+    protected EventsMapper mapper = EventsMapper.INSTANCE;
 
     @Autowired
     public void setRestaurantOrdersService(RestaurantOrdersService restaurantOrdersService) {

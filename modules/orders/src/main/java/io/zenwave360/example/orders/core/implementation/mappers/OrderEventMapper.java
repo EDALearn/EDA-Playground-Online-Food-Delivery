@@ -50,6 +50,9 @@ public interface OrderEventMapper {
     OrderStatus asOrderStatus(KitchenStatus status);
 
     default OrderStatus asOrderStatus(KitchenStatus kitchenStatus, OrderStatus originalStatus) {
+        if(kitchenStatus == KitchenStatus.ACCEPTED && originalStatus == OrderStatus.DELIVERY_ACCEPTED) {
+            return OrderStatus.CONFIRMED;
+        }
         return ObjectUtils.firstNonNull(asOrderStatus(kitchenStatus), originalStatus);
     }
 
@@ -62,6 +65,9 @@ public interface OrderEventMapper {
     OrderStatus asOrderStatus(DeliveryStatus deliveryStatus);
 
     default OrderStatus asOrderStatus(DeliveryStatus deliveryStatus, OrderStatus originalStatus) {
+        if(deliveryStatus == DeliveryStatus.ACCEPTED && originalStatus == OrderStatus.KITCHEN_ACCEPTED) {
+            return OrderStatus.CONFIRMED;
+        }
         return ObjectUtils.firstNonNull(asOrderStatus(deliveryStatus), originalStatus);
     }
 

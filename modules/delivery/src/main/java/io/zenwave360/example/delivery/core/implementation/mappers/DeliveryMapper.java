@@ -1,6 +1,7 @@
 package io.zenwave360.example.delivery.core.implementation.mappers;
 
 import io.zenwave360.example.delivery.core.domain.*;
+import io.zenwave360.example.delivery.core.domain.events.DeliveryStatus;
 import io.zenwave360.example.delivery.core.inbound.dtos.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,4 +23,7 @@ public interface DeliveryMapper {
     @Mapping(target = "id", ignore = true)
     Delivery update(@MappingTarget Delivery entity, DeliveryInput input);
 
+    default DeliveryStatus asDeliveryStatus(DeliveryOrderStatus status) {
+        return DeliveryStatus.valueOf(status.name());
+    }
 }

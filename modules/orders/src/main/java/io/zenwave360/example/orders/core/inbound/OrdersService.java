@@ -3,12 +3,15 @@ package io.zenwave360.example.orders.core.inbound;
 import io.zenwave360.example.orders.core.domain.*;
 import io.zenwave360.example.orders.core.inbound.dtos.*;
 import java.util.List;
+import java.util.Optional;
 
 /** Inbound Service Port for managing [CustomerOrder]. */
 public interface OrdersService {
 
-    /** */
-    public CustomerOrder getOrder(String id);
+    /**
+     *
+     */
+    public Optional<CustomerOrder> getCustomerOrder(String id);
 
     /** */
     public CustomerOrder createOrder(CustomerOrder input);
