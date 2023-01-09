@@ -17,21 +17,21 @@ public class OrdersApiControllerTest {
   @Test
   public void getOrderTest() {
     String orderId = null;
-    var response = controller.getOrder(orderId);
+    var response = controller.getCustomerOrder(orderId);
     Assertions.assertEquals(200, response.getStatusCode().value());
   }
 
   @Test
   public void updateOrderTest() {
     String orderId = null;
-    CustomerOrderDTO reqBody = null;
+    CustomerOrderInputDTO reqBody = null;
     var response = controller.updateOrder(orderId, reqBody);
     Assertions.assertEquals(200, response.getStatusCode().value());
   }
 
   @Test
   public void createOrderTest() {
-    CustomerOrderDTO reqBody = null;
+    CustomerOrderInputDTO reqBody = null;
     var response = controller.createOrder(reqBody);
     Assertions.assertEquals(201, response.getStatusCode().value());
   }

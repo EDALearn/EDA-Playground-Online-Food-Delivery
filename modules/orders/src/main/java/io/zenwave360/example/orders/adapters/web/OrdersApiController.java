@@ -41,7 +41,7 @@ public class OrdersApiController implements OrdersApi {
   }
 
   @Override
-  public ResponseEntity<CustomerOrderDTO> getOrder(String orderId) {
+  public ResponseEntity<CustomerOrderDTO> getCustomerOrder(String orderId) {
     Optional<CustomerOrder> customerOrder = ordersService.getCustomerOrder(orderId);
     if(customerOrder.isEmpty()) {
       return ResponseEntity.status(404).build();
@@ -51,16 +51,16 @@ public class OrdersApiController implements OrdersApi {
   }
 
   @Override
-  public ResponseEntity<CustomerOrderDTO> updateOrder(String orderId, CustomerOrderDTO reqBody) {
-    CustomerOrder input = mapper.asCustomerOrder(reqBody);
+  public ResponseEntity<CustomerOrderDTO> updateOrder(String orderId, CustomerOrderInputDTO reqBody) {
+    CustomerOrderInput input = mapper.asCustomerOrder(reqBody);
     CustomerOrder customerOrder = ordersService.updateOrder(orderId, input);
     CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder);
     return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
-  public ResponseEntity<CustomerOrderDTO> createOrder(CustomerOrderDTO reqBody) {
-    CustomerOrder input = mapper.asCustomerOrder(reqBody);
+  public ResponseEntity<CustomerOrderDTO> createOrder(CustomerOrderInputDTO reqBody) {
+    CustomerOrderInput input = mapper.asCustomerOrder(reqBody);
     CustomerOrder customerOrder = ordersService.createOrder(input);
     CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder);
     return ResponseEntity.status(201).body(responseDTO);

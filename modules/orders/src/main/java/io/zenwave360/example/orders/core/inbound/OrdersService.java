@@ -9,15 +9,17 @@ import java.util.Optional;
 public interface OrdersService {
 
     /**
-     *
+     * Get the "id" customerOrder.
+     * @param id the id of the entity.
+     * @return the entity.
      */
     public Optional<CustomerOrder> getCustomerOrder(String id);
 
     /** */
-    public CustomerOrder createOrder(CustomerOrder input);
+    public CustomerOrder createOrder(CustomerOrderInput input);
 
     /** */
-    public CustomerOrder updateOrder(String id, CustomerOrder input);
+    public CustomerOrder updateOrder(String id, CustomerOrderInput input);
 
     /** */
     public CustomerOrder updateKitchenStatus(String id, KitchenStatusInput input);

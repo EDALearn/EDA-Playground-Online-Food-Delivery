@@ -15,8 +15,8 @@ tags:
 paths:
   /orders/{orderId}:
     get:
-      operationId: getOrder
-      description: "getOrder"
+      operationId: getCustomerOrder
+      description: "getCustomerOrder"
       tags: [Orders]
       parameters:
         - name: "orderId"
@@ -45,7 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CustomerOrder"
+              $ref: "#/components/schemas/CustomerOrderInput"
       responses:
         "200":
           description: "OK"
@@ -62,7 +62,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CustomerOrder"
+              $ref: "#/components/schemas/CustomerOrderInput"
       responses:
         "201":
           description: "OK"
@@ -113,36 +113,6 @@ paths:
 
 components:
   schemas:
-    Restaurant:
-      type: "object"
-      x-business-entity: "Restaurant"
-      required:
-      - "restaurantId"
-      - "name"
-      - "phone"
-      properties:
-        restaurantId:
-          type: "string"
-        name:
-          type: "string"
-        phone:
-          type: "string"
-        addresses:
-          $ref: "#/components/schemas/Address"
-    OrderStatus:
-      type: "string"
-      x-business-entity: "OrderStatus"
-      enum:
-      - "RECEIVED"
-      - "KITCHEN_ACCEPTED"
-      - "DELIVERY_ACCEPTED"
-      - "CONFIRMED"
-      - "KITCHEN_IN_PROGRESS"
-      - "KITCHEN_READY"
-      - "KITCHEN_DELIVERED"
-      - "ON_DELIVERY"
-      - "DELIVERED"
-      - "CANCELLED"
     Address:
       type: "object"
       x-business-entity: "Address"
@@ -214,6 +184,59 @@ components:
       type: "array"
       items:
         $ref: "#/components/schemas/CustomerOrder"
+    CustomerOrderInput:
+      type: "object"
+      x-business-entity: "CustomerOrderInput"
+      required:
+      - "customerId"
+      - "restaurantId"
+      - "addressIdentifier"
+      properties:
+        orderTime:
+          type: "string"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerId:
+          type: "string"
+        restaurantId:
+          type: "string"
+        addressIdentifier:
+          type: "string"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+    Restaurant:
+      type: "object"
+      x-business-entity: "Restaurant"
+      required:
+      - "restaurantId"
+      - "name"
+      - "phone"
+      properties:
+        restaurantId:
+          type: "string"
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        addresses:
+          $ref: "#/components/schemas/Address"
+    OrderStatus:
+      type: "string"
+      x-business-entity: "OrderStatus"
+      enum:
+      - "RECEIVED"
+      - "KITCHEN_ACCEPTED"
+      - "DELIVERY_ACCEPTED"
+      - "CONFIRMED"
+      - "KITCHEN_IN_PROGRESS"
+      - "KITCHEN_READY"
+      - "KITCHEN_DELIVERED"
+      - "ON_DELIVERY"
+      - "DELIVERED"
+      - "CANCELLED"
     OrderItem:
       type: "object"
       x-business-entity: "OrderItem"
@@ -274,7 +297,7 @@ components:
       type: "object"
       x-business-entity: "CancelOrderInput"
       properties:
-        orderId:
+        id:
           type: "string"
         reason:
           type: "string"

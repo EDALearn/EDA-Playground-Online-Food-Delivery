@@ -9,7 +9,7 @@ public class InMemoryTestsManualContext extends InMemoryTestsConfig {
     ProducerInMemoryContext producerInMemory = ProducerInMemoryContext.INSTANCE;
 
     public OrdersServiceImpl ordersService() {
-        return new OrdersServiceImpl(customerOrderRepository(), producerInMemory.ordersEventsProducer());
+        return new OrdersServiceImpl(customerOrderRepository(), producerInMemory.ordersEventsProducer(), null, null);
     }
 
 }

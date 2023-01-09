@@ -1,30 +1,67 @@
+### List Customers
+GET {{baseUrl}}/customers
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+### List Restaurants
+GET {{baseUrl}}/restaurants
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### Create Customer
+POST {{baseUrl}}/customers
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+    "firstName": "Ivan",
+    "lastName": "Garcia Sainz-Aja",
+    "email": "email@domain.com",
+    "phone": "(505) 503-4455",
+    "addresses": [
+      {
+        "identifier": "Home Address",
+        "street": "Calle del Percebe, 13",
+        "city": "Madrid",
+        "state": "Madrid",
+        "zip": "28001",
+        "type": "HOME"
+      }
+    ]
+}
+
+### Create Restaurant
+POST {{baseUrl}}/restaurants
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "name": "The Restaurant at the End of the Universe",
+  "phone": "0-345-39181-0",
+  "address": {
+    "street": "Frogstar World B",
+    "city": "Madrid",
+    "state": "Madrid",
+    "zip": "28001"
+  }
+}
+
+
 ### Create Order
+< {%
+request.variables.set("customerId", "659d8831878ae4030afa2a6f")
+request.variables.set("addressIdentifier", "Home Address")
+request.variables.set("restaurantId", "659d883c878ae4030afa2a70")
+%}
 POST {{baseUrl}}/orders
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 {
-  "customerDetails": {
-    "customerId": "1",
-    "firstName": "Ivan",
-    "lastName": "Garcia Sainz-Aja",
-    "email": "ivangsa@gmail.com",
-    "phone": "(505) 503-4455",
-    "addresses": {
-        "street": "Calle del Percebe, 13",
-        "city": "Madrid",
-        "state": "Madrid",
-        "zip": "28001"
-    }
-  },
-  "restaurantDetails": {
-    "restaurantId": "1",
-    "name": "The Restaurant at the End of the Universe",
-    "phone": "0-345-39181-0",
-    "address": {
-      "street": "Frogstar World B"
-    }
-  },
+  "customerId": "{{customerId}}",
+  "restaurantId": "{{restaurantId}}",
+  "addressIdentifier": "{{addressIdentifier}}",
   "orderItems": [
     {
       "menuItemId": "1",
@@ -33,4 +70,14 @@ Content-Type: application/json
       "quantity": 2
     }
   ]
+}
+
+### Update Kitchen Order Status
+PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "status": "",
+  "operatorName": ""
 }

@@ -12,7 +12,7 @@ import java.util.*;
 @lombok.Setter
 public class CancelOrderInput implements Serializable {
 
-    private String orderId;
+    private String id;
 
     private String reason;
 

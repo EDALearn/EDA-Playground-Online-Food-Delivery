@@ -108,6 +108,63 @@
                 </executions>
 
             </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>6.6.0</version>
+                <executions>
+                    <execution>
+                        <id>openapi-generator-client-customers</id>
+                        <goals><goal>generate</goal></goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../customers/src/main/resources/apis/openapi.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <library>spring-http-interface</library>
+                            <apiPackage>${basePackage}.customers.client</apiPackage>
+                            <modelPackage>${basePackage}.customers.client.model</modelPackage>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+                            <addCompileSourceRoot>true</addCompileSourceRoot>
+                            <typeMappings>
+                                <typeMapping>Double=java.math.BigDecimal</typeMapping>
+                            </typeMappings>
+                            <configOptions>
+                                <useJakartaEe>true</useJakartaEe>
+                                <documentationProvider>none</documentationProvider>
+                                <openApiNullable>false</openApiNullable>
+                                <useOptional>true</useOptional>
+                                <useTags>true</useTags>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>openapi-generator-client-restaurants</id>
+                        <goals><goal>generate</goal></goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../restaurants/src/main/resources/apis/openapi.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <library>spring-http-interface</library>
+                            <apiPackage>${basePackage}.restaurants.client</apiPackage>
+                            <modelPackage>${basePackage}.restaurants.client.model</modelPackage>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+                            <addCompileSourceRoot>true</addCompileSourceRoot>
+                            <typeMappings>
+                                <typeMapping>Double=java.math.BigDecimal</typeMapping>
+                            </typeMappings>
+                            <configOptions>
+                                <useJakartaEe>true</useJakartaEe>
+                                <documentationProvider>none</documentationProvider>
+                                <openApiNullable>false</openApiNullable>
+                                <useOptional>true</useOptional>
+                                <useTags>true</useTags>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

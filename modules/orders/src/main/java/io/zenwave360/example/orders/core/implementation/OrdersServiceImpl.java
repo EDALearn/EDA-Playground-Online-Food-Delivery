@@ -7,10 +7,13 @@ import io.zenwave360.example.orders.core.inbound.dtos.*;
 import io.zenwave360.example.orders.core.outbound.events.IOrdersEventsProducer;
 import io.zenwave360.example.orders.core.outbound.mongodb.*;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.zenwave360.example.orders.customers.client.CustomerApi;
+import io.zenwave360.example.orders.restaurants.client.RestaurantBackOfficeApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,10 +32,15 @@ public class OrdersServiceImpl implements OrdersService {
     private final CustomerOrderRepository customerOrderRepository;
     private final IOrdersEventsProducer ordersEventsProducer;
 
+    private final RestaurantBackOfficeApi restaurantBackOfficeApi;
+    private final CustomerApi customerApi;
+
     /** Constructor. */
-    public OrdersServiceImpl(CustomerOrderRepository customerOrderRepository, IOrdersEventsProducer ordersEventsProducer) {
+    public OrdersServiceImpl(CustomerOrderRepository customerOrderRepository, IOrdersEventsProducer ordersEventsProducer, RestaurantBackOfficeApi restaurantBackOfficeApi, CustomerApi customerApi) {
         this.customerOrderRepository = customerOrderRepository;
         this.ordersEventsProducer = ordersEventsProducer;
+        this.restaurantBackOfficeApi = restaurantBackOfficeApi;
+        this.customerApi = customerApi;
     }
 
     public Optional<CustomerOrder> getCustomerOrder(String id) {
@@ -41,9 +49,17 @@ public class OrdersServiceImpl implements OrdersService {
         return customerOrder;
     }
 
-    public CustomerOrder createOrder(CustomerOrder input) {
+    public CustomerOrder createOrder(CustomerOrderInput input) {
         log.debug("Request createOrder: {}", input);
-        var customerOrder = customerOrderMapper.update(new CustomerOrder(), input);
+
+        var restaurant = restaurantBackOfficeApi.getRestaurant(input.getRestaurantId()).getBody();
+        var customer = customerApi.getCustomer(input.getCustomerId()).getBody();
+        var address = customer.getAddresses().stream().filter(a -> Objects.equals(a.getIdentifier(), input.getAddressIdentifier())).findFirst().orElseThrow();
+        var customerOrder = customerOrderMapper.update(new CustomerOrder(), input, customer, address, restaurant);
+        customerOrder.setStatus(OrderStatus.RECEIVED);
+        customerOrder.setOrderTime(Instant.now());
+
+        // save
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
@@ -53,7 +69,7 @@ public class OrdersServiceImpl implements OrdersService {
         return customerOrder;
     }
 
-    public CustomerOrder updateOrder(String id, CustomerOrder input) {
+    public CustomerOrder updateOrder(String id, CustomerOrderInput input) {
         log.debug("Request updateOrder: {}", id);
         var customerOrder = customerOrderRepository.findById(id).orElseThrow();
         var previousStatus = customerOrder.getStatus();
@@ -75,7 +91,7 @@ public class OrdersServiceImpl implements OrdersService {
         var previousStatus = customerOrder.getStatus();
 
         if(KitchenStatus.REJECTED.equals(input.getKitchenStatus()) || KitchenStatus.CANCELLED.equals(input.getKitchenStatus())) {
-            return cancelOrder(id, new CancelOrderInput().setOrderId(id).setReason("Kitchen rejected order"));
+            return cancelOrder(id, new CancelOrderInput().setId(id).setReason("Kitchen rejected order"));
         }
 
         customerOrder.setStatus(orderEventMapper.asOrderStatus(input.getKitchenStatus(), previousStatus));
@@ -96,7 +112,7 @@ public class OrdersServiceImpl implements OrdersService {
         var previousStatus = customerOrder.getStatus();
 
         if(DeliveryStatus.REJECTED.equals(input.getDeliveryStatus()) || DeliveryStatus.CANCELLED.equals(input.getDeliveryStatus())) {
-            return cancelOrder(id, new CancelOrderInput().setOrderId(id).setReason("Delivery rejected order"));
+            return cancelOrder(id, new CancelOrderInput().setId(id).setReason("Delivery rejected order"));
         }
 
         customerOrder.setStatus(orderEventMapper.asOrderStatus(input.getDeliveryStatus(), previousStatus));

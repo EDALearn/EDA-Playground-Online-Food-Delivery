@@ -116,6 +116,21 @@ enum OrderStatus {
 
 // == Serices =============================
 
+input CustomerOrderInput {
+    orderTime Instant
+    status OrderStatus
+    customerId String required
+    restaurantId String required
+    addressIdentifier String required
+    orderItems OrderItem[] {
+       menuItemId String required
+       name String required
+       description String
+       price BigDecimal required
+       quantity Integer required
+    }
+}
+
 input OrdersFilter {
     status OrderStatus
     customerName String
@@ -152,9 +167,9 @@ service OrdersService for (CustomerOrder) {
     @get("/{orderId}")
     getCustomerOrder(id) CustomerOrder?
     @post
-    createOrder(CustomerOrder) CustomerOrder withEvents OrderEvent
+    createOrder(CustomerOrderInput) CustomerOrder withEvents OrderEvent
     @put("/{orderId}")
-    updateOrder(id, CustomerOrder) CustomerOrder withEvents OrderEvent OrderStatusUpdated
+    updateOrder(id, CustomerOrderInput) CustomerOrder withEvents OrderEvent OrderStatusUpdated
 
     @asyncapi({api: RestaurantsAsyncAPI, channel: "KitchenOrdersStatusChannel"})
     updateKitchenStatus(id, KitchenStatusInput) CustomerOrder withEvents OrderEvent OrderStatusUpdated

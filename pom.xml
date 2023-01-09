@@ -137,6 +137,7 @@
 						<version>6.6.0</version>
 						<executions>
 							<execution>
+								<id>openapi-generator-server</id>
 								<goals>
 									<goal>generate</goal>
 								</goals>
@@ -193,6 +194,10 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-schema</artifactId>
 			<version>${spring-cloud-stream-schema.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
 		</dependency>
 
 		<dependency>

@@ -1,7 +1,9 @@
 package io.zenwave360.example.restaurants.adapters.events.orders;
 
+import io.zenwave360.example.restaurants.client.orders.events.dtos.Customer;
 import io.zenwave360.example.restaurants.client.orders.events.dtos.OrderEvent;
 import io.zenwave360.example.restaurants.client.orders.events.dtos.OrderItem;
+import io.zenwave360.example.restaurants.core.domain.CustomerDetails;
 import io.zenwave360.example.restaurants.core.inbound.dtos.KitchenOrderInput;
 import io.zenwave360.example.restaurants.core.inbound.dtos.MenuItemInput;
 import org.mapstruct.Mapper;
@@ -30,9 +32,12 @@ public interface EventsMapper {
     @Mapping(source = "id", target = "orderId")
     @Mapping(source = "restaurantDetails.restaurantId", target = "restaurantId")
     @Mapping(source ="customerDetails", target = "customer")
+    @Mapping( target = "customer.name", expression = "java(customer.getFirstName() + \" \" + customer.getLastName())")
     @Mapping(source = "orderItems", target = "items")
     @Mapping(source = "orderTime", target = "date")
     KitchenOrderInput asKitchenOrder(OrderEvent payload);
+
+    CustomerDetails asCustomerDetails(Customer customer);
 
     MenuItemInput asMenuItemInput(OrderItem orderItem);
 

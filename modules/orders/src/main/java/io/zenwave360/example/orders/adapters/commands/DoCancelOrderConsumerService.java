@@ -26,7 +26,7 @@ public class DoCancelOrderConsumerService implements IDoCancelOrderConsumerServi
     public void doCancelOrder(CancelOrderInput payload, CancelOrderInputHeaders headers) {
         log.debug("Received CancelOrderInput: {}", payload);
         var input = new io.zenwave360.example.orders.core.inbound.dtos.CancelOrderInput() //
-            .setOrderId(payload.getId())
+            .setId(payload.getId())
             .setReason(payload.getReason());
         ordersService.cancelOrder(payload.getId(), input);
     }

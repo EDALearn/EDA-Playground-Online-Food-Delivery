@@ -44,6 +44,10 @@ public class Customer implements Serializable {
     @NotNull
     private String email;
 
+    @Field
+    @NotNull
+    private String phone;
+
     /** address is a nested entity */
     @Field
     private List<Address> addresses = new ArrayList<>();

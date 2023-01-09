@@ -16,7 +16,7 @@ public interface OrdersDTOsMapper {
   // request mappings
   OrdersFilter asOrdersFilter(OrdersFilterDTO dto);
 
-  CustomerOrder asCustomerOrder(CustomerOrderDTO dto);
+  CustomerOrderInput asCustomerOrder(CustomerOrderInputDTO dto);
 
   CancelOrderInput asCancelOrderInput(CancelOrderInputDTO dto);
 

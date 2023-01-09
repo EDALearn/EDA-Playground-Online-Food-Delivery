@@ -40,6 +40,7 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
         var isKitchenAvailability = true;
         if(isKitchenAvailability) {
             var kitchenOrder = kitchenOrderMapper.update(new KitchenOrder(), input);
+            kitchenOrder.setStatus(KitchenOrderStatus.ACCEPTED);
             kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
             var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
                 .withKitchenOrderId(kitchenOrder.getId())

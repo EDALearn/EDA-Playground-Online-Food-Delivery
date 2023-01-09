@@ -1,4 +1,5 @@
 
+
 POST {{baseUrl}}/restaurants
 Authorization: {{Authorization}}
 Content-Type: application/json

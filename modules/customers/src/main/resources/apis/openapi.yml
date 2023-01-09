@@ -163,6 +163,7 @@ components:
       - "firstName"
       - "lastName"
       - "email"
+      - "phone"
       properties:
         id:
           type: "string"
@@ -181,6 +182,9 @@ components:
         email:
           type: "string"
           description: "email javadoc comment"
+        phone:
+          type: "string"
+          description: ""
         addresses:
           type: "array"
           items:
