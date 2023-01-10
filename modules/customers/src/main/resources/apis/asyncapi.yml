@@ -38,38 +38,34 @@ operations:
 components:
   messages:
     CustomerEventMessage:
-      messageId: CustomerEventMessage
       name: CustomerEventMessage
       title: ""
       summary: ""
-      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        $ref: "#/components/schemas/CustomerEvent"
+        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/CustomerEvent"
     CustomerAddressUpdatedMessage:
-      messageId: CustomerAddressUpdatedMessage
       name: CustomerAddressUpdatedMessage
       title: ""
       summary: ""
-      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        $ref: "#/components/schemas/CustomerAddressUpdated"
+        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/CustomerAddressUpdated"
 
   messageTraits:
     CommonHeaders:
       headers:
         type: object
         properties:
-          kafka_messageKey:
-            type: string
-            description: This header value will be populated automatically at runtime
-            x-runtime-expression: $message.payload#/id
           tracingId:
             type: string
-            description: This header value will be populated automatically at runtime
+            description: This header value will be populated automatically at runtime (when using ZenWave code generator)
             x-runtime-expression: $tracingIdSupplier
 
   schemas:

@@ -49,48 +49,44 @@ operations:
 components:
   messages:
     CancelOrderInputMessage:
-      messageId: CancelOrderInputMessage
       name: CancelOrderInputMessage
       title: ""
       summary: ""
-      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        $ref: "#/components/schemas/CancelOrderInput"
+        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/CancelOrderInput"
     OrderEventMessage:
-      messageId: OrderEventMessage
       name: OrderEventMessage
       title: ""
       summary: ""
-      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        $ref: "#/components/schemas/OrderEvent"
+        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/OrderEvent"
     OrderStatusUpdatedMessage:
-      messageId: OrderStatusUpdatedMessage
       name: OrderStatusUpdatedMessage
       title: ""
       summary: ""
-      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        $ref: "#/components/schemas/OrderStatusUpdated"
+        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/OrderStatusUpdated"
 
   messageTraits:
     CommonHeaders:
       headers:
         type: object
         properties:
-          kafka_messageKey:
-            type: string
-            description: This header value will be populated automatically at runtime
-            x-runtime-expression: $message.payload#/id
           tracingId:
             type: string
-            description: This header value will be populated automatically at runtime
+            description: This header value will be populated automatically at runtime (when using ZenWave code generator)
             x-runtime-expression: $tracingIdSupplier
 
   schemas:
