@@ -38,7 +38,7 @@
                         </configuration>
                     </execution>
 
-                    <!-- Generate AsyncAPI CLIENT for Restaurants API -->
+                    <!-- Generate AsyncAPI CLIENT for Restaurants API
                     <execution>
                         <id>generate-asyncapi-restaurants-dtos</id>
                         <phase>generate-sources</phase>
@@ -70,9 +70,9 @@
                                 <consumerApiPackage>${asyncapiRestaurantsClientPackage}.events.consumer</consumerApiPackage>
                             </configOptions>
                         </configuration>
-                    </execution>
+                    </execution> -->
 
-                    <!-- Generate AsyncAPI CLIENT for Delivery API -->
+                    <!-- Generate AsyncAPI CLIENT for Delivery API
                     <execution>
                         <id>generate-asyncapi-delivery-dtos</id>
                         <phase>generate-sources</phase>
@@ -104,7 +104,7 @@
                                 <consumerApiPackage>${asyncapiDeliveryClientPackage}.events.consumer</consumerApiPackage>
                             </configOptions>
                         </configuration>
-                    </execution>
+                    </execution> -->
                 </executions>
 
             </plugin>

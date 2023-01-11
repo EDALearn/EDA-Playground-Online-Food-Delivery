@@ -37,7 +37,7 @@
                         </configuration>
                     </execution>
 
-                    <!-- Generate AsyncAPI CLIENT for Orders API -->
+                    <!-- Generate AsyncAPI CLIENT for Orders API
                     <execution>
                         <id>generate-asyncapi-orders-dtos</id>
                         <phase>generate-sources</phase>
@@ -68,7 +68,7 @@
                                 <consumerApiPackage>${asyncapiOrdersClientPackage}.events.consumer</consumerApiPackage>
                             </configOptions>
                         </configuration>
-                    </execution>
+                    </execution> -->
                 </executions>
             </plugin>
         </plugins>

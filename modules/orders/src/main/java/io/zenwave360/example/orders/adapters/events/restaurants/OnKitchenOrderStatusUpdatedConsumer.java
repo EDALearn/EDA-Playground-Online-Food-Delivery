@@ -1,10 +1,11 @@
 package io.zenwave360.example.orders.adapters.events.restaurants;
 
-import io.zenwave360.example.orders.client.restaurants.events.consumer.*;
-import io.zenwave360.example.orders.client.restaurants.events.dtos.*;
+
+import io.zenwave360.example.orders.adapters.commands.IOnKitchenOrderStatusUpdatedConsumerService;
 import io.zenwave360.example.orders.core.domain.KitchenStatus;
+import io.zenwave360.example.orders.core.domain.events.KitchenOrderStatus;
+import io.zenwave360.example.orders.core.domain.events.KitchenOrderStatusUpdated;
 import io.zenwave360.example.orders.core.inbound.OrdersService;
-import io.zenwave360.example.orders.core.inbound.dtos.DeliveryStatusInput;
 import io.zenwave360.example.orders.core.inbound.dtos.KitchenStatusInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class OnKitchenOrderStatusUpdatedConsumer implements IOnKitchenOrderStatu
 
     /** */
     public void onKitchenOrderStatusUpdated(KitchenOrderStatusUpdated payload,
-            KitchenOrderStatusUpdatedHeaders headers) {
+                                            KitchenOrderStatusUpdatedHeaders headers) {
         log.debug("Received command request for onKitchenOrderStatusUpdated: {} with headers {}", payload, headers);
         KitchenStatusInput input = new KitchenStatusInput() //
                 .setKitchenOrderId(payload.getKitchenOrderId())

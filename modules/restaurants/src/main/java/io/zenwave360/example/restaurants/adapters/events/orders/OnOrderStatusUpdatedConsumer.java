@@ -1,7 +1,8 @@
 package io.zenwave360.example.restaurants.adapters.events.orders;
 
-import io.zenwave360.example.restaurants.client.orders.events.consumer.*;
-import io.zenwave360.example.restaurants.client.orders.events.dtos.*;
+
+import io.zenwave360.example.restaurants.adapters.commands.IOnOrderStatusUpdatedConsumerService;
+import io.zenwave360.example.restaurants.core.domain.events.OrderStatusUpdated;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,7 @@
 package io.zenwave360.example.delivery.adapters.events.orders;
 
-import io.zenwave360.example.delivery.client.orders.events.consumer.IOnOrderStatusUpdatedConsumerService;
-import io.zenwave360.example.delivery.client.orders.events.dtos.OrderStatusUpdated;
+import io.zenwave360.example.delivery.adapters.commands.IOnOrderStatusUpdatedConsumerService;
+import io.zenwave360.example.delivery.core.domain.events.OrderStatusUpdated;
 import org.springframework.stereotype.Component;
 
 @Component("delivery_OnOrderStatusUpdatedConsumer")

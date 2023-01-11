@@ -1,9 +1,9 @@
 package io.zenwave360.example.orders.adapters.events.delivery;
 
-import io.zenwave360.example.orders.client.delivery.events.consumer.IOnDeliveryStatusUpdatedConsumerService;
 
-import io.zenwave360.example.orders.client.delivery.events.dtos.DeliveryStatusUpdated;
+import io.zenwave360.example.orders.adapters.commands.IOnDeliveryStatusUpdatedConsumerService;
 import io.zenwave360.example.orders.core.domain.DeliveryStatus;
+import io.zenwave360.example.orders.core.domain.events.DeliveryStatusUpdated;
 import io.zenwave360.example.orders.core.inbound.OrdersService;
 import io.zenwave360.example.orders.core.inbound.dtos.DeliveryStatusInput;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class OnDeliveryStatusUpdatedConsumer implements IOnDeliveryStatusUpdated
 
     /** */
     public void onDeliveryStatusUpdated(DeliveryStatusUpdated payload,
-            IOnDeliveryStatusUpdatedConsumerService.DeliveryStatusUpdatedHeaders headers) {
+                                        IOnDeliveryStatusUpdatedConsumerService.DeliveryStatusUpdatedHeaders headers) {
         log.debug("Received command request for onDeliveryStatusUpdated: {} with headers {}", payload, headers);
         DeliveryStatusInput input = new DeliveryStatusInput() //
             .setDeliveryOrderId(payload.getDeliveryId())
@@ -33,7 +33,7 @@ public class OnDeliveryStatusUpdatedConsumer implements IOnDeliveryStatusUpdated
         ordersService.updateDeliveryStatus(payload.getCustomerOrderId(), input);
     };
 
-    private DeliveryStatus map(io.zenwave360.example.orders.client.delivery.events.dtos.DeliveryStatus status) {
+    private DeliveryStatus map(io.zenwave360.example.orders.core.domain.events.DeliveryStatus status) {
         return DeliveryStatus.valueOf(status.name());
     }
 
