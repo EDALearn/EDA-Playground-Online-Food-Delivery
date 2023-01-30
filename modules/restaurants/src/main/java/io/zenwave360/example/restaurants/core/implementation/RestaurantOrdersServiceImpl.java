@@ -5,8 +5,7 @@ import io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatusUp
 import io.zenwave360.example.restaurants.core.implementation.mappers.*;
 import io.zenwave360.example.restaurants.core.inbound.*;
 import io.zenwave360.example.restaurants.core.inbound.dtos.*;
-import io.zenwave360.example.restaurants.core.outbound.events.IRestaurantOrdersEventsProducer;
-import io.zenwave360.example.restaurants.core.outbound.events.RestaurantOrdersEventsProducer;
+import io.zenwave360.example.restaurants.core.outbound.events.*;
 import io.zenwave360.example.restaurants.core.outbound.mongodb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,34 +17,32 @@ import org.springframework.transaction.annotation.Transactional;
 /** Service Implementation for managing [KitchenOrder]. */
 @Service
 @Transactional(readOnly = true)
+@lombok.AllArgsConstructor
 public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final KitchenOrderMapper kitchenOrderMapper = KitchenOrderMapper.INSTANCE;
+    private final RestaurantOrdersServiceMapper restaurantOrdersServiceMapper = RestaurantOrdersServiceMapper.INSTANCE;
 
     private final KitchenOrderRepository kitchenOrderRepository;
 
+    private final EventsMapper eventsMapper = EventsMapper.INSTANCE;
+
     private final IRestaurantOrdersEventsProducer eventsProducer;
 
-    /** Constructor. */
-    public RestaurantOrdersServiceImpl(KitchenOrderRepository kitchenOrderRepository, RestaurantOrdersEventsProducer eventsProducer) {
-        this.kitchenOrderRepository = kitchenOrderRepository;
-        this.eventsProducer = eventsProducer;
-    }
 
     @Transactional
     public KitchenOrder createKitchenOrder(KitchenOrderInput input) {
         log.debug("Request to save KitchenOrder: {}", input);
         var isKitchenAvailability = true;
         if(isKitchenAvailability) {
-            var kitchenOrder = kitchenOrderMapper.update(new KitchenOrder(), input);
+            var kitchenOrder = restaurantOrdersServiceMapper.update(new KitchenOrder(), input);
             kitchenOrder.setStatus(KitchenOrderStatus.ACCEPTED);
             kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
             var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
-                .withKitchenOrderId(kitchenOrder.getId())
-                .withCustomerOrderId(input.getOrderId())
-                .withStatus(io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus.ACCEPTED);
+                    .withKitchenOrderId(kitchenOrder.getId())
+                    .withCustomerOrderId(input.getOrderId())
+                    .withStatus(io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus.ACCEPTED);
             eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
             return kitchenOrder;
         } else {
@@ -75,11 +72,11 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
     public KitchenOrder updateKitchenOrderStatus(String id, KitchenOrderStatusInput input) {
         log.debug("Request updateKitchenOrderStatus: {}", id);
         var kitchenOrder = kitchenOrderRepository.findById(id).orElseThrow();
-        kitchenOrder = kitchenOrderMapper.update(kitchenOrder, input);
+        kitchenOrder = restaurantOrdersServiceMapper.update(kitchenOrder, input);
         var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
                 .withKitchenOrderId(kitchenOrder.getId())
                 .withCustomerOrderId(kitchenOrder.getOrderId())
-                .withStatus(kitchenOrderMapper.asKitchenOrderStatus(kitchenOrder.getStatus()));
+                .withStatus(restaurantOrdersServiceMapper.asKitchenOrderStatus(kitchenOrder.getStatus()));
         eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
         kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
         return kitchenOrder;

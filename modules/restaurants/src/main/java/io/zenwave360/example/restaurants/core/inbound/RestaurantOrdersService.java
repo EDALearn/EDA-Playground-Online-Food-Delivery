@@ -8,24 +8,16 @@ import org.springframework.data.domain.Pageable;
 /** Inbound Service Port for managing [KitchenOrder]. */
 public interface RestaurantOrdersService {
 
-    /**
-     * Creates a kitchenOrder.
-     * @param kitchenOrder the entity to save.
-     * @return the persisted entity.
-     */
+    /** With Events: [KitchenOrderStatusUpdated]. */
     public KitchenOrder createKitchenOrder(KitchenOrderInput input);
 
-    /** */
+    /** With Events: [KitchenOrderStatusUpdated]. */
     public void onOrderStatusUpdated(OrderStatusUpdated input);
 
-    /** */
+    /** With Events: [KitchenOrderStatusUpdated]. */
     public KitchenOrder updateKitchenOrderStatus(String id, KitchenOrderStatusInput input);
 
-    /**
-     * Get all the KitchenOrders matching the search criteria.
-     * @param criteria the criteria with pagination information.
-     * @return the list of entities.
-     */
+    /** */
     public Page<KitchenOrder> searchKitchenOrders(KitchenOrdersFilter input, Pageable pageable);
 
 }

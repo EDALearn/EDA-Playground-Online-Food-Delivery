@@ -14,25 +14,19 @@ public interface RestaurantOrdersDTOsMapper {
   RestaurantOrdersDTOsMapper INSTANCE = Mappers.getMapper(RestaurantOrdersDTOsMapper.class);
 
   // request mappings
-
+  KitchenOrdersFilter asKitchenOrdersFilter(KitchenOrdersFilterDTO dto);
 
   KitchenOrderStatusInput asKitchenOrderStatusInput(KitchenOrderStatusInputDTO dto);
 
   // response mappings
-  KitchenOrderDTO asKitchenOrderDTO(KitchenOrder entity);
 
-  KitchenOrderPaginatedDTO asKitchenOrderPaginatedDTO(Page<KitchenOrder> entity);
-
-  // response paginated mappings
   List<KitchenOrderDTO> asKitchenOrderDTOList(List<KitchenOrder> entityList);
+
+  KitchenOrderPaginatedDTO asKitchenOrderPaginatedDTO(Page<KitchenOrder> page);
 
   default Page<KitchenOrderDTO> asKitchenOrderDTOPage(Page<KitchenOrder> page) {
     return page.map(this::asKitchenOrderDTO);
   }
 
-  KitchenOrdersFilter asKitchenOrdersFilter(KitchenOrdersFilterDTO kitchenOrdersFilterDTO);
-
-  KitchenOrderStatus asKitchenOrderStatus(KitchenOrderStatusDTO dto);
-
-  KitchenOrderStatusDTO asKitchenOrderStatusDTO(KitchenOrderStatus enumValue);
+  KitchenOrderDTO asKitchenOrderDTO(KitchenOrder entity);
 }

@@ -19,14 +19,14 @@ public interface CustomerDTOsMapper {
   Customer asCustomer(CustomerDTO dto);
 
   // response mappings
-  CustomerDTO asCustomerDTO(Customer entity);
 
-  CustomerPaginatedDTO asCustomerPaginatedDTO(Page<Customer> entity);
-
-  // response paginated mappings
   List<CustomerDTO> asCustomerDTOList(List<Customer> entityList);
+
+  CustomerPaginatedDTO asCustomerPaginatedDTO(Page<Customer> page);
 
   default Page<CustomerDTO> asCustomerDTOPage(Page<Customer> page) {
     return page.map(this::asCustomerDTO);
   }
+
+  CustomerDTO asCustomerDTO(Customer entity);
 }

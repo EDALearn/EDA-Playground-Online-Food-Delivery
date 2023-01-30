@@ -44,7 +44,7 @@ components:
         properties:
           tracingId:
             type: string
-            description: This header value will be populated automatically at runtime (when using ZenWave code generator)
+            description: This header value can be populated automatically at runtime (when using ZenWave code generator)
             x-runtime-expression: $tracingIdSupplier
 
   schemas:
@@ -61,12 +61,12 @@ components:
         deliveryId:
           type: "string"
         status:
-          $ref: "#/components/schemas/DeliveryStatus"
+          $ref: "#/components/schemas/DeliveryOrderStatus"
         message:
           type: "string"
-    DeliveryStatus:
+    DeliveryOrderStatus:
       type: "string"
-      x-business-entity: "DeliveryStatus"
+      x-business-entity: "DeliveryOrderStatus"
       enum:
       - "ACCEPTED"
       - "REJECTED"

@@ -57,6 +57,7 @@ paths:
           required: true
           schema:
             type: string
+            
       responses:
         "200":
           description: "OK"
@@ -75,6 +76,7 @@ paths:
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:
@@ -97,6 +99,7 @@ paths:
           required: true
           schema:
             type: string
+            
       responses:
         "200":
           description: "OK"
@@ -115,6 +118,7 @@ paths:
           required: true
           schema:
             type: string
+            
         - name: "name"
           in: path
           required: true
@@ -143,6 +147,7 @@ paths:
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:
@@ -183,6 +188,7 @@ components:
       type: "object"
       x-business-entity: "KitchenOrder"
       required:
+      - "orderId"
       - "restaurantId"
       - "date"
       - "items"
@@ -192,6 +198,8 @@ components:
           type: "string"
         version:
           type: "integer"
+        orderId:
+          type: "string"
         restaurantId:
           type: "string"
         date:
@@ -268,6 +276,19 @@ components:
           type: "string"
         zip:
           type: "string"
+    OrderStatusUpdated:
+      type: "object"
+      x-business-entity: "OrderStatusUpdated"
+      properties:
+        orderId:
+          type: "string"
+        dateTime:
+          type: "string"
+          format: "date-time"
+        status:
+          type: "string"
+        previousStatus:
+          type: "string"
     RestaurantIdInput:
       type: "object"
       x-business-entity: "RestaurantIdInput"
@@ -318,11 +339,14 @@ components:
       type: "object"
       x-business-entity: "KitchenOrderInput"
       required:
+      - "orderId"
       - "restaurantId"
       - "date"
       - "items"
       - "customer"
       properties:
+        orderId:
+          type: "string"
         restaurantId:
           type: "string"
         date:
@@ -330,7 +354,7 @@ components:
         items:
           type: "array"
           items:
-            type: "string"
+            $ref: "#/components/schemas/MenuItem"
         customer:
           $ref: "#/components/schemas/CustomerDetails"
     KitchenOrdersFilter:

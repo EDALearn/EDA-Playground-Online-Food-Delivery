@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
-/** REST controller for Api. */
+/** REST controller for OrdersApi. */
 @RestController
 @RequestMapping("/api")
 public class OrdersApiController implements OrdersApi {
@@ -42,43 +42,44 @@ public class OrdersApiController implements OrdersApi {
 
   @Override
   public ResponseEntity<CustomerOrderDTO> getCustomerOrder(String orderId) {
-    Optional<CustomerOrder> customerOrder = ordersService.getCustomerOrder(orderId);
-    if(customerOrder.isEmpty()) {
-      return ResponseEntity.status(404).build();
+    var customerOrder = ordersService.getCustomerOrder(orderId);
+    if (customerOrder.isPresent()) {
+      CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder.get());
+      return ResponseEntity.status(200).body(responseDTO);
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder.get());
-    return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<CustomerOrderDTO> updateOrder(String orderId, CustomerOrderInputDTO reqBody) {
-    CustomerOrderInput input = mapper.asCustomerOrder(reqBody);
-    CustomerOrder customerOrder = ordersService.updateOrder(orderId, input);
+    var input = mapper.asCustomerOrderInput(reqBody);
+    var customerOrder = ordersService.updateOrder(orderId, input);
     CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder);
     return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<CustomerOrderDTO> createOrder(CustomerOrderInputDTO reqBody) {
-    CustomerOrderInput input = mapper.asCustomerOrder(reqBody);
-    CustomerOrder customerOrder = ordersService.createOrder(input);
+    var input = mapper.asCustomerOrderInput(reqBody);
+    var customerOrder = ordersService.createOrder(input);
     CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder);
     return ResponseEntity.status(201).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<CustomerOrderDTO> cancelOrder(String orderId, CancelOrderInputDTO reqBody) {
-    CancelOrderInput input = mapper.asCancelOrderInput(reqBody);
-    CustomerOrder customerOrder = ordersService.cancelOrder(orderId, input);
+    var input = mapper.asCancelOrderInput(reqBody);
+    var customerOrder = ordersService.cancelOrder(orderId, input);
     CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder);
     return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<List<CustomerOrderDTO>> searchOrders(OrdersFilterDTO reqBody) {
-    OrdersFilter input = mapper.asOrdersFilter(reqBody);
-    List<CustomerOrder> listCustomerOrder = ordersService.searchOrders(input);
-    List<CustomerOrderDTO> responseDTO = mapper.asCustomerOrderListDTO(listCustomerOrder);
+    var input = mapper.asOrdersFilter(reqBody);
+    var customerOrder = ordersService.searchOrders(input);
+    var responseDTO = mapper.asCustomerOrderDTOList(customerOrder);
     return ResponseEntity.status(201).body(responseDTO);
   }
 

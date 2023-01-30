@@ -1,7 +1,7 @@
 package io.zenwave360.example.restaurants.adapters.web;
 
 import io.zenwave360.example.restaurants.adapters.web.model.*;
-import io.zenwave360.example.restaurants.config.InMemoryTestsManualContext;
+import io.zenwave360.example.restaurants.config.ServicesInMemoryConfig;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -14,8 +14,9 @@ public class RestaurantOrdersApiControllerTest {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-  RestaurantOrdersApiController controller =
-      new RestaurantOrdersApiController().setRestaurantOrdersService(InMemoryTestsManualContext.INSTANCE.restaurantOrdersService());
+  ServicesInMemoryConfig context = new ServicesInMemoryConfig();
+
+  RestaurantOrdersApiController controller = new RestaurantOrdersApiController().setRestaurantOrdersService(context.restaurantOrdersService());
 
   @Test
   public void updateKitchenOrderStatusTest() {
@@ -27,11 +28,11 @@ public class RestaurantOrdersApiControllerTest {
 
   @Test
   public void searchKitchenOrdersTest() {
-    var kitchenOrdersFilterDTO = new KitchenOrdersFilterDTO();
     Optional<Integer> page = null;
     Optional<Integer> limit = null;
     Optional<List<String>> sort = null;
-    var response = controller.searchKitchenOrders(page, limit, sort, kitchenOrdersFilterDTO);
-    Assertions.assertEquals(200, response.getStatusCode().value());
+    KitchenOrdersFilterDTO reqBody = null;
+    var response = controller.searchKitchenOrders(page, limit, sort, reqBody);
+    Assertions.assertEquals(201, response.getStatusCode().value());
   }
 }

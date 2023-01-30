@@ -14,29 +14,23 @@ public interface RestaurantBackOfficeDTOsMapper {
   RestaurantBackOfficeDTOsMapper INSTANCE = Mappers.getMapper(RestaurantBackOfficeDTOsMapper.class);
 
   // request mappings
-
   MenuItem asMenuItem(MenuItemDTO dto);
 
-  // response mappings
-  RestaurantDTO asRestaurantDTO(Restaurant entity);
+  Restaurant asRestaurant(RestaurantDTO dto);
 
+  // response mappings
 
   MenuItemDTO asMenuItemDTO(MenuItem entity);
 
-  RestaurantPaginatedDTO asRestaurantPaginatedDTO(Page<Restaurant> entity);
+  RestaurantDTO asRestaurantDTO(Restaurant entity);
 
-  // response paginated mappings
+  List<MenuItemDTO> asMenuItemDTOList(List<MenuItem> entityList);
+
   List<RestaurantDTO> asRestaurantDTOList(List<Restaurant> entityList);
+
+  RestaurantPaginatedDTO asRestaurantPaginatedDTO(Page<Restaurant> page);
 
   default Page<RestaurantDTO> asRestaurantDTOPage(Page<Restaurant> page) {
     return page.map(this::asRestaurantDTO);
   }
-
-  List<MenuItemDTO> asMenuItemListDTOList(List<MenuItem> entityList);
-
-  default Page<MenuItemDTO> asMenuItemListDTOPage(Page<MenuItem> page) {
-    return page.map(this::asMenuItemDTO);
-  }
-
-  Restaurant asRestaurant(RestaurantDTO reqBody);
 }

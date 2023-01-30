@@ -17,14 +17,14 @@ public interface DeliveryDTOsMapper {
   DeliveryStatusInput asDeliveryStatusInput(DeliveryStatusInputDTO dto);
 
   // response mappings
-  DeliveryPaginatedDTO asDeliveryPaginatedDTO(Page<Delivery> entity);
 
-  DeliveryDTO asDeliveryDTO(Delivery entity);
-
-  // response paginated mappings
   List<DeliveryDTO> asDeliveryDTOList(List<Delivery> entityList);
+
+  DeliveryPaginatedDTO asDeliveryPaginatedDTO(Page<Delivery> page);
 
   default Page<DeliveryDTO> asDeliveryDTOPage(Page<Delivery> page) {
     return page.map(this::asDeliveryDTO);
   }
+
+  DeliveryDTO asDeliveryDTO(Delivery entity);
 }
