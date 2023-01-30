@@ -38,9 +38,9 @@ public class CustomerOrder implements Serializable {
     private Restaurant restaurantDetails;
 
     @Field
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItemInput> orderItems = new ArrayList<>();
 
-    public CustomerOrder addOrderItems(OrderItem orderItems) {
+    public CustomerOrder addOrderItems(OrderItemInput orderItems) {
         this.orderItems.add(orderItems);
         return this;
     }

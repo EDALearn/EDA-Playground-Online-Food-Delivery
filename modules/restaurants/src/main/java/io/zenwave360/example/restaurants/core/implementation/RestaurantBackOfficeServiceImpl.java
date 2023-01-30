@@ -4,6 +4,7 @@ import io.zenwave360.example.restaurants.core.domain.*;
 import io.zenwave360.example.restaurants.core.implementation.mappers.*;
 import io.zenwave360.example.restaurants.core.inbound.*;
 import io.zenwave360.example.restaurants.core.inbound.dtos.*;
+import io.zenwave360.example.restaurants.core.outbound.events.*;
 import io.zenwave360.example.restaurants.core.outbound.mongodb.*;
 import java.util.List;
 import java.util.Optional;
@@ -17,30 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 /** Service Implementation for managing [Restaurant, MenuItem]. */
 @Service
 @Transactional(readOnly = true)
+@lombok.AllArgsConstructor
 public class RestaurantBackOfficeServiceImpl implements RestaurantBackOfficeService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final RestaurantMapper restaurantMapper = RestaurantMapper.INSTANCE;
+    private final RestaurantBackOfficeServiceMapper restaurantBackOfficeServiceMapper = RestaurantBackOfficeServiceMapper.INSTANCE;
 
     private final RestaurantRepository restaurantRepository;
 
-    private final MenuItemMapper menuItemMapper = MenuItemMapper.INSTANCE;
-
     private final MenuItemRepository menuItemRepository;
-
-    /** Constructor. */
-    public RestaurantBackOfficeServiceImpl(RestaurantRepository restaurantRepository,
-            MenuItemRepository menuItemRepository) {
-        this.restaurantRepository = restaurantRepository;
-
-        this.menuItemRepository = menuItemRepository;
-    }
 
     @Transactional
     public Restaurant createRestaurant(Restaurant input) {
         log.debug("Request to save Restaurant: {}", input);
-        var restaurant = restaurantMapper.update(new Restaurant(), input);
+        var restaurant = restaurantBackOfficeServiceMapper.update(new Restaurant(), input);
         restaurant = restaurantRepository.save(restaurant);
         return restaurant;
     }
@@ -60,7 +52,7 @@ public class RestaurantBackOfficeServiceImpl implements RestaurantBackOfficeServ
     @Transactional
     public MenuItem createMenuItem(MenuItem input) {
         log.debug("Request to save MenuItem: {}", input);
-        var menuItem = menuItemMapper.update(new MenuItem(), input);
+        var menuItem = restaurantBackOfficeServiceMapper.update(new MenuItem(), input);
         menuItem = menuItemRepository.save(menuItem);
         return menuItem;
     }
@@ -69,15 +61,15 @@ public class RestaurantBackOfficeServiceImpl implements RestaurantBackOfficeServ
     public Optional<MenuItem> updateMenuItem(String id, MenuItem input) {
         log.debug("Request to update MenuItem : {}", input);
         var menuItem = menuItemRepository.findById(id).map(existingMenuItem -> {
-            return menuItemMapper.update(existingMenuItem, input);
+            return restaurantBackOfficeServiceMapper.update(existingMenuItem, input);
         }).map(menuItemRepository::save);
         return menuItem;
     }
 
     public List<MenuItem> listMenuItems(String restaurantId) {
-        log.debug("Request list of MenuItems for restaurantId: {}", restaurantId);
-        var results = menuItemRepository.findAllByRestaurantId(restaurantId);
-        return results;
+        log.debug("Request list of MenuItems");
+        var menuItems = menuItemRepository.findAll();
+        return menuItems;
     }
 
 }

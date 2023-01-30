@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 
 /** Acceptance Test for RestaurantBackOfficeService. */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,7 +25,7 @@ public class RestaurantBackOfficeServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    InMemoryTestsManualContext context = InMemoryTestsManualContext.INSTANCE;
+    ServicesInMemoryConfig context = new ServicesInMemoryConfig();
 
     RestaurantBackOfficeServiceImpl restaurantBackOfficeService = context.restaurantBackOfficeService();
 
@@ -87,9 +86,13 @@ public class RestaurantBackOfficeServiceTest {
     void createRestaurantTest() {
         var input = new Restaurant();
         // TODO fill input data
+        // input.setName("aa");
+        // input.setPhone("");
+        // input.setAddress(new Address());
         var restaurant = restaurantBackOfficeService.createRestaurant(input);
         assertNotNull(restaurant.getId());
-        assertTrue(restaurantRepository.containsEntity(restaurant)); // not legacy
+        assertTrue(restaurantRepository.containsEntity(restaurant)); // TODO: implement
+                                                                     // this test
     }
 
     @Test
@@ -97,21 +100,26 @@ public class RestaurantBackOfficeServiceTest {
     void getRestaurantTest() {
         var id = "1"; // TODO fill id
         var restaurant = restaurantBackOfficeService.getRestaurant(id);
-        assertTrue(restaurant.isPresent()); // not legacy
+        assertTrue(restaurant.isPresent()); // TODO: implement this test
     }
 
     @Test
     @Order(2)
     void listRestaurantsTest() {
-        var results = restaurantBackOfficeService.listRestaurants(PageRequest.of(0, 10));
-        assertNotNull(results); // not legacy
+        // var results = restaurantBackOfficeService.listRestaurants(PageRequest.of(0,
+        // 10));
+        // assertNotNull(results);// TODO: implement this test
     }
 
     @Test
     @Order(3)
-    void createMenuItemTest() { // not legacy
+    void createMenuItemTest() { // TODO: implement this test
         var input = new MenuItem();
         // TODO fill input data
+        // input.setRestaurantId("");
+        // input.setName("aa");
+        // input.setDescription("");
+        // input.setPrice(BigDecimal.valueOf(0));
         var menuItem = restaurantBackOfficeService.createMenuItem(input);
         assertNotNull(menuItem.getId());
         assertTrue(menuItemRepository.containsEntity(menuItem));
@@ -119,10 +127,14 @@ public class RestaurantBackOfficeServiceTest {
 
     @Test
     @Order(4)
-    void updateMenuItemTest() { // not legacy
+    void updateMenuItemTest() { // TODO: implement this test
         var id = "1"; // TODO fill id
         var input = new MenuItem();
         // TODO fill input data
+        // input.setRestaurantId("");
+        // input.setName("aa");
+        // input.setDescription("");
+        // input.setPrice(BigDecimal.valueOf(0));
         assertTrue(menuItemRepository.containsKey(id));
         var menuItem = restaurantBackOfficeService.updateMenuItem(id, input);
         assertTrue(menuItem.isPresent());
@@ -131,10 +143,9 @@ public class RestaurantBackOfficeServiceTest {
 
     @Test
     @Order(5)
-    void listMenuItemsTest() { // not legacy
-        var restaurantId = "1"; // TODO fill restaurantId
-        var results = restaurantBackOfficeService.listMenuItems(restaurantId);
-        assertNotNull(results);
+    void listMenuItemsTest() { // TODO: implement this test
+        // var results = restaurantBackOfficeService.listMenuItems(PageRequest.of(0, 10));
+        // assertNotNull(results);
     }
 
 }

@@ -24,10 +24,9 @@ spring:
   cloud:
     function:
       definition: >-
-        on-order-event;on-order-status-updated;do-cancel-order;restaurants_on-order-event;
-        restaurants_on-kitchen-order-status-updated;delivery_on-delivery-status-updated;
-        restaurants_on-order-status-updated;on-kitchen-order-status-updated;
-        delivery_on-order-event;delivery_on-order-status-updated;on-delivery-status-updated;
+        do-cancel-order;on-order-event;on-order-status-updated;on-kitchen-order-status-updated;on-delivery-status-updated;
+        on-order-event-at-restaurants;on-order-status-updated-at-restaurants;
+        on-order-event-at-delivery;on-order-status-updated-at-delivery;
     stream:
       bindings:
         ## Orders Module Bindings
@@ -38,28 +37,28 @@ spring:
           destination: orders.orders
         on-order-status-updated-out-0:
           destination: orders.order_updates
-        restaurants_on-kitchen-order-status-updated-in-0:
+        on-kitchen-order-status-updated-in-0:
           destination: restaurants.kitchen_order_status
           group: orders.consumer
-        delivery_on-delivery-status-updated-in-0:
+        on-delivery-status-updated-in-0:
           destination: delivery.delivery_status
           group: orders.consumer
 
         ## Restaurants Module Bindings
-        restaurants_on-order-event-in-0:
+        on-order-event-at-restaurants-in-0:
           destination: orders.orders
           group: restaurants.consumer
-        restaurants_on-order-status-updated-in-0:
+        on-order-status-updated-at-restaurants-in-0:
           destination: orders.order_updates
           group: restaurants.consumer
         on-kitchen-order-status-updated-out-0:
           destination: restaurants.kitchen_order_status
 
         ## Delivery Module Bindings
-        delivery_on-order-event-in-0:
+        on-order-event-at-delivery-in-0:
           destination: orders.orders
           group: delivery.consumer
-        delivery_on-order-status-updated-in-0:
+        on-order-status-updated-at-delivery-in-0:
           destination: orders.order_updates
           group: delivery.consumer
         on-delivery-status-updated-out-0:

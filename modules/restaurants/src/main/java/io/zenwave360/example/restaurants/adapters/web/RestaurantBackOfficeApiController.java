@@ -10,14 +10,13 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
-/** REST controller for Api. */
+/** REST controller for RestaurantBackOfficeApi. */
 @RestController
 @RequestMapping("/api")
 public class RestaurantBackOfficeApiController implements RestaurantBackOfficeApi {
@@ -43,17 +42,24 @@ public class RestaurantBackOfficeApiController implements RestaurantBackOfficeAp
 
   @Override
   public ResponseEntity<RestaurantDTO> createRestaurant(RestaurantDTO reqBody) {
-    Restaurant input = mapper.asRestaurant(reqBody);
-    Restaurant restaurant = restaurantBackOfficeService.createRestaurant(input);
+    var input = mapper.asRestaurant(reqBody);
+    var restaurant = restaurantBackOfficeService.createRestaurant(input);
     RestaurantDTO responseDTO = mapper.asRestaurantDTO(restaurant);
     return ResponseEntity.status(201).body(responseDTO);
   }
 
   @Override
+  public ResponseEntity<RestaurantPaginatedDTO> listRestaurants(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {
+    var restaurantPage = restaurantBackOfficeService.listRestaurants(pageOf(page, limit, sort));
+    var responseDTO = mapper.asRestaurantPaginatedDTO(restaurantPage);
+    return ResponseEntity.status(200).body(responseDTO);
+  }
+
+  @Override
   public ResponseEntity<RestaurantDTO> getRestaurant(String restaurantId) {
-    Optional<Restaurant> optionalRestaurant = restaurantBackOfficeService.getRestaurant(restaurantId);
-    if (optionalRestaurant.isPresent()) {
-      RestaurantDTO responseDTO = mapper.asRestaurantDTO(optionalRestaurant.get());
+    var restaurant = restaurantBackOfficeService.getRestaurant(restaurantId);
+    if (restaurant.isPresent()) {
+      RestaurantDTO responseDTO = mapper.asRestaurantDTO(restaurant.get());
       return ResponseEntity.status(200).body(responseDTO);
     } else {
       return ResponseEntity.notFound().build();
@@ -61,33 +67,26 @@ public class RestaurantBackOfficeApiController implements RestaurantBackOfficeAp
   }
 
   @Override
-  public ResponseEntity<RestaurantPaginatedDTO> listRestaurants(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {
-    Page<Restaurant> pageRestaurant = restaurantBackOfficeService.listRestaurants(pageOf(page, limit, sort));
-    RestaurantPaginatedDTO responseDTO = mapper.asRestaurantPaginatedDTO(pageRestaurant);
-    return ResponseEntity.status(200).body(responseDTO);
-  }
-
-  @Override
   public ResponseEntity<MenuItemDTO> createMenuItem(String restaurantId, MenuItemDTO reqBody) {
-    MenuItem input = mapper.asMenuItem(reqBody);
-    MenuItem menuItem = restaurantBackOfficeService.createMenuItem(input);
+    var input = mapper.asMenuItem(reqBody);
+    var menuItem = restaurantBackOfficeService.createMenuItem(input);
     MenuItemDTO responseDTO = mapper.asMenuItemDTO(menuItem);
     return ResponseEntity.status(201).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<List<MenuItemDTO>> listMenuItems(String restaurantId) {
-    List<MenuItem> listMenuItem = restaurantBackOfficeService.listMenuItems(restaurantId);
-    List<MenuItemDTO> responseDTO = mapper.asMenuItemListDTOList(listMenuItem);
+    var menuItem = restaurantBackOfficeService.listMenuItems(restaurantId);
+    var responseDTO = mapper.asMenuItemDTOList(menuItem);
     return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<MenuItemDTO> updateMenuItem(String restaurantId, String name, MenuItemDTO reqBody) {
-    MenuItem input = mapper.asMenuItem(reqBody);
-    Optional<MenuItem> optionalMenuItem = restaurantBackOfficeService.updateMenuItem(restaurantId, input);
-    if (optionalMenuItem.isPresent()) {
-      MenuItemDTO responseDTO = mapper.asMenuItemDTO(optionalMenuItem.get());
+    var input = mapper.asMenuItem(reqBody);
+    var menuItem = restaurantBackOfficeService.updateMenuItem(restaurantId, input);
+    if (menuItem.isPresent()) {
+      MenuItemDTO responseDTO = mapper.asMenuItemDTO(menuItem.get());
       return ResponseEntity.status(200).body(responseDTO);
     } else {
       return ResponseEntity.notFound().build();

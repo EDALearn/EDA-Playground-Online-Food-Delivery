@@ -6,7 +6,6 @@ import io.zenwave360.example.orders.core.inbound.dtos.*;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.Page;
 
 @Mapper(uses = BaseMapper.class)
 public interface OrdersDTOsMapper {
@@ -16,13 +15,13 @@ public interface OrdersDTOsMapper {
   // request mappings
   OrdersFilter asOrdersFilter(OrdersFilterDTO dto);
 
-  CustomerOrderInput asCustomerOrder(CustomerOrderInputDTO dto);
+  CustomerOrderInput asCustomerOrderInput(CustomerOrderInputDTO dto);
 
   CancelOrderInput asCancelOrderInput(CancelOrderInputDTO dto);
 
   // response mappings
+
   CustomerOrderDTO asCustomerOrderDTO(CustomerOrder entity);
 
-  List<CustomerOrderDTO> asCustomerOrderListDTO(List<CustomerOrder> entity);
-
+  List<CustomerOrderDTO> asCustomerOrderDTOList(List<CustomerOrder> entityList);
 }

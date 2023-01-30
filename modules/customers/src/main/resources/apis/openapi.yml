@@ -56,6 +56,7 @@ paths:
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:
@@ -78,6 +79,7 @@ paths:
           required: true
           schema:
             type: string
+            
       responses:
         "204":
           description: "OK"
@@ -91,6 +93,7 @@ paths:
           required: true
           schema:
             type: string
+            
       responses:
         "200":
           description: "OK"
@@ -109,11 +112,13 @@ paths:
           required: true
           schema:
             type: string
+            
         - name: "identifier"
           in: path
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:

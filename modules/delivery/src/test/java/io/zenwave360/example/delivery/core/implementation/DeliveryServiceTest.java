@@ -1,5 +1,7 @@
 package io.zenwave360.example.delivery.core.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import io.zenwave360.example.delivery.config.*;
@@ -23,7 +25,7 @@ public class DeliveryServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    InMemoryTestsManualContext context = InMemoryTestsManualContext.INSTANCE;
+    ServicesInMemoryConfig context = new ServicesInMemoryConfig();
 
     DeliveryServiceImpl deliveryService = context.deliveryService();
 
@@ -56,12 +58,34 @@ public class DeliveryServiceTest {
 
     @Test
     @Order(0)
-    void createKitchenOrderTest() { // not legacy
+    void createDeliveryTest() {
+        var input = new DeliveryInput();
+        // TODO fill input data
+        // input.setOrderId("");
+        // input.setCustomer(new Customer());
+        // input.setRestaurant(new Restaurant());
+        // input.setOrderItems(new OrderItem());
+        // input.setStatus(DeliveryOrderStatus.values()[0]);
+        var delivery = deliveryService.createDelivery(input);
+        assertNotNull(delivery.getId());
+        assertTrue(deliveryRepository.containsEntity(delivery));
     }
 
     @Test
     @Order(1)
-    void updateDeliveryStatusTest() { // not legacy
+    void onOrderStatusUpdatedTest() { // TODO: implement this test
+    }
+
+    @Test
+    @Order(2)
+    void updateDeliveryStatusTest() { // TODO: implement this test
+    }
+
+    @Test
+    @Order(3)
+    void listDeliveriesTest() {
+        // var results = deliveryService.listDeliveries(PageRequest.of(0, 10));
+        // assertNotNull(results);
     }
 
 }

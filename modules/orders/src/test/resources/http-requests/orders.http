@@ -50,9 +50,9 @@ Content-Type: application/json
 
 ### Create Order
 < {%
-request.variables.set("customerId", "659d8831878ae4030afa2a6f")
+request.variables.set("customerId", "65ba42cc46154928cf97ddf6")
 request.variables.set("addressIdentifier", "Home Address")
-request.variables.set("restaurantId", "659d883c878ae4030afa2a70")
+request.variables.set("restaurantId", "65ba42de46154928cf97ddf7")
 %}
 POST {{baseUrl}}/orders
 Authorization: {{Authorization}}
@@ -71,6 +71,24 @@ Content-Type: application/json
     }
   ]
 }
+
+### Search Orders
+POST {{baseUrl}}/orders/search
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+
+}
+
+### Get Order
+< {%
+    request.variables.set("orderId", "65ba48db2ea5d57ffe8961a2")
+%}
+GET {{baseUrl}}/orders/{{orderId}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
 
 ### Update Kitchen Order Status
 PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status

@@ -1,5 +1,6 @@
 package io.zenwave360.example.orders.core.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import io.zenwave360.example.orders.config.*;
@@ -23,7 +24,7 @@ public class OrdersServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    InMemoryTestsManualContext context = InMemoryTestsManualContext.INSTANCE;
+    ServicesInMemoryConfig context = new ServicesInMemoryConfig();
 
     OrdersServiceImpl ordersService = context.ordersService();
 
@@ -56,37 +57,40 @@ public class OrdersServiceTest {
 
     @Test
     @Order(0)
-    void getOrderTest() { // not legacy
+    void getCustomerOrderTest() {
+        var id = "1"; // TODO fill id
+        var customerOrder = ordersService.getCustomerOrder(id);
+        assertTrue(customerOrder.isPresent());
     }
 
     @Test
     @Order(1)
-    void createOrderTest() { // not legacy
+    void createOrderTest() { // TODO: implement this test
     }
 
     @Test
     @Order(2)
-    void updateOrderTest() { // not legacy
+    void updateOrderTest() { // TODO: implement this test
     }
 
     @Test
     @Order(3)
-    void updateKitchenStatusTest() { // not legacy
+    void updateKitchenStatusTest() { // TODO: implement this test
     }
 
     @Test
     @Order(4)
-    void updateDeliveryStatusTest() { // not legacy
+    void updateDeliveryStatusTest() { // TODO: implement this test
     }
 
     @Test
     @Order(5)
-    void cancelOrderTest() { // not legacy
+    void cancelOrderTest() { // TODO: implement this test
     }
 
     @Test
     @Order(6)
-    void searchOrdersTest() { // not legacy
+    void searchOrdersTest() { // TODO: implement this test
     }
 
 }

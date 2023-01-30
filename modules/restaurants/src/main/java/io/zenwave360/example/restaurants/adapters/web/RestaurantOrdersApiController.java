@@ -10,14 +10,13 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
-/** REST controller for Api. */
+/** REST controller for RestaurantOrdersApi. */
 @RestController
 @RequestMapping("/api")
 public class RestaurantOrdersApiController implements RestaurantOrdersApi {
@@ -43,18 +42,19 @@ public class RestaurantOrdersApiController implements RestaurantOrdersApi {
 
   @Override
   public ResponseEntity<KitchenOrderDTO> updateKitchenOrderStatus(String orderId, KitchenOrderStatusInputDTO reqBody) {
-    KitchenOrderStatusInput input = mapper.asKitchenOrderStatusInput(reqBody);
-    KitchenOrder kitchenOrder = restaurantOrdersService.updateKitchenOrderStatus(orderId, input);
+    var input = mapper.asKitchenOrderStatusInput(reqBody);
+    var kitchenOrder = restaurantOrdersService.updateKitchenOrderStatus(orderId, input);
     KitchenOrderDTO responseDTO = mapper.asKitchenOrderDTO(kitchenOrder);
     return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
-  public ResponseEntity<KitchenOrderPaginatedDTO> searchKitchenOrders(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort, KitchenOrdersFilterDTO kitchenOrdersFilterDTO) {
-    var kitchenOrdersFilter = mapper.asKitchenOrdersFilter(kitchenOrdersFilterDTO);
-    Page<KitchenOrder> pageKitchenOrder = restaurantOrdersService.searchKitchenOrders(kitchenOrdersFilter, pageOf(page, limit, sort));
-    KitchenOrderPaginatedDTO responseDTO = mapper.asKitchenOrderPaginatedDTO(pageKitchenOrder);
-    return ResponseEntity.status(200).body(responseDTO);
+  public ResponseEntity<KitchenOrderPaginatedDTO> searchKitchenOrders(
+      Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort, KitchenOrdersFilterDTO reqBody) {
+    var input = mapper.asKitchenOrdersFilter(reqBody);
+    var kitchenOrderPage = restaurantOrdersService.searchKitchenOrders(input, pageOf(page, limit, sort));
+    var responseDTO = mapper.asKitchenOrderPaginatedDTO(kitchenOrderPage);
+    return ResponseEntity.status(201).body(responseDTO);
   }
 
   protected Pageable pageOf(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {

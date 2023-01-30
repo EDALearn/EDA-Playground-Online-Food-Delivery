@@ -22,12 +22,12 @@ public class KitchenOrderInput implements Serializable {
     private LocalDateTime date;
 
     @NotNull
-    private List<MenuItemInput> items = new ArrayList<>();
+    private List<MenuItem> items = new ArrayList<>();
 
     @NotNull
     private CustomerDetails customer;
 
-    public KitchenOrderInput addItems(MenuItemInput items) {
+    public KitchenOrderInput addItems(MenuItem items) {
         this.items.add(items);
         return this;
     }

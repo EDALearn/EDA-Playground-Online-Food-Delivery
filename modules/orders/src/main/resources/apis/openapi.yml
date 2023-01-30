@@ -24,6 +24,7 @@ paths:
           required: true
           schema:
             type: string
+            
       responses:
         "200":
           description: "OK"
@@ -41,6 +42,7 @@ paths:
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:
@@ -81,6 +83,7 @@ paths:
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:
@@ -179,7 +182,7 @@ components:
         orderItems:
           type: "array"
           items:
-            $ref: "#/components/schemas/OrderItem"
+            $ref: "#/components/schemas/OrderItemInput"
     CustomerOrderList:
       type: "array"
       items:
@@ -293,6 +296,27 @@ components:
       - "READY"
       - "DELIVERED"
       - "CANCELLED"
+    OrderItemInput:
+      type: "object"
+      x-business-entity: "OrderItemInput"
+      required:
+      - "menuItemId"
+      - "name"
+      - "price"
+      - "quantity"
+      properties:
+        menuItemId:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          type: "number"
+          format: "double"
+        quantity:
+          type: "integer"
+          format: "int32"
     CancelOrderInput:
       type: "object"
       x-business-entity: "CancelOrderInput"

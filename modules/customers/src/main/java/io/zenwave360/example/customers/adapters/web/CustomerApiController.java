@@ -10,14 +10,13 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
-/** REST controller for Api. */
+/** REST controller for CustomerApi. */
 @RestController
 @RequestMapping("/api")
 public class CustomerApiController implements CustomerApi {
@@ -43,25 +42,25 @@ public class CustomerApiController implements CustomerApi {
 
   @Override
   public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO reqBody) {
-    Customer input = mapper.asCustomer(reqBody);
-    Customer customer = customerService.createCustomer(input);
+    var input = mapper.asCustomer(reqBody);
+    var customer = customerService.createCustomer(input);
     CustomerDTO responseDTO = mapper.asCustomerDTO(customer);
     return ResponseEntity.status(201).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<CustomerPaginatedDTO> listCustomers(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {
-    Page<Customer> pageCustomer = customerService.listCustomers(pageOf(page, limit, sort));
-    CustomerPaginatedDTO responseDTO = mapper.asCustomerPaginatedDTO(pageCustomer);
+    var customerPage = customerService.listCustomers(pageOf(page, limit, sort));
+    var responseDTO = mapper.asCustomerPaginatedDTO(customerPage);
     return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<CustomerDTO> updateCustomer(String customerId, CustomerDTO reqBody) {
-    Customer input = mapper.asCustomer(reqBody);
-    Optional<Customer> optionalCustomer = customerService.updateCustomer(customerId, input);
-    if (optionalCustomer.isPresent()) {
-      CustomerDTO responseDTO = mapper.asCustomerDTO(optionalCustomer.get());
+    var input = mapper.asCustomer(reqBody);
+    var customer = customerService.updateCustomer(customerId, input);
+    if (customer.isPresent()) {
+      CustomerDTO responseDTO = mapper.asCustomerDTO(customer.get());
       return ResponseEntity.status(200).body(responseDTO);
     } else {
       return ResponseEntity.notFound().build();
@@ -76,9 +75,9 @@ public class CustomerApiController implements CustomerApi {
 
   @Override
   public ResponseEntity<CustomerDTO> getCustomer(String customerId) {
-    Optional<Customer> optionalCustomer = customerService.getCustomer(customerId);
-    if (optionalCustomer.isPresent()) {
-      CustomerDTO responseDTO = mapper.asCustomerDTO(optionalCustomer.get());
+    var customer = customerService.getCustomer(customerId);
+    if (customer.isPresent()) {
+      CustomerDTO responseDTO = mapper.asCustomerDTO(customer.get());
       return ResponseEntity.status(200).body(responseDTO);
     } else {
       return ResponseEntity.notFound().build();
@@ -87,10 +86,10 @@ public class CustomerApiController implements CustomerApi {
 
   @Override
   public ResponseEntity<CustomerDTO> updateCustomerAddress(String customerId, String identifier, AddressDTO reqBody) {
-    Address input = mapper.asAddress(reqBody);
-    Optional<Customer> optionalCustomer = customerService.updateCustomerAddress(customerId, identifier, input);
-    if (optionalCustomer.isPresent()) {
-      CustomerDTO responseDTO = mapper.asCustomerDTO(optionalCustomer.get());
+    var input = mapper.asAddress(reqBody);
+    var customer = customerService.updateCustomerAddress(customerId, identifier, input);
+    if (customer.isPresent()) {
+      CustomerDTO responseDTO = mapper.asCustomerDTO(customer.get());
       return ResponseEntity.status(200).body(responseDTO);
     } else {
       return ResponseEntity.notFound().build();

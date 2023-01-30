@@ -13,7 +13,7 @@ import java.util.*;
 public class DeliveryStatusInput implements Serializable {
 
     @NotNull
-    private DeliveryStatus status;
+    private DeliveryOrderStatus status;
 
     @NotNull
     private String operatorName;

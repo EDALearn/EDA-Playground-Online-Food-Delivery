@@ -6,7 +6,6 @@ import io.zenwave360.example.restaurants.core.domain.events.Customer;
 import io.zenwave360.example.restaurants.core.domain.events.OrderEvent;
 import io.zenwave360.example.restaurants.core.domain.events.OrderItem;
 import io.zenwave360.example.restaurants.core.inbound.dtos.KitchenOrderInput;
-import io.zenwave360.example.restaurants.core.inbound.dtos.MenuItemInput;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -39,10 +38,6 @@ public interface EventsMapper {
     KitchenOrderInput asKitchenOrder(OrderEvent payload);
 
     CustomerDetails asCustomerDetails(Customer customer);
-
-    MenuItemInput asMenuItemInput(OrderItem orderItem);
-
-    List<MenuItemInput> asMenuItemInputList(List<OrderItem> orderItems);
 
     default LocalDateTime map(OffsetDateTime value) {
         return value != null ? value.toLocalDateTime() : null;

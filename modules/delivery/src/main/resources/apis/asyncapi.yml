@@ -25,13 +25,13 @@ operations:
     channel:
       $ref: '#/channels/DeliveryStatusChannel'
 # client operations
-  onOrderEvent:
+  onOrderEventAtDelivery:
     action: receive
     tags:
       - name: Orders
     channel:
       $ref: '#/channels/OrdersChannel'
-  onOrderStatusUpdated:
+  onOrderStatusUpdatedAtDelivery:
     action: receive
     tags:
       - name: Orders

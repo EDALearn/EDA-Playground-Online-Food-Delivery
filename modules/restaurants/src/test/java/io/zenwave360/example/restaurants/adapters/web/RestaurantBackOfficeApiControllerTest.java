@@ -1,7 +1,7 @@
 package io.zenwave360.example.restaurants.adapters.web;
 
 import io.zenwave360.example.restaurants.adapters.web.model.*;
-import io.zenwave360.example.restaurants.config.InMemoryTestsManualContext;
+import io.zenwave360.example.restaurants.config.ServicesInMemoryConfig;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -14,8 +14,10 @@ public class RestaurantBackOfficeApiControllerTest {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
+  ServicesInMemoryConfig context = new ServicesInMemoryConfig();
+
   RestaurantBackOfficeApiController controller =
-      new RestaurantBackOfficeApiController().setRestaurantBackOfficeService(InMemoryTestsManualContext.INSTANCE.restaurantBackOfficeService());
+      new RestaurantBackOfficeApiController().setRestaurantBackOfficeService(context.restaurantBackOfficeService());
 
   @Test
   public void createRestaurantTest() {
