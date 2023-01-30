@@ -4,7 +4,7 @@ import io.zenwave360.example.orders.core.domain.*;
 import io.zenwave360.example.orders.core.implementation.mappers.*;
 import io.zenwave360.example.orders.core.inbound.*;
 import io.zenwave360.example.orders.core.inbound.dtos.*;
-import io.zenwave360.example.orders.core.outbound.events.IOrdersEventsProducer;
+import io.zenwave360.example.orders.core.outbound.events.*;
 import io.zenwave360.example.orders.core.outbound.mongodb.*;
 
 import java.time.Instant;
@@ -22,29 +22,24 @@ import org.springframework.transaction.annotation.Transactional;
 /** Service Implementation for managing [CustomerOrder]. */
 @Service
 @Transactional(readOnly = true)
+@lombok.AllArgsConstructor
 public class OrdersServiceImpl implements OrdersService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final CustomerOrderMapper customerOrderMapper = CustomerOrderMapper.INSTANCE;
-    private final OrderEventMapper orderEventMapper = OrderEventMapper.INSTANCE;
+    private final OrdersServiceMapper ordersServiceMapper = OrdersServiceMapper.INSTANCE;
 
     private final CustomerOrderRepository customerOrderRepository;
-    private final IOrdersEventsProducer ordersEventsProducer;
+
+    private final EventsMapper eventsMapper = EventsMapper.INSTANCE;
+
+    private final IOrdersEventsProducer eventsProducer;
 
     private final RestaurantBackOfficeApi restaurantBackOfficeApi;
     private final CustomerApi customerApi;
 
-    /** Constructor. */
-    public OrdersServiceImpl(CustomerOrderRepository customerOrderRepository, IOrdersEventsProducer ordersEventsProducer, RestaurantBackOfficeApi restaurantBackOfficeApi, CustomerApi customerApi) {
-        this.customerOrderRepository = customerOrderRepository;
-        this.ordersEventsProducer = ordersEventsProducer;
-        this.restaurantBackOfficeApi = restaurantBackOfficeApi;
-        this.customerApi = customerApi;
-    }
-
     public Optional<CustomerOrder> getCustomerOrder(String id) {
-        log.debug("Request get CustomerOrder: {}", id);
+        log.debug("Request to get CustomerOrder : {}", id);
         var customerOrder = customerOrderRepository.findById(id);
         return customerOrder;
     }
@@ -55,7 +50,7 @@ public class OrdersServiceImpl implements OrdersService {
         var restaurant = restaurantBackOfficeApi.getRestaurant(input.getRestaurantId()).getBody();
         var customer = customerApi.getCustomer(input.getCustomerId()).getBody();
         var address = customer.getAddresses().stream().filter(a -> Objects.equals(a.getIdentifier(), input.getAddressIdentifier())).findFirst().orElseThrow();
-        var customerOrder = customerOrderMapper.update(new CustomerOrder(), input, customer, address, restaurant);
+        var customerOrder = ordersServiceMapper.update(new CustomerOrder(), input, customer, address, restaurant);
         customerOrder.setStatus(OrderStatus.RECEIVED);
         customerOrder.setOrderTime(Instant.now());
 
@@ -63,8 +58,8 @@ public class OrdersServiceImpl implements OrdersService {
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
-        var orderEvent = orderEventMapper.asOrderEvent(customerOrder);
-        ordersEventsProducer.onOrderEvent(orderEvent);
+        var orderEvent = eventsMapper.asOrderEvent(customerOrder);
+        eventsProducer.onOrderEvent(orderEvent);
 
         return customerOrder;
     }
@@ -73,13 +68,13 @@ public class OrdersServiceImpl implements OrdersService {
         log.debug("Request updateOrder: {}", id);
         var customerOrder = customerOrderRepository.findById(id).orElseThrow();
         var previousStatus = customerOrder.getStatus();
-        customerOrder = customerOrderMapper.update(customerOrder, input);
+        customerOrder = ordersServiceMapper.update(customerOrder, input);
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
         if( Objects.equals(previousStatus, customerOrder.getStatus())) {
-            var orderStatusEvent = orderEventMapper.asOrderStatusUpdated(customerOrder, previousStatus);
-            ordersEventsProducer.onOrderStatusUpdated(orderStatusEvent);
+            var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
+            eventsProducer.onOrderStatusUpdated(orderStatusEvent);
         }
 
         return customerOrder;
@@ -94,13 +89,13 @@ public class OrdersServiceImpl implements OrdersService {
             return cancelOrder(id, new CancelOrderInput().setId(id).setReason("Kitchen rejected order"));
         }
 
-        customerOrder.setStatus(orderEventMapper.asOrderStatus(input.getKitchenStatus(), previousStatus));
+        customerOrder.setStatus(eventsMapper.asOrderStatus(input.getKitchenStatus(), previousStatus));
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
         if( Objects.equals(previousStatus, customerOrder.getStatus())) {
-            var orderStatusEvent = orderEventMapper.asOrderStatusUpdated(customerOrder, previousStatus);
-            ordersEventsProducer.onOrderStatusUpdated(orderStatusEvent);
+            var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
+            eventsProducer.onOrderStatusUpdated(orderStatusEvent);
         }
 
         return customerOrder;
@@ -115,13 +110,13 @@ public class OrdersServiceImpl implements OrdersService {
             return cancelOrder(id, new CancelOrderInput().setId(id).setReason("Delivery rejected order"));
         }
 
-        customerOrder.setStatus(orderEventMapper.asOrderStatus(input.getDeliveryStatus(), previousStatus));
+        customerOrder.setStatus(eventsMapper.asOrderStatus(input.getDeliveryStatus(), previousStatus));
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
         if( Objects.equals(previousStatus, customerOrder.getStatus())) {
-            var orderStatusEvent = orderEventMapper.asOrderStatusUpdated(customerOrder, previousStatus);
-            ordersEventsProducer.onOrderStatusUpdated(orderStatusEvent);
+            var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
+            eventsProducer.onOrderStatusUpdated(orderStatusEvent);
         }
 
         return customerOrder;
@@ -135,8 +130,8 @@ public class OrdersServiceImpl implements OrdersService {
         customerOrder.setStatus(OrderStatus.CANCELLED);
         customerOrder = customerOrderRepository.save(customerOrder);
         // emit events
-        var orderStatusEvent = orderEventMapper.orderStatusUpdated(id, OrderStatus.CANCELLED, previousStatus);
-        ordersEventsProducer.onOrderStatusUpdated(orderStatusEvent);
+        var orderStatusEvent = eventsMapper.orderStatusUpdated(id, OrderStatus.CANCELLED, previousStatus);
+        eventsProducer.onOrderStatusUpdated(orderStatusEvent);
 
         return customerOrder;
     }

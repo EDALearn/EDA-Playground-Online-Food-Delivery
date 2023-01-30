@@ -1,7 +1,7 @@
 package io.zenwave360.example.delivery.adapters.web;
 
 import io.zenwave360.example.delivery.adapters.web.model.*;
-import io.zenwave360.example.delivery.config.InMemoryTestsManualContext;
+import io.zenwave360.example.delivery.config.ServicesInMemoryConfig;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +14,9 @@ public class DeliveryApiControllerTest {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-  DeliveryApiController controller = new DeliveryApiController().setDeliveryService(InMemoryTestsManualContext.INSTANCE.deliveryService());
+  ServicesInMemoryConfig context = new ServicesInMemoryConfig();
+
+  DeliveryApiController controller = new DeliveryApiController().setDeliveryService(context.deliveryService());
 
   @Test
   public void updateDeliveryStatusTest() {

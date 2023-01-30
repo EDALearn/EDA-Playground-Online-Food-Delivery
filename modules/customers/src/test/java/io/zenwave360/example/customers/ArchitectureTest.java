@@ -29,7 +29,7 @@ public class ArchitectureTest {
     static final ArchRule respectsLayersForHexagonalArchitecture = layeredArchitecture()
         .consideringOnlyDependenciesInAnyPackage("io.zenwave360.example.customers..")
         .layer("Any").definedBy("..")
-        .optionalLayer("Config").definedBy("..config..")
+        .layer("Config").definedBy("..config..")
         .layer("Core").definedBy("..core..")
         .layer("Domain").definedBy("..core.domain..")
         .layer("Models").definedBy("..core.domain..", "..core.inbound.dtos..")

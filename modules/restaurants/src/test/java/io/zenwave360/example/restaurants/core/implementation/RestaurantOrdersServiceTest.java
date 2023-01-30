@@ -18,8 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 /** Acceptance Test for RestaurantOrdersService. */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -27,7 +25,7 @@ public class RestaurantOrdersServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    InMemoryTestsManualContext context = InMemoryTestsManualContext.INSTANCE;
+    ServicesInMemoryConfig context = new ServicesInMemoryConfig();
 
     RestaurantOrdersServiceImpl restaurantOrdersService = context.restaurantOrdersService();
 
@@ -64,6 +62,12 @@ public class RestaurantOrdersServiceTest {
     void createKitchenOrderTest() {
         var input = new KitchenOrderInput();
         // TODO fill input data
+        // input.setOrderId("");
+        // input.setRestaurantId("");
+        // input.setDate(new LocalDateTime());
+        // input.setItems(new MenuItem());
+        // input.setStatus(KitchenOrderStatus.values()[0]);
+        // input.setCustomer(new CustomerDetails());
         var kitchenOrder = restaurantOrdersService.createKitchenOrder(input);
         assertNotNull(kitchenOrder.getId());
         assertTrue(kitchenOrderRepository.containsEntity(kitchenOrder));
@@ -71,16 +75,17 @@ public class RestaurantOrdersServiceTest {
 
     @Test
     @Order(1)
-    void updateKitchenOrderStatusTest() { // not legacy
+    void onOrderStatusUpdatedTest() { // TODO: implement this test
     }
 
     @Test
     @Order(2)
-    void searchKitchenOrdersTest() {
-        var kitchenOrdersFilter = new KitchenOrdersFilter();
-        // TODO fill criteria
-        var results = restaurantOrdersService.searchKitchenOrders(kitchenOrdersFilter, PageRequest.of(0, 10));
-        assertNotNull(results);
+    void updateKitchenOrderStatusTest() { // TODO: implement this test
+    }
+
+    @Test
+    @Order(3)
+    void searchKitchenOrdersTest() { // TODO: implement this test
     }
 
 }

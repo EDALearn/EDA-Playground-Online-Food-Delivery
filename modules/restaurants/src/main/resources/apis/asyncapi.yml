@@ -45,7 +45,7 @@ components:
         properties:
           tracingId:
             type: string
-            description: This header value will be populated automatically at runtime (when using ZenWave code generator)
+            description: This header value can be populated automatically at runtime (when using ZenWave code generator)
             x-runtime-expression: $tracingIdSupplier
 
   schemas:

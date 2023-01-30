@@ -4,7 +4,7 @@ package io.zenwave360.example.customers.core.inbound.dtos;
 
 @interface keep {
 
-	// keeps this package even when it's empty,
-	// allowing wildcard import "io.zenwave360.example.customers.core.inbound.dtos.*;"
+    // keeps this package even when it's empty,
+    // allowing wildcard import "io.zenwave360.example.customers.core.inbound.dtos.*;"
 
 }

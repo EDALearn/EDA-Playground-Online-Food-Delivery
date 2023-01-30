@@ -7,6 +7,7 @@ config {
     basePackage "io.zenwave360.example.restaurants"
     targetFolder "modules/restaurants"
     persistence mongodb
+    haltOnFailFormatting false
 
     // these are code generation plugins for ZenWave IntelliJ Plugin, for models you can skip to 'entities' section
     plugins {
@@ -24,6 +25,7 @@ config {
 
         BackendApplicationDefaultPlugin {
             useLombok true
+            includeEmitEventsImplementation true
             // --force // overwite all files
         }
 
@@ -43,7 +45,6 @@ config {
             apiId "orders"
             role client
             specFile "modules/orders/src/main/resources/apis/asyncapi.yml"
-            zdlFile "models/restaurants.zdl"
             modelPackage "{{basePackage}}.client.{{apiId}}.events.dtos"
             consumerApiPackage "{{basePackage}}.client.{{apiId}}.events.consumer"
         }
@@ -138,7 +139,7 @@ input KitchenOrderInput {
     orderId String required
     restaurantId String required
     date LocalDateTime required
-    items MenuItemInput[] required
+    items MenuItem[] required
     customer CustomerDetails required
 }
 

@@ -1,7 +1,7 @@
 package io.zenwave360.example.customers.adapters.web;
 
 import io.zenwave360.example.customers.adapters.web.model.*;
-import io.zenwave360.example.customers.config.InMemoryTestsManualContext;
+import io.zenwave360.example.customers.config.ServicesInMemoryConfig;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +14,9 @@ public class CustomerApiControllerTest {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-  CustomerApiController controller = new CustomerApiController().setCustomerService(InMemoryTestsManualContext.INSTANCE.customerService());
+  ServicesInMemoryConfig context = new ServicesInMemoryConfig();
+
+  CustomerApiController controller = new CustomerApiController().setCustomerService(context.customerService());
 
   @Test
   public void createCustomerTest() {

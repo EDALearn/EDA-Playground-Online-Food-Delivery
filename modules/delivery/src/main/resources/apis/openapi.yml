@@ -24,6 +24,7 @@ paths:
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:
@@ -75,6 +76,19 @@ components:
           type: "string"
         zip:
           type: "string"
+    OrderStatusUpdated:
+      type: "object"
+      x-business-entity: "OrderStatusUpdated"
+      properties:
+        orderId:
+          type: "string"
+        dateTime:
+          type: "string"
+          format: "date-time"
+        status:
+          type: "string"
+        previousStatus:
+          type: "string"
     Customer:
       type: "object"
       x-business-entity: "Customer"
@@ -120,12 +134,12 @@ components:
       - "operatorName"
       properties:
         status:
-          $ref: "#/components/schemas/DeliveryStatus"
+          $ref: "#/components/schemas/DeliveryOrderStatus"
         operatorName:
           type: "string"
-    DeliveryStatus:
+    DeliveryOrderStatus:
       type: "string"
-      x-business-entity: "DeliveryStatus"
+      x-business-entity: "DeliveryOrderStatus"
       enum:
       - "ACCEPTED"
       - "REJECTED"
@@ -155,7 +169,7 @@ components:
           items:
             $ref: "#/components/schemas/OrderItem"
         status:
-          type: "string"
+          $ref: "#/components/schemas/DeliveryOrderStatus"
     DeliveryPaginated:
       allOf:
       - $ref: "#/components/schemas/Page"
@@ -172,7 +186,7 @@ components:
       - "orderId"
       - "date"
       - "restaurantId"
-      - "customer"
+      - "customerId"
       - "items"
       properties:
         orderId:
@@ -181,12 +195,12 @@ components:
           type: "string"
         restaurantId:
           type: "string"
-        customer:
+        customerId:
           type: "string"
         items:
           type: "array"
           items:
-            type: "string"
+            $ref: "#/components/schemas/OrderItem"
 
     Page:
       type: object

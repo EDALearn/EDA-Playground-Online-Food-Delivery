@@ -72,6 +72,15 @@ Content-Type: application/json
   ]
 }
 
+### Get Order
+< {%
+    request.variables.set("orderId", "65ba2ab4519c0f0fd3f88829")
+%}
+GET {{baseUrl}}/orders/{{orderId}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
 ### Update Kitchen Order Status
 PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
 Authorization: {{Authorization}}

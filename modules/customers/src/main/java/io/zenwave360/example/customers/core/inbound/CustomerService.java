@@ -10,40 +10,31 @@ import org.springframework.data.domain.Pageable;
 public interface CustomerService {
 
     /**
-     * Creates a customer.
-     * @param customer the entity to save.
-     * @return the persisted entity.
+     * Create customer javadoc comment
+     *
+     * <p>
+     * With Events: [CustomerEvent].
      */
     public Customer createCustomer(Customer input);
 
-    /**
-     * Updates a customer.
-     * @param customer the entity to update.
-     * @return the persisted entity.
-     */
+    /** With Events: [CustomerEvent]. */
     public Optional<Customer> updateCustomer(String id, Customer input);
 
-    /** Updates a the customer address identified by address.identifier */
+    /**
+     * Updates a the customer address identified by address.identifier
+     *
+     * <p>
+     * With Events: [CustomerEvent, CustomerAddressUpdated].
+     */
     public Optional<Customer> updateCustomerAddress(String id, String identifier, Address address);
 
-    /**
-     * Delete the "id" customer.
-     * @param id the id of the entity.
-     */
+    /** With Events: [CustomerEvent]. */
     public void deleteCustomer(String id);
 
-    /**
-     * Get the "id" customer.
-     * @param id the id of the entity.
-     * @return the entity.
-     */
+    /** */
     public Optional<Customer> getCustomer(String id);
 
-    /**
-     * Get all the Customers.
-     * @param criteria the criteria with pagination information.
-     * @return the list of entities.
-     */
+    /** */
     public Page<Customer> listCustomers(Pageable pageable);
 
 }

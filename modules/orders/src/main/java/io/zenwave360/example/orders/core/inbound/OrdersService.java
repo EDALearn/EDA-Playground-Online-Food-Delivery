@@ -8,26 +8,22 @@ import java.util.Optional;
 /** Inbound Service Port for managing [CustomerOrder]. */
 public interface OrdersService {
 
-    /**
-     * Get the "id" customerOrder.
-     * @param id the id of the entity.
-     * @return the entity.
-     */
+    /** */
     public Optional<CustomerOrder> getCustomerOrder(String id);
 
-    /** */
+    /** With Events: [OrderEvent]. */
     public CustomerOrder createOrder(CustomerOrderInput input);
 
-    /** */
+    /** With Events: [OrderEvent, OrderStatusUpdated]. */
     public CustomerOrder updateOrder(String id, CustomerOrderInput input);
 
-    /** */
+    /** With Events: [OrderEvent, OrderStatusUpdated]. */
     public CustomerOrder updateKitchenStatus(String id, KitchenStatusInput input);
 
-    /** */
+    /** With Events: [OrderEvent, OrderStatusUpdated]. */
     public CustomerOrder updateDeliveryStatus(String id, DeliveryStatusInput input);
 
-    /** */
+    /** With Events: [OrderEvent, OrderStatusUpdated]. */
     public CustomerOrder cancelOrder(String id, CancelOrderInput input);
 
     /** */

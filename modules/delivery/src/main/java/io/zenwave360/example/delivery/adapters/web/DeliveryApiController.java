@@ -10,14 +10,13 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
-/** REST controller for Api. */
+/** REST controller for DeliveryApi. */
 @RestController
 @RequestMapping("/api")
 public class DeliveryApiController implements DeliveryApi {
@@ -43,16 +42,16 @@ public class DeliveryApiController implements DeliveryApi {
 
   @Override
   public ResponseEntity<DeliveryDTO> updateDeliveryStatus(String orderId, DeliveryStatusInputDTO reqBody) {
-    DeliveryStatusInput input = mapper.asDeliveryStatusInput(reqBody);
-    Delivery delivery = null; // TODO: deliveryService.updateDeliveryStatus(orderId, input);
+    var input = mapper.asDeliveryStatusInput(reqBody);
+    var delivery = deliveryService.updateDeliveryStatus(orderId, input);
     DeliveryDTO responseDTO = mapper.asDeliveryDTO(delivery);
     return ResponseEntity.status(200).body(responseDTO);
   }
 
   @Override
   public ResponseEntity<DeliveryPaginatedDTO> listDeliveries(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {
-    Page<Delivery> pageDelivery = null; // TODO: deliveryService.listDeliveries(pageOf(page, limit, sort));
-    DeliveryPaginatedDTO responseDTO = mapper.asDeliveryPaginatedDTO(pageDelivery);
+    var deliveryPage = deliveryService.listDeliveries(pageOf(page, limit, sort));
+    var responseDTO = mapper.asDeliveryPaginatedDTO(deliveryPage);
     return ResponseEntity.status(200).body(responseDTO);
   }
 

@@ -1,7 +1,7 @@
 package io.zenwave360.example.orders.adapters.web;
 
 import io.zenwave360.example.orders.adapters.web.model.*;
-import io.zenwave360.example.orders.config.InMemoryTestsManualContext;
+import io.zenwave360.example.orders.config.ServicesInMemoryConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -12,10 +12,12 @@ public class OrdersApiControllerTest {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-  OrdersApiController controller = new OrdersApiController().setOrdersService(InMemoryTestsManualContext.INSTANCE.ordersService());
+  ServicesInMemoryConfig context = new ServicesInMemoryConfig();
+
+  OrdersApiController controller = new OrdersApiController().setOrdersService(context.ordersService());
 
   @Test
-  public void getOrderTest() {
+  public void getCustomerOrderTest() {
     String orderId = null;
     var response = controller.getCustomerOrder(orderId);
     Assertions.assertEquals(200, response.getStatusCode().value());

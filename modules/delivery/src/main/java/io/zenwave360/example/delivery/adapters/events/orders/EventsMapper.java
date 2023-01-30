@@ -33,9 +33,9 @@ public interface EventsMapper {
     @Mapping(source = "orderTime", target = "date")
     DeliveryInput asDeliveryInput(OrderEvent payload);
 
-    OrderItem aOrderItem(io.zenwave360.example.delivery.client.orders.events.dtos.OrderItem orderItem);
+    OrderItem aOrderItem(io.zenwave360.example.delivery.client.orders.events.dtos.OrderItemInput orderItem);
 
-    List<OrderItem> asOrderItemList(List<io.zenwave360.example.delivery.client.orders.events.dtos.OrderItem> orderItems);
+    List<OrderItem> asOrderItemList(List<io.zenwave360.example.delivery.client.orders.events.dtos.OrderItemInput> orderItems);
 
     default LocalDateTime map(OffsetDateTime value) {
         return value != null ? value.toLocalDateTime() : null;

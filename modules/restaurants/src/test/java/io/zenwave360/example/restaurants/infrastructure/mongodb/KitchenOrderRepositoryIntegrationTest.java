@@ -28,6 +28,7 @@ public class KitchenOrderRepositoryIntegrationTest extends BaseRepositoryIntegra
     @Test
     public void saveTest() {
         KitchenOrder kitchenOrder = new KitchenOrder();
+        kitchenOrder.setOrderId(null);
         kitchenOrder.setRestaurantId(null);
         kitchenOrder.setDate(null);
         kitchenOrder.setItems(null);
@@ -43,6 +44,7 @@ public class KitchenOrderRepositoryIntegrationTest extends BaseRepositoryIntegra
     public void updateTest() {
         var id = "1";
         var kitchenOrder = kitchenOrderRepository.findById(id).orElseThrow();
+        kitchenOrder.setOrderId(null);
         kitchenOrder.setRestaurantId(null);
         kitchenOrder.setDate(null);
         kitchenOrder.setItems(null);
@@ -50,6 +52,7 @@ public class KitchenOrderRepositoryIntegrationTest extends BaseRepositoryIntegra
         kitchenOrder.setCustomer(null);
 
         kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
+        Assertions.assertEquals("", kitchenOrder.getOrderId());
         Assertions.assertEquals("", kitchenOrder.getRestaurantId());
         Assertions.assertEquals("", kitchenOrder.getDate());
         Assertions.assertEquals("", kitchenOrder.getItems());
