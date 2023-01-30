@@ -1,0 +1,22 @@
+asyncapi: 3.0.0
+info:
+  title: "ZenWave Online Food Delivery - Create Order SAGA Channels"
+  version: 0.0.1
+
+
+defaultContentType: application/json
+
+channels:
+
+  OrdersChannel:
+    $ref: './orders/src/main/resources/apis/asyncapi.yml#/channels/OrdersChannel'
+  OrderUpdatesChannel:
+    $ref: './orders/src/main/resources/apis/asyncapi.yml#/channels/OrderUpdatesChannel'
+
+  KitchenOrdersStatusChannel:
+    $ref: './restaurants/src/main/resources/apis/asyncapi.yml#/channels/KitchenOrdersStatusChannel'
+  DeliveryStatusChannel:
+    $ref: './delivery/src/main/resources/apis/asyncapi.yml#/channels/DeliveryStatusChannel'
+
+  CancelOrdersChannel:
+    $ref: './orders/src/main/resources/apis/asyncapi.yml#/channels/CancelOrdersChannel'
