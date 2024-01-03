@@ -1,0 +1,177 @@
+asyncapi: 3.0.0
+info:
+  title: "ZenWave Online Food Delivery - Customers Module"
+  version: 0.0.1
+  tags:
+    - name: "Default"
+    - name: "Customer"
+
+defaultContentType: application/json
+
+channels:
+  CustomerEventsChannel:
+    address: "customer-events-topic"
+    messages:
+      CustomerEventMessage:
+        $ref: '#/components/messages/CustomerEventMessage'
+  CustomerAddressEventsChannel:
+    address: "customer-address-events-topic"
+    messages:
+      CustomerAddressUpdatedMessage:
+        $ref: '#/components/messages/CustomerAddressUpdatedMessage'
+
+operations:
+  onCreateCustomerCustomerEvent:
+    action: send
+    tags:
+      - name: Customer
+    channel:
+      $ref: '#/channels/CustomerEventsChannel'
+  onUpdateCustomerCustomerEvent:
+    action: send
+    tags:
+      - name: Customer
+    channel:
+      $ref: '#/channels/CustomerEventsChannel'
+  onUpdateCustomerAddressCustomerEvent:
+    action: send
+    tags:
+      - name: Customer
+    channel:
+      $ref: '#/channels/CustomerEventsChannel'
+  onUpdateCustomerAddressCustomerAddressUpdated:
+    action: send
+    tags:
+      - name: Customer
+    channel:
+      $ref: '#/channels/CustomerAddressEventsChannel'
+  onDeleteCustomerCustomerEvent:
+    action: send
+    tags:
+      - name: Customer
+    channel:
+      $ref: '#/channels/CustomerEventsChannel'
+
+
+components:
+  messages:
+    CustomerEventMessage:
+      messageId: CustomerEventMessage
+      name: CustomerEventMessage
+      title: 
+      summary: 
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/CustomerEvent"
+    CustomerAddressUpdatedMessage:
+      messageId: CustomerAddressUpdatedMessage
+      name: CustomerAddressUpdatedMessage
+      title: 
+      summary: 
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/CustomerAddressUpdated"
+
+  messageTraits:
+    CommonHeaders:
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/id
+          tracingId:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $tracingIdSupplier
+
+  schemas:
+    CustomerEvent:
+      type: "object"
+      x-business-entity: "CustomerEvent"
+      properties:
+        customerId:
+          type: "string"
+        eventType:
+          $ref: "#/components/schemas/EventType"
+        customer:
+          $ref: "#/components/schemas/Customer"
+    CustomerAddressUpdated:
+      type: "object"
+      x-business-entity: "CustomerAddressUpdated"
+      properties:
+        customerId:
+          type: "string"
+        addressDescription:
+          type: "string"
+        originalAddress:
+          $ref: "#/components/schemas/Address"
+        newAddress:
+          $ref: "#/components/schemas/Address"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "description"
+      - "street"
+      - "type"
+      properties:
+        description:
+          type: "string"
+          description: "Description identifier for this Address"
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+        type:
+          $ref: "#/components/schemas/AddressType"
+    EventType:
+      type: "string"
+      x-business-entity: "EventType"
+      enum:
+      - "CREATED"
+      - "UPDATED"
+      - "DELETED"
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+      - "firstName"
+      - "lastName"
+      - "email"
+      properties:
+        id:
+          type: "string"
+        firstName:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+          description: "first name javadoc comment"
+        lastName:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+          description: "last name javadoc comment"
+        email:
+          type: "string"
+          description: "email javadoc comment"
+        addresses:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Address"
+    AddressType:
+      type: "string"
+      x-business-entity: "AddressType"
+      enum:
+      - "HOME"
+      - "WORK"
+
