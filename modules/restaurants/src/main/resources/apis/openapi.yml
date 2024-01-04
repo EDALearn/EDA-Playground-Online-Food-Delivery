@@ -1,0 +1,434 @@
+openapi: 3.0.1
+info:
+  title: ZenWave Online Food Delivery - Restaurants Module
+  version: 0.0.1
+  description: "ZenWave Online Food Delivery - Restaurants Module"
+  contact:
+    email: email@domain.com
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: "Default"
+  - name: "RestaurantBackOffice"
+  - name: "RestaurantOrders"
+
+
+paths:
+  /restaurants:
+    post:
+      operationId: createRestaurant
+      description: "createRestaurant"
+      tags: [RestaurantBackOffice]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Restaurant"
+      responses:
+        "201":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Restaurant"
+    get:
+      operationId: listRestaurants
+      description: "listRestaurants"
+      tags: [RestaurantBackOffice]
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantPaginated"
+  /restaurants/{restaurantId}:
+    get:
+      operationId: getRestaurant
+      description: "getRestaurant"
+      tags: [RestaurantBackOffice]
+      parameters:
+        - name: "restaurantId"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Restaurant"
+  /restaurants/{restaurantId}/menuItems:
+    post:
+      operationId: createMenuItem
+      description: "createMenuItem"
+      tags: [RestaurantBackOffice]
+      parameters:
+        - name: "restaurantId"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItem"
+      responses:
+        "201":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+    get:
+      operationId: listMenuItems
+      description: "listMenuItems"
+      tags: [RestaurantBackOffice]
+      parameters:
+        - name: "restaurantId"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItemList"
+  /restaurants/{restaurantId}/menuItems/{name}:
+    put:
+      operationId: updateMenuItem
+      description: "updateMenuItem"
+      tags: [RestaurantBackOffice]
+      parameters:
+        - name: "restaurantId"
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: "name"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MenuItem"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MenuItem"
+  /orders/{orderId}/status:
+    put:
+      operationId: updateKitchenOrderStatus
+      description: "updateKitchenOrderStatus"
+      tags: [RestaurantOrders]
+      parameters:
+        - name: "orderId"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KitchenOrderStatusInput"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KitchenOrder"
+  /orders:
+    post:
+      operationId: searchKitchenOrders
+      description: "searchKitchenOrders"
+      tags: [RestaurantOrders]
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KitchenOrdersFilter"
+      responses:
+        "201":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KitchenOrderPaginated"
+
+components:
+  schemas:
+    KitchenOrder:
+      type: "object"
+      x-business-entity: "KitchenOrder"
+      required:
+      - "restaurantId"
+      - "date"
+      - "items"
+      - "status"
+      properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
+        restaurantId:
+          type: "string"
+        date:
+          type: "string"
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MenuItem"
+        status:
+          $ref: "#/components/schemas/KitchenOrderStatus"
+        customer:
+          $ref: "#/components/schemas/CustomerDetails"
+    KitchenOrderPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "KitchenOrder"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/KitchenOrder"
+    Restaurant:
+      type: "object"
+      x-business-entity: "Restaurant"
+      required:
+      - "name"
+      - "phone"
+      properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
+        name:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+    RestaurantPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "Restaurant"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/Restaurant"
+    KitchenOrderStatus:
+      type: "string"
+      x-business-entity: "KitchenOrderStatus"
+      enum:
+      - "RECEIVED"
+      - "IN_PROGRESS"
+      - "READY"
+      - "DELIVERED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      - "city"
+      - "state"
+      - "zip"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+    RestaurantIdInput:
+      type: "object"
+      x-business-entity: "RestaurantIdInput"
+      required:
+      - "restaurantId"
+      properties:
+        restaurantId:
+          type: "string"
+    MenuItem:
+      type: "object"
+      x-business-entity: "MenuItem"
+      required:
+      - "restaurantId"
+      - "name"
+      - "price"
+      properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
+        restaurantId:
+          type: "string"
+        name:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+        description:
+          type: "string"
+        price:
+          type: "number"
+          format: "double"
+    MenuItemList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/MenuItem"
+    KitchenOrderStatusInput:
+      type: "object"
+      x-business-entity: "KitchenOrderStatusInput"
+      required:
+      - "status"
+      - "operatorName"
+      properties:
+        status:
+          $ref: "#/components/schemas/KitchenOrderStatus"
+        operatorName:
+          type: "string"
+    KitchenOrderInput:
+      type: "object"
+      x-business-entity: "KitchenOrderInput"
+      required:
+      - "restaurantId"
+      - "date"
+      - "items"
+      - "customer"
+      properties:
+        restaurantId:
+          type: "string"
+        date:
+          type: "string"
+        items:
+          type: "array"
+          items:
+            type: "string"
+        customer:
+          $ref: "#/components/schemas/CustomerDetails"
+    KitchenOrdersFilter:
+      type: "object"
+      x-business-entity: "KitchenOrdersFilter"
+      properties:
+        restaurantId:
+          type: "string"
+        status:
+          $ref: "#/components/schemas/KitchenOrderStatus"
+    CustomerDetails:
+      type: "object"
+      x-business-entity: "CustomerDetails"
+      required:
+      - "name"
+      - "phone"
+      properties:
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/CustomerAddress"
+    CustomerAddress:
+      type: "object"
+      x-business-entity: "CustomerAddress"
+      required:
+      - "street"
+      - "city"
+      - "state"
+      - "zip"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+
+    Page:
+      type: object
+      required:
+        - "content"
+        - "totalElements"
+        - "totalPages"
+        - "size"
+        - "number"
+      properties:
+        number:
+          type: integer
+          minimum: 0
+        numberOfElements:
+          type: integer
+          minimum: 0
+        size:
+          type: integer
+          minimum: 0
+          maximum: 200
+          multipleOf: 25
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The number of results page
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: The number of results in a single page
+      schema:
+        type: integer
+        format: int32
+        default: 20
+    sort:
+      name: sort
+      in: query
+      description: The number of results page
+      schema:
+        type: array
+        items:
+          type: string
+
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+    bearerAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+security:
+  - basicAuth: []  # <-- use the same name here
+  - bearerAuth: []  # <-- use the same name here

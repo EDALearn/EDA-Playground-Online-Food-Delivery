@@ -1,0 +1,32 @@
+package io.zenwave360.example.restaurants.core.inbound.dtos;
+
+import io.zenwave360.example.restaurants.core.domain.*;
+import jakarta.validation.constraints.*;
+import java.io.Serializable;
+import java.math.*;
+import java.time.*;
+import java.util.*;
+
+/** KitchenOrderInput. */
+@lombok.Getter
+@lombok.Setter
+public class KitchenOrderInput implements Serializable {
+
+    @NotNull
+    private String restaurantId;
+
+    @NotNull
+    private LocalDateTime date;
+
+    @NotNull
+    private List<MenuItemInput> items = new ArrayList<>();
+
+    @NotNull
+    private CustomerDetails customer;
+
+    public KitchenOrderInput addItems(MenuItemInput items) {
+        this.items.add(items);
+        return this;
+    }
+
+}

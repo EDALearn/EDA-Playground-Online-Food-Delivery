@@ -16,6 +16,11 @@
             <artifactId>customers-module</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${parent.groupId}</groupId>
+            <artifactId>restaurants-module</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

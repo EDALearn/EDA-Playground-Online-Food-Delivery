@@ -1,0 +1,15 @@
+
+POST {{baseUrl}}/restaurants
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "name": "The Restaurant at the End of the Universe",
+  "phone": "0-345-39181-0",
+  "address": {
+    "street": "Frogstar World B",
+    "city": "",
+    "state": "",
+    "zip": ""
+  }
+}

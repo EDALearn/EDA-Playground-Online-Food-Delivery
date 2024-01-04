@@ -49,6 +49,7 @@
 
 	<modules>
 		<module>modules/customers</module>
+		<module>modules/restaurants</module>
 		<module>modulith</module>
 	</modules>
 
