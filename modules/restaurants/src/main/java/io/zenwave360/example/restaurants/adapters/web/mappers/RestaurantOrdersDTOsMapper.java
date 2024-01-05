@@ -31,4 +31,8 @@ public interface RestaurantOrdersDTOsMapper {
   }
 
   KitchenOrdersFilter asKitchenOrdersFilter(KitchenOrdersFilterDTO kitchenOrdersFilterDTO);
+
+  KitchenOrderStatus asKitchenOrderStatus(KitchenOrderStatusDTO dto);
+
+  KitchenOrderStatusDTO asKitchenOrderStatusDTO(KitchenOrderStatus enumValue);
 }

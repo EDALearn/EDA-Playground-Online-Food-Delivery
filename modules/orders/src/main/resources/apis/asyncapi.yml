@@ -1,0 +1,308 @@
+asyncapi: 3.0.0
+info:
+  title: "ZenWave Online Food Delivery - Orders Module"
+  version: 0.0.1
+  tags:
+    - name: "Default"
+    - name: "Orders"
+
+defaultContentType: application/json
+
+channels:
+  CancelOrdersChannel:
+    address: "orders.cancel_orders"
+    messages:
+      CancelOrderInputMessage:
+        $ref: '#/components/messages/CancelOrderInputMessage'
+  OrdersChannel:
+    address: "orders.orders"
+    messages:
+      OrderEventMessage:
+        $ref: '#/components/messages/OrderEventMessage'
+  OrderUpdatesChannel:
+    address: "orders.order_updates"
+    messages:
+      OrderUpdatedMessage:
+        $ref: '#/components/messages/OrderUpdatedMessage'
+  OrderCancelChannel:
+    address: "orders.order_cancellations"
+    messages:
+      OrderCancelledMessage:
+        $ref: '#/components/messages/OrderCancelledMessage'
+
+operations:
+  doCancelOrder:
+    action: receive
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/CancelOrdersChannel'
+  onCreateOrderOrderEvent:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrdersChannel'
+  onUpdateOrderOrderEvent:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrdersChannel'
+  onUpdateOrderOrderUpdated:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrderUpdatesChannel'
+  onUpdateKitchenStatusOrderEvent:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrdersChannel'
+  onUpdateKitchenStatusOrderUpdated:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrderUpdatesChannel'
+  onUpdateKitchenStatusOrderCancelled:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrderCancelChannel'
+  onUpdateDeliveryStatusOrderEvent:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrdersChannel'
+  onUpdateDeliveryStatusOrderUpdated:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrderUpdatesChannel'
+  onUpdateDeliveryStatusOrderCancelled:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrderCancelChannel'
+  onCancelOrderOrderEvent:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrdersChannel'
+  onCancelOrderOrderCancelled:
+    action: send
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrderCancelChannel'
+
+
+components:
+  messages:
+    CancelOrderInputMessage:
+      messageId: CancelOrderInputMessage
+      name: CancelOrderInputMessage
+      title: ""
+      summary: ""
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/CancelOrderInput"
+    OrderEventMessage:
+      messageId: OrderEventMessage
+      name: OrderEventMessage
+      title: ""
+      summary: ""
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/OrderEvent"
+    OrderUpdatedMessage:
+      messageId: OrderUpdatedMessage
+      name: OrderUpdatedMessage
+      title: ""
+      summary: ""
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/OrderUpdated"
+    OrderCancelledMessage:
+      messageId: OrderCancelledMessage
+      name: OrderCancelledMessage
+      title: ""
+      summary: ""
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/OrderCancelled"
+
+  messageTraits:
+    CommonHeaders:
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/id
+          tracingId:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $tracingIdSupplier
+
+  schemas:
+    OrderEvent:
+      type: "object"
+      x-business-entity: "OrderEvent"
+      properties:
+        orderTime:
+          type: "string"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerDetails:
+          $ref: "#/components/schemas/Customer"
+        restaurantDetails:
+          $ref: "#/components/schemas/Restaurant"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        id:
+          type: "string"
+    OrderUpdated:
+      type: "object"
+      x-business-entity: "OrderUpdated"
+      properties:
+        orderId:
+          type: "string"
+        dateTime:
+          type: "string"
+          format: "date-time"
+        originalOrder:
+          $ref: "#/components/schemas/CustomerOrder"
+        updatedOrder:
+          $ref: "#/components/schemas/CustomerOrder"
+    OrderCancelled:
+      type: "object"
+      x-business-entity: "OrderCancelled"
+      properties:
+        orderId:
+          type: "string"
+        dateTime:
+          type: "string"
+          format: "date-time"
+        reason:
+          type: "string"
+    CancelOrderInput:
+      type: "object"
+      x-business-entity: "CancelOrderInput"
+      properties:
+        orderId:
+          type: "string"
+        reason:
+          type: "string"
+    Restaurant:
+      type: "object"
+      x-business-entity: "Restaurant"
+      required:
+      - "name"
+      - "phone"
+      properties:
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        addresses:
+          $ref: "#/components/schemas/Address"
+    OrderStatus:
+      type: "string"
+      x-business-entity: "OrderStatus"
+      enum:
+      - "RECEIVED"
+      - "CONFIRMED"
+      - "KITCHEN_IN_PROGRESS"
+      - "KITCHEN_READY"
+      - "KITCHEN_DELIVERED"
+      - "ON_DELIVERY"
+      - "DELIVERED"
+      - "CANCELLED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+      - "firstName"
+      - "lastName"
+      - "email"
+      - "phone"
+      properties:
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+    OrderItem:
+      type: "object"
+      x-business-entity: "OrderItem"
+      required:
+      - "name"
+      - "price"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          type: "number"
+          format: "double"
+    CustomerOrder:
+      type: "object"
+      x-business-entity: "CustomerOrder"
+      properties:
+        id:
+          type: "string"
+        orderTime:
+          type: "string"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerDetails:
+          $ref: "#/components/schemas/Customer"
+        restaurantDetails:
+          $ref: "#/components/schemas/Restaurant"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+

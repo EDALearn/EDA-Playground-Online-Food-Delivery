@@ -3,6 +3,9 @@ logging:
     io.zenwave360.example: DEBUG
     org.springframework.security: DEBUG
 #    org.apache.kafka: DEBUG
+
+management.endpoints.web.exposure.include: "*"
+
 spring:
   security:
     user:

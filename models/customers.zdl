@@ -50,6 +50,7 @@ entity Customer {
   firstName String required minlength(2) maxlength(250) /** first name javadoc comment */
   lastName String required minlength(2) maxlength(250) /** last name javadoc comment */
   email String required unique /** email javadoc comment */
+  phone String required
   /**
    * address is a nested entity
    */
@@ -108,14 +109,14 @@ service CustomerService for (Customer) {
 @skip // skip generating this domain enum, it will genereate by asyncapi code generator.
 enum EventType {  CREATED(1) /** created description */,  UPDATED(1) /** updated description */,  DELETED(1) /** deleted description */ }
 
-@asyncapi({channel: "CustomerEventsChannel", topic: "customer-events-topic"})
+@asyncapi({channel: "CustomerEventsChannel", topic: "customer.events"})
 event CustomerEvent {
   customerId String
   eventType EventType
   customer Customer
 }
 
-@asyncapi({channel: "CustomerAddressEventsChannel", topic: "customer-address-events-topic"})
+@asyncapi({channel: "CustomerAddressEventsChannel", topic: "customer.address-events"})
 event CustomerAddressUpdated {
   customerId String
   addressDescription String

@@ -1,0 +1,35 @@
+### Create Order
+POST {{baseUrl}}/orders
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "customerDetails": {
+    "firstName": "Ivan",
+    "lastName": "Garcia Sainz-Aja",
+    "email": "ivangsa@gmail.com",
+    "phone": "(505) 503-4455",
+    "addresses": {
+        "street": "Calle del Percebe, 13",
+        "city": "Madrid",
+        "state": "Madrid",
+        "zip": "28001"
+    }
+  },
+  "restaurantDetails": {
+    "id": "1",
+    "name": "The Restaurant at the End of the Universe",
+    "phone": "0-345-39181-0",
+    "address": {
+      "street": "Frogstar World B"
+    }
+  },
+  "orderItems": [
+    {
+      "menuItemId": "1",
+      "name": "Pan Galactic Gargle Blaster",
+      "price": 5.95,
+      "quantity": 2
+    }
+  ]
+}

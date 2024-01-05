@@ -10,12 +10,12 @@ defaultContentType: application/json
 
 channels:
   CustomerEventsChannel:
-    address: "customer-events-topic"
+    address: "customer.events"
     messages:
       CustomerEventMessage:
         $ref: '#/components/messages/CustomerEventMessage'
   CustomerAddressEventsChannel:
-    address: "customer-address-events-topic"
+    address: "customer.address-events"
     messages:
       CustomerAddressUpdatedMessage:
         $ref: '#/components/messages/CustomerAddressUpdatedMessage'
@@ -58,8 +58,8 @@ components:
     CustomerEventMessage:
       messageId: CustomerEventMessage
       name: CustomerEventMessage
-      title: 
-      summary: 
+      title: ""
+      summary: ""
       schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
@@ -68,8 +68,8 @@ components:
     CustomerAddressUpdatedMessage:
       messageId: CustomerAddressUpdatedMessage
       name: CustomerAddressUpdatedMessage
-      title: 
-      summary: 
+      title: ""
+      summary: ""
       schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
@@ -117,11 +117,11 @@ components:
       type: "object"
       x-business-entity: "Address"
       required:
-      - "description"
+      - "identifier"
       - "street"
       - "type"
       properties:
-        description:
+        identifier:
           type: "string"
           description: "Description identifier for this Address"
         street:
@@ -148,6 +148,7 @@ components:
       - "firstName"
       - "lastName"
       - "email"
+      - "phone"
       properties:
         id:
           type: "string"
@@ -164,6 +165,9 @@ components:
         email:
           type: "string"
           description: "email javadoc comment"
+        phone:
+          type: "string"
+          description: ""
         addresses:
           type: "array"
           items:

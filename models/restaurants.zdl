@@ -88,7 +88,7 @@ entity KitchenOrder {
 }
 
 enum KitchenOrderStatus {
-    RECEIVED, IN_PROGRESS, READY, DELIVERED
+    ACCEPTED, REJECTED, IN_PROGRESS, READY, DELIVERED, CANCELLED
 }
 
 
@@ -140,36 +140,23 @@ input KitchenOrdersFilter {
     status KitchenOrderStatus
 }
 
-@rest("/orders")
+@rest("/restaurants-orders")
 service RestaurantOrdersService for (KitchenOrder) {
 
-    @asyncapi({api: "OrdersAyncAPI", channel: "KitchenOrderCreatedEvent"})
-    createKitchenOrder(KitchenOrderInput) KitchenOrder withEvents [KitchenOrderCreatedEvent|KitchenOrderRejectedEvent]
+    @asyncapi({api: OrdersAyncAPI, channel: "OrderCreatedChannel"})
+    createKitchenOrder(KitchenOrderInput) KitchenOrder withEvents KitchenOrderStatusUpdated
 
     @put("/{orderId}/status")
-    updateKitchenOrderStatus(id, KitchenOrderStatusInput) KitchenOrder withEvents [KitchenOrderStatusUpdatedEvent]
+    updateKitchenOrderStatus(id, KitchenOrderStatusInput) KitchenOrder withEvents KitchenOrderStatusUpdated
 
     @post @paginated
     searchKitchenOrders(KitchenOrdersFilter) KitchenOrder[]
 }
 
-@asyncapi({channel: "KitchenOrdersChannel", topic: "kitchen-orders-topic"})
-event KitchenOrderCreatedEvent {
-    customerOrderId String required
-    kitchenOrderId String required
-    kitchenOrder KitchenOrder required
-}
-
-@asyncapi({channel: "KitchenOrdersChannel", topic: "kitchen-orders-topic"})
-event KitchenOrderRejectedEvent {
-    customerOrderId String required
-    reason String required
-}
-
 @asyncapi({channel: "KitchenOrdersStatusChannel", topic: "kitchen-orders-status-topic"})
-event KitchenOrderStatusUpdatedEvent {
+event KitchenOrderStatusUpdated {
     customerOrderId String required
     kitchenOrderId String required
     status KitchenOrderStatus required
-    operatorName String required
+    message String
 }

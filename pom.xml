@@ -50,6 +50,8 @@
 	<modules>
 		<module>modules/customers</module>
 		<module>modules/restaurants</module>
+		<module>modules/orders</module>
+		<module>modules/delivery</module>
 		<module>modulith</module>
 	</modules>
 
