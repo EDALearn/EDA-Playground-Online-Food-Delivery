@@ -117,9 +117,12 @@ components:
       type: "object"
       x-business-entity: "Restaurant"
       required:
+      - "restaurantId"
       - "name"
       - "phone"
       properties:
+        restaurantId:
+          type: "string"
         name:
           type: "string"
         phone:
@@ -210,9 +213,13 @@ components:
       type: "object"
       x-business-entity: "OrderItem"
       required:
+      - "menuItemId"
       - "name"
       - "price"
+      - "quantity"
       properties:
+        menuItemId:
+          type: "string"
         name:
           type: "string"
         description:
@@ -220,6 +227,9 @@ components:
         price:
           type: "number"
           format: "double"
+        quantity:
+          type: "integer"
+          format: "int32"
     DeliveryStatusInput:
       type: "object"
       x-business-entity: "DeliveryStatusInput"

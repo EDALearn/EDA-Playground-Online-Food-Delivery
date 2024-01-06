@@ -38,3 +38,87 @@ config {
         }
     }
 }
+
+apis {
+    asyncapi(provider) default {
+        uri "delivery/src/main/resources/apis/asyncapi.yml"
+    }
+    asyncapi(client) RestaurantsAsyncAPI {
+        uri "restaurants/src/main/resources/apis/asyncapi.yml"
+    }
+    asyncapi(client) OrdersAsyncAPI {
+        uri "orders/src/main/resources/apis/asyncapi.yml"
+    }
+}
+
+// == Entities =============================
+
+@aggregate
+entity Delivery {
+    orderId String required
+    customer Customer {
+        customerId String required
+        name String required
+        phone String required
+        address Address {
+            street String
+            zip String
+        }
+    }
+    restaurant Restaurant {
+        restaurantId String
+        name String
+        phone String
+        address Address {
+            street String
+            zip String
+        }
+    }
+    orderItems OrderItem[] {
+       menuItemId String required
+       name String required
+       description String
+       price BigDecimal required
+       quantity Integer required
+    }
+    status DeliveryOrderStatus required
+}
+
+enum DeliveryStatus {
+    ACCEPTED, REJECTED, IN_PROGRESS, READY, DELIVERED, CANCELLED
+}
+
+// == Serices =============================
+input DeliveryInput {
+    orderId String required
+    date LocalDateTime required
+    restaurantId String required
+    customerId String required
+    items MenuItemInput[] required
+}
+
+input DeliveryStatusInput {
+    status DeliveryStatus required
+    operatorName String required
+}
+
+@rest("/delivery")
+service DeliveryService for (Delivery) {
+
+    @asyncapi({api: OrdersAyncAPI, channel: "OrderCreatedChannel"})
+    createDelivery(DeliveryInput) Delivery withEvents DeliveryStatusUpdated
+
+    @put("/{orderId}/status")
+    updateDeliveryStatus(id, DeliveryStatusInput) Delivery withEvents DeliveryStatusUpdated
+
+    @get @paginated
+    listDeliveries() Delivery[]
+}
+
+@asyncapi({channel: "DeliveryStatusChannel", topic: "delivery.status-topic"})
+event DeliveryStatusUpdated {
+    customerOrderId String required
+    deliveryId String required
+    status DeliveryStatus required
+    message String
+}

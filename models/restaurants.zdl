@@ -124,6 +124,7 @@ service RestaurantBackOfficeService for (Restaurant, MenuItem) {
 // == RestaurantOrdersService =============================
 
 input KitchenOrderInput {
+    orderId String required
     restaurantId String required
     date LocalDateTime required
     items MenuItemInput[] required
@@ -143,7 +144,7 @@ input KitchenOrdersFilter {
 @rest("/restaurants-orders")
 service RestaurantOrdersService for (KitchenOrder) {
 
-    @asyncapi({api: OrdersAyncAPI, channel: "OrderCreatedChannel"})
+    @asyncapi({api: OrdersAyncAPI, channel: "OrdersChannel"})
     createKitchenOrder(KitchenOrderInput) KitchenOrder withEvents KitchenOrderStatusUpdated
 
     @put("/{orderId}/status")
@@ -153,7 +154,7 @@ service RestaurantOrdersService for (KitchenOrder) {
     searchKitchenOrders(KitchenOrdersFilter) KitchenOrder[]
 }
 
-@asyncapi({channel: "KitchenOrdersStatusChannel", topic: "kitchen-orders-status-topic"})
+@asyncapi({channel: "KitchenOrdersStatusChannel", topic: "kitchen-orders.status-topic"})
 event KitchenOrderStatusUpdated {
     customerOrderId String required
     kitchenOrderId String required
