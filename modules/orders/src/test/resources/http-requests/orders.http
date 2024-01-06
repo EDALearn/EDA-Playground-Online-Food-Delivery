@@ -5,6 +5,7 @@ Content-Type: application/json
 
 {
   "customerDetails": {
+    "customerId": "1",
     "firstName": "Ivan",
     "lastName": "Garcia Sainz-Aja",
     "email": "ivangsa@gmail.com",
@@ -17,7 +18,7 @@ Content-Type: application/json
     }
   },
   "restaurantDetails": {
-    "id": "1",
+    "restaurantId": "1",
     "name": "The Restaurant at the End of the Universe",
     "phone": "0-345-39181-0",
     "address": {

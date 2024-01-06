@@ -9,11 +9,6 @@ info:
 defaultContentType: application/json
 
 channels:
-  OrderCreatedChannel:
-    address: "add topic here"
-    messages:
-      DeliveryInputMessage:
-        $ref: '#/components/messages/DeliveryInputMessage'
   DeliveryStatusChannel:
     address: "delivery.status-topic"
     messages:
@@ -21,19 +16,7 @@ channels:
         $ref: '#/components/messages/DeliveryStatusUpdatedMessage'
 
 operations:
-  doCreateDelivery:
-    action: receive
-    tags:
-      - name: Delivery
-    channel:
-      $ref: '#/channels/OrderCreatedChannel'
-  onCreateDeliveryDeliveryStatusUpdated:
-    action: send
-    tags:
-      - name: Delivery
-    channel:
-      $ref: '#/channels/DeliveryStatusChannel'
-  onUpdateDeliveryStatusDeliveryStatusUpdated:
+  onDeliveryStatusUpdated:
     action: send
     tags:
       - name: Delivery
@@ -43,16 +26,6 @@ operations:
 
 components:
   messages:
-    DeliveryInputMessage:
-      messageId: DeliveryInputMessage
-      name: DeliveryInputMessage
-      title: ""
-      summary: ""
-      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        $ref: "#/components/schemas/DeliveryInput"
     DeliveryStatusUpdatedMessage:
       messageId: DeliveryStatusUpdatedMessage
       name: DeliveryStatusUpdatedMessage
@@ -95,28 +68,6 @@ components:
           $ref: "#/components/schemas/DeliveryStatus"
         message:
           type: "string"
-    DeliveryInput:
-      type: "object"
-      x-business-entity: "DeliveryInput"
-      required:
-      - "orderId"
-      - "date"
-      - "restaurantId"
-      - "customer"
-      - "items"
-      properties:
-        orderId:
-          type: "string"
-        date:
-          type: "string"
-        restaurantId:
-          type: "string"
-        customer:
-          type: "string"
-        items:
-          type: "array"
-          items:
-            type: "string"
     DeliveryStatus:
       type: "string"
       x-business-entity: "DeliveryStatus"

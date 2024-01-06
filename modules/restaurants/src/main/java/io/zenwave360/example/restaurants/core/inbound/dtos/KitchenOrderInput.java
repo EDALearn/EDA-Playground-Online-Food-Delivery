@@ -13,6 +13,9 @@ import java.util.*;
 public class KitchenOrderInput implements Serializable {
 
     @NotNull
+    private String orderId;
+
+    @NotNull
     private String restaurantId;
 
     @NotNull

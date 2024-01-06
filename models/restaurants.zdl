@@ -37,11 +37,20 @@ config {
             openApiModelPackage "{{basePackage}}.adapters.web.model"
             openApiModelNameSuffix DTO
         }
+
+        SpringCloudStreams3AdaptersPlugin {
+            apiId "orders"
+            role client
+            specFile "modules/orders/src/main/resources/apis/asyncapi.yml"
+            zdlFile "models/restaurants.zdl"
+            modelPackage "{{basePackage}}.client.{{apiId}}.events.dtos"
+            consumerApiPackage "{{basePackage}}.client.{{apiId}}.events.consumer"
+        }
     }
 }
 
 apis {
-    asyncapi(client) OrdersAyncAPI {
+    asyncapi(client) OrdersAsyncAPI {
         uri "orders/src/main/resources/apis/asyncapi.yml"
     }
 }
@@ -131,6 +140,13 @@ input KitchenOrderInput {
     customer CustomerDetails required
 }
 
+input OrderStatusUpdated {
+    orderId String
+    dateTime Instant
+    status String
+    previousStatus String
+}
+
 input KitchenOrderStatusInput {
     status KitchenOrderStatus required
     operatorName String required
@@ -144,8 +160,11 @@ input KitchenOrdersFilter {
 @rest("/restaurants-orders")
 service RestaurantOrdersService for (KitchenOrder) {
 
-    @asyncapi({api: OrdersAyncAPI, channel: "OrdersChannel"})
+    @asyncapi({api: OrdersAsyncAPI, channel: "OrdersChannel"})
     createKitchenOrder(KitchenOrderInput) KitchenOrder withEvents KitchenOrderStatusUpdated
+
+    @asyncapi({api: OrdersAsyncAPI, channel: "OrderUpdatesChannel"})
+    onOrderStatusUpdated(id, OrderStatusUpdated) KitchenOrder withEvents KitchenOrderStatusUpdated
 
     @put("/{orderId}/status")
     updateKitchenOrderStatus(id, KitchenOrderStatusInput) KitchenOrder withEvents KitchenOrderStatusUpdated

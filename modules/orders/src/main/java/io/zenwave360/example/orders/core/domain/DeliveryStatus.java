@@ -3,7 +3,8 @@ package io.zenwave360.example.orders.core.domain;
 /** Enum for DeliveryStatus. */
 public enum DeliveryStatus {
 
-    IN_PROGRESS("IN_PROGRESS"), DELIVERED("DELIVERED"), CANCELLED("CANCELLED"),;
+    REJECTED("REJECTED"), ACCEPTED("ACCEPTED"), IN_PROGRESS("IN_PROGRESS"), DELIVERED("DELIVERED"),
+    CANCELLED("CANCELLED"),;
 
     private final String value;
 

@@ -17,6 +17,10 @@ public class Restaurant implements Serializable {
 
     @Field
     @NotNull
+    private String restaurantId;
+
+    @Field
+    @NotNull
     private String name;
 
     @Field

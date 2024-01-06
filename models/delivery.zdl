@@ -94,7 +94,14 @@ input DeliveryInput {
     date LocalDateTime required
     restaurantId String required
     customerId String required
-    items MenuItemInput[] required
+    items OrderItem[] required
+}
+
+input OrderStatusUpdated {
+    orderId String
+    dateTime Instant
+    status String
+    previousStatus String
 }
 
 input DeliveryStatusInput {
@@ -105,8 +112,11 @@ input DeliveryStatusInput {
 @rest("/delivery")
 service DeliveryService for (Delivery) {
 
-    @asyncapi({api: OrdersAyncAPI, channel: "OrderCreatedChannel"})
+    @asyncapi({api: OrdersAsyncAPI, channel: "OrderCreatedChannel"})
     createDelivery(DeliveryInput) Delivery withEvents DeliveryStatusUpdated
+
+    @asyncapi({api: OrdersAsyncAPI, channel: "OrderUpdatesChannel"})
+    onOrderStatusUpdated(id, OrderStatusUpdated) Delivery withEvents DeliveryStatusUpdated
 
     @put("/{orderId}/status")
     updateDeliveryStatus(id, DeliveryStatusInput) Delivery withEvents DeliveryStatusUpdated

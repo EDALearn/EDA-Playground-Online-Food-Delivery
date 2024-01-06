@@ -36,6 +36,14 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
         return kitchenOrder;
     }
 
+    @Transactional
+    public KitchenOrder onOrderStatusUpdated(String id, OrderStatusUpdated input) {
+        log.debug("Request onOrderStatusUpdated: {} {}", id, input);
+        var kitchenOrder = kitchenOrderRepository.findById(id).orElseThrow();
+        // TODO: implement this method
+        return kitchenOrder;
+    }
+
     public KitchenOrder updateKitchenOrderStatus(String id, KitchenOrderStatusInput input) {
         log.debug("Request updateKitchenOrderStatus: {}", id);
         var kitchenOrder = kitchenOrderRepository.findById(id).orElseThrow();

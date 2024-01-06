@@ -58,6 +58,7 @@ entity CustomerOrder {
     orderTime Instant
     status OrderStatus
     customerDetails Customer {
+      customerId String required
       firstName String required
       lastName String required
       email String required
@@ -90,7 +91,9 @@ entity CustomerOrder {
 }
 
 enum OrderStatus {
-    RECEIVED, CONFIRMED, KITCHEN_IN_PROGRESS, KITCHEN_READY, KITCHEN_DELIVERED, ON_DELIVERY, DELIVERED, CANCELLED
+    RECEIVED, KITCHEN_ACCEPTED, DELIVERY_ACCEPTED, CONFIRMED,
+    KITCHEN_IN_PROGRESS, KITCHEN_READY, KITCHEN_DELIVERED,
+    ON_DELIVERY, DELIVERED, CANCELLED
 }
 
 // == Serices =============================
@@ -118,12 +121,12 @@ input CancelOrderInput {
 
 @input
 enum KitchenStatus {
-    IN_PROGRESS, READY, DELIVERED, CANCELLED
+    REJECTED, ACCEPTED, IN_PROGRESS, READY, DELIVERED, CANCELLED
 }
 
 @input
 enum DeliveryStatus {
-    IN_PROGRESS, DELIVERED, CANCELLED
+    REJECTED, ACCEPTED, IN_PROGRESS, DELIVERED, CANCELLED
 }
 
 @rest("/orders")
@@ -133,16 +136,16 @@ service OrdersService for (CustomerOrder) {
     @post
     createOrder(CustomerOrder) CustomerOrder withEvents OrderEvent
     @put("/{orderId}")
-    updateOrder(id, CustomerOrder) CustomerOrder withEvents OrderEvent OrderUpdated
+    updateOrder(id, CustomerOrder) CustomerOrder withEvents OrderEvent OrderStatusUpdated
 
     @asyncapi({api: RestaurantsAsyncAPI, channel: "KitchenOrdersStatusChannel"})
-    updateKitchenStatus(id, KitchenStatusInput) CustomerOrder withEvents OrderEvent [OrderUpdated|OrderCancelled]
+    updateKitchenStatus(id, KitchenStatusInput) CustomerOrder withEvents OrderEvent OrderStatusUpdated
     @asyncapi({api: DeliveryAsyncAPI, channel: "DeliveryStatusChannel"})
-    updateDeliveryStatus(id, DeliveryStatusInput) CustomerOrder withEvents OrderEvent [OrderUpdated|OrderCancelled]
+    updateDeliveryStatus(id, DeliveryStatusInput) CustomerOrder withEvents OrderEvent OrderStatusUpdated
 
     @asyncapi({channel: "CancelOrdersChannel", topic: "orders.cancel_orders"})
     @put("/{orderId}/cancel")
-    cancelOrder(id, CancelOrderInput) CustomerOrder withEvents OrderEvent OrderCancelled
+    cancelOrder(id, CancelOrderInput) CustomerOrder withEvents OrderEvent OrderStatusUpdated
 
     @post("/search")
     searchOrders(OrdersFilter) CustomerOrder[]
@@ -156,16 +159,9 @@ event OrderEvent {
 }
 
 @asyncapi({channel: "OrderUpdatesChannel", topic: "orders.order_updates"})
-event OrderUpdated {
+event OrderStatusUpdated {
     orderId String
     dateTime Instant
-    originalOrder CustomerOrder
-    updatedOrder CustomerOrder
-}
-
-@asyncapi({channel: "OrderCancelChannel", topic: "orders.order_cancellations"})
-event OrderCancelled {
-    orderId String
-    dateTime Instant
-    reason String
+    status OrderStatus
+    previousStatus OrderStatus
 }

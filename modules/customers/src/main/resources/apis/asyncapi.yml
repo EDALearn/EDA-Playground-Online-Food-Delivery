@@ -21,36 +21,18 @@ channels:
         $ref: '#/components/messages/CustomerAddressUpdatedMessage'
 
 operations:
-  onCreateCustomerCustomerEvent:
+  onCustomerEvent:
     action: send
     tags:
       - name: Customer
     channel:
       $ref: '#/channels/CustomerEventsChannel'
-  onUpdateCustomerCustomerEvent:
-    action: send
-    tags:
-      - name: Customer
-    channel:
-      $ref: '#/channels/CustomerEventsChannel'
-  onUpdateCustomerAddressCustomerEvent:
-    action: send
-    tags:
-      - name: Customer
-    channel:
-      $ref: '#/channels/CustomerEventsChannel'
-  onUpdateCustomerAddressCustomerAddressUpdated:
+  onCustomerAddressUpdated:
     action: send
     tags:
       - name: Customer
     channel:
       $ref: '#/channels/CustomerAddressEventsChannel'
-  onDeleteCustomerCustomerEvent:
-    action: send
-    tags:
-      - name: Customer
-    channel:
-      $ref: '#/channels/CustomerEventsChannel'
 
 
 components:

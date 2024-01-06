@@ -17,6 +17,10 @@ public class Customer implements Serializable {
 
     @Field
     @NotNull
+    private String customerId;
+
+    @Field
+    @NotNull
     private String firstName;
 
     @Field

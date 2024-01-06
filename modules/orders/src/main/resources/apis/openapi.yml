@@ -134,6 +134,8 @@ components:
       x-business-entity: "OrderStatus"
       enum:
       - "RECEIVED"
+      - "KITCHEN_ACCEPTED"
+      - "DELIVERY_ACCEPTED"
       - "CONFIRMED"
       - "KITCHEN_IN_PROGRESS"
       - "KITCHEN_READY"
@@ -169,11 +171,14 @@ components:
       type: "object"
       x-business-entity: "Customer"
       required:
+      - "customerId"
       - "firstName"
       - "lastName"
       - "email"
       - "phone"
       properties:
+        customerId:
+          type: "string"
         firstName:
           type: "string"
         lastName:
@@ -242,6 +247,8 @@ components:
       type: "string"
       x-business-entity: "DeliveryStatus"
       enum:
+      - "REJECTED"
+      - "ACCEPTED"
       - "IN_PROGRESS"
       - "DELIVERED"
       - "CANCELLED"
@@ -257,6 +264,8 @@ components:
       type: "string"
       x-business-entity: "KitchenStatus"
       enum:
+      - "REJECTED"
+      - "ACCEPTED"
       - "IN_PROGRESS"
       - "READY"
       - "DELIVERED"

@@ -22,12 +22,12 @@ public class DeliveryInput implements Serializable {
     private String restaurantId;
 
     @NotNull
-    private CustomerDetails customer;
+    private String customerId;
 
     @NotNull
-    private List<MenuItemInput> items = new ArrayList<>();
+    private List<OrderItem> items = new ArrayList<>();
 
-    public DeliveryInput addItems(MenuItemInput items) {
+    public DeliveryInput addItems(OrderItem items) {
         this.items.add(items);
         return this;
     }

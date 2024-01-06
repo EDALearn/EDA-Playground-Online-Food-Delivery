@@ -17,6 +17,10 @@ public class OrderItem implements Serializable {
 
     @Field
     @NotNull
+    private String menuItemId;
+
+    @Field
+    @NotNull
     private String name;
 
     @Field
@@ -25,5 +29,9 @@ public class OrderItem implements Serializable {
     @Field
     @NotNull
     private BigDecimal price;
+
+    @Field
+    @NotNull
+    private Integer quantity;
 
 }

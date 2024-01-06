@@ -14,4 +14,31 @@
         <basePackage>io.zenwave360.example.orders</basePackage><!-- used by openapi and asyncapi plugins in parent -->
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.github.zenwave360.zenwave-sdk</groupId>
+                <artifactId>zenwave-sdk-maven-plugin</artifactId>
+
+                <executions>
+                    <!-- Generates AsyncAPI PROVIDER (own API) -->
+                    <!-- (Config is inherited from parent) -->
+                    <execution>
+                        <id>generate-asyncapi-provider-dtos</id>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/apis/asyncapi.yml</inputSpec>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-asyncapi-provider-implementation</id>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/apis/asyncapi.yml</inputSpec>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

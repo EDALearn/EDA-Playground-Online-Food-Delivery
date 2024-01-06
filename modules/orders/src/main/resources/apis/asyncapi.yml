@@ -22,13 +22,8 @@ channels:
   OrderUpdatesChannel:
     address: "orders.order_updates"
     messages:
-      OrderUpdatedMessage:
-        $ref: '#/components/messages/OrderUpdatedMessage'
-  OrderCancelChannel:
-    address: "orders.order_cancellations"
-    messages:
-      OrderCancelledMessage:
-        $ref: '#/components/messages/OrderCancelledMessage'
+      OrderStatusUpdatedMessage:
+        $ref: '#/components/messages/OrderStatusUpdatedMessage'
 
 operations:
   doCancelOrder:
@@ -37,72 +32,18 @@ operations:
       - name: Orders
     channel:
       $ref: '#/channels/CancelOrdersChannel'
-  onCreateOrderOrderEvent:
+  onOrderEvent:
     action: send
     tags:
       - name: Orders
     channel:
       $ref: '#/channels/OrdersChannel'
-  onUpdateOrderOrderEvent:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrdersChannel'
-  onUpdateOrderOrderUpdated:
+  onOrderStatusUpdated:
     action: send
     tags:
       - name: Orders
     channel:
       $ref: '#/channels/OrderUpdatesChannel'
-  onUpdateKitchenStatusOrderEvent:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrdersChannel'
-  onUpdateKitchenStatusOrderUpdated:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrderUpdatesChannel'
-  onUpdateKitchenStatusOrderCancelled:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrderCancelChannel'
-  onUpdateDeliveryStatusOrderEvent:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrdersChannel'
-  onUpdateDeliveryStatusOrderUpdated:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrderUpdatesChannel'
-  onUpdateDeliveryStatusOrderCancelled:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrderCancelChannel'
-  onCancelOrderOrderEvent:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrdersChannel'
-  onCancelOrderOrderCancelled:
-    action: send
-    tags:
-      - name: Orders
-    channel:
-      $ref: '#/channels/OrderCancelChannel'
 
 
 components:
@@ -127,26 +68,16 @@ components:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
         $ref: "#/components/schemas/OrderEvent"
-    OrderUpdatedMessage:
-      messageId: OrderUpdatedMessage
-      name: OrderUpdatedMessage
+    OrderStatusUpdatedMessage:
+      messageId: OrderStatusUpdatedMessage
+      name: OrderStatusUpdatedMessage
       title: ""
       summary: ""
       schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        $ref: "#/components/schemas/OrderUpdated"
-    OrderCancelledMessage:
-      messageId: OrderCancelledMessage
-      name: OrderCancelledMessage
-      title: ""
-      summary: ""
-      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        $ref: "#/components/schemas/OrderCancelled"
+        $ref: "#/components/schemas/OrderStatusUpdated"
 
   messageTraits:
     CommonHeaders:
@@ -182,30 +113,19 @@ components:
             $ref: "#/components/schemas/OrderItem"
         id:
           type: "string"
-    OrderUpdated:
+    OrderStatusUpdated:
       type: "object"
-      x-business-entity: "OrderUpdated"
+      x-business-entity: "OrderStatusUpdated"
       properties:
         orderId:
           type: "string"
         dateTime:
           type: "string"
           format: "date-time"
-        originalOrder:
-          $ref: "#/components/schemas/CustomerOrder"
-        updatedOrder:
-          $ref: "#/components/schemas/CustomerOrder"
-    OrderCancelled:
-      type: "object"
-      x-business-entity: "OrderCancelled"
-      properties:
-        orderId:
-          type: "string"
-        dateTime:
-          type: "string"
-          format: "date-time"
-        reason:
-          type: "string"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        previousStatus:
+          $ref: "#/components/schemas/OrderStatus"
     CancelOrderInput:
       type: "object"
       x-business-entity: "CancelOrderInput"
@@ -218,9 +138,12 @@ components:
       type: "object"
       x-business-entity: "Restaurant"
       required:
+      - "restaurantId"
       - "name"
       - "phone"
       properties:
+        restaurantId:
+          type: "string"
         name:
           type: "string"
         phone:
@@ -232,6 +155,8 @@ components:
       x-business-entity: "OrderStatus"
       enum:
       - "RECEIVED"
+      - "KITCHEN_ACCEPTED"
+      - "DELIVERY_ACCEPTED"
       - "CONFIRMED"
       - "KITCHEN_IN_PROGRESS"
       - "KITCHEN_READY"
@@ -257,11 +182,14 @@ components:
       type: "object"
       x-business-entity: "Customer"
       required:
+      - "customerId"
       - "firstName"
       - "lastName"
       - "email"
       - "phone"
       properties:
+        customerId:
+          type: "string"
         firstName:
           type: "string"
         lastName:
@@ -276,9 +204,13 @@ components:
       type: "object"
       x-business-entity: "OrderItem"
       required:
+      - "menuItemId"
       - "name"
       - "price"
+      - "quantity"
       properties:
+        menuItemId:
+          type: "string"
         name:
           type: "string"
         description:
@@ -286,23 +218,7 @@ components:
         price:
           type: "number"
           format: "double"
-    CustomerOrder:
-      type: "object"
-      x-business-entity: "CustomerOrder"
-      properties:
-        id:
-          type: "string"
-        orderTime:
-          type: "string"
-          format: "date-time"
-        status:
-          $ref: "#/components/schemas/OrderStatus"
-        customerDetails:
-          $ref: "#/components/schemas/Customer"
-        restaurantDetails:
-          $ref: "#/components/schemas/Restaurant"
-        orderItems:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/OrderItem"
+        quantity:
+          type: "integer"
+          format: "int32"
 

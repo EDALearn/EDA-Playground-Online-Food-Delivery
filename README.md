@@ -11,28 +11,36 @@ After cloning the repository, you can build and run the application using:
 
 ```shell
 docker-compose -f modulith/src/main/docker/docker-compose.yml up -d
+mvn clean install -DskipTests
 mvn spring-boot:run -f modulith
 ```
-The use REST APIs to create/update `customers`, `restaurants` and `orders`.
+Then use REST APIs to create/update `customers`, `restaurants` and `orders`.
 
 ### Bounded Contexts
 ![Online Food Delivery Service - Bounded Contexts](models/diagrams/BoundedContexts.excalidraw.svg)
 
-### APIs
+### APIs and Models
+
+#### ZenWave ZDL Models:
+
+* [models/customers.zdl](models/customers.zdl)
+* [models/orders.zdl](models/orders.zdl)
+* [models/restaurants.zdl](models/restaurants.zdl)
+* [models/delivery.zdl](models/delivery.zdl)
 
 #### AsyncAPI:
 
 * [customers/src/main/resources/apis/asyncapi.yml](customers/src/main/resources/apis/asyncapi.yml)
-* [delivery/src/main/resources/apis/asyncapi.yml](delivery/src/main/resources/apis/asyncapi.yml)
-* [restaurants/src/main/resources/apis/asyncapi.yml](restaurants/src/main/resources/apis/asyncapi.yml)
 * [orders/src/main/resources/apis/asyncapi.yml](orders/src/main/resources/apis/asyncapi.yml)
+* [restaurants/src/main/resources/apis/asyncapi.yml](restaurants/src/main/resources/apis/asyncapi.yml)
+* [delivery/src/main/resources/apis/asyncapi.yml](delivery/src/main/resources/apis/asyncapi.yml)
 
 #### OpenAPI:
 
 * [customers/src/main/resources/apis/openapi.yml](customers/src/main/resources/apis/openapi.yml)
-* [delivery/src/main/resources/apis/openapi.yml](delivery/src/main/resources/apis/openapi.yml)
-* [restaurants/src/main/resources/apis/openapi.yml](restaurants/src/main/resources/apis/openapi.yml)
 * [orders/src/main/resources/apis/openapi.yml](orders/src/main/resources/apis/openapi.yml)
+* [restaurants/src/main/resources/apis/openapi.yml](restaurants/src/main/resources/apis/openapi.yml)
+* [delivery/src/main/resources/apis/openapi.yml](delivery/src/main/resources/apis/openapi.yml)
 
 ### Create Order Async Channels
 

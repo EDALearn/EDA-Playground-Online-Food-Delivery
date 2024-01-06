@@ -11,19 +11,13 @@ defaultContentType: application/json
 
 channels:
   KitchenOrdersStatusChannel:
-    address: "kitchen-orders-status-topic"
+    address: "kitchen-orders.status-topic"
     messages:
       KitchenOrderStatusUpdatedMessage:
         $ref: '#/components/messages/KitchenOrderStatusUpdatedMessage'
 
 operations:
-  onCreateKitchenOrderKitchenOrderStatusUpdated:
-    action: send
-    tags:
-      - name: RestaurantOrders
-    channel:
-      $ref: '#/channels/KitchenOrdersStatusChannel'
-  onUpdateKitchenOrderStatusKitchenOrderStatusUpdated:
+  onKitchenOrderStatusUpdated:
     action: send
     tags:
       - name: RestaurantOrders
