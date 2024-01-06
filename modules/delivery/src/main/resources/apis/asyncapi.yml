@@ -1,0 +1,130 @@
+asyncapi: 3.0.0
+info:
+  title: "ZenWave Online Food Delivery - Delivery Module"
+  version: 0.0.1
+  tags:
+    - name: "Default"
+    - name: "Delivery"
+
+defaultContentType: application/json
+
+channels:
+  OrderCreatedChannel:
+    address: "add topic here"
+    messages:
+      DeliveryInputMessage:
+        $ref: '#/components/messages/DeliveryInputMessage'
+  DeliveryStatusChannel:
+    address: "delivery.status-topic"
+    messages:
+      DeliveryStatusUpdatedMessage:
+        $ref: '#/components/messages/DeliveryStatusUpdatedMessage'
+
+operations:
+  doCreateDelivery:
+    action: receive
+    tags:
+      - name: Delivery
+    channel:
+      $ref: '#/channels/OrderCreatedChannel'
+  onCreateDeliveryDeliveryStatusUpdated:
+    action: send
+    tags:
+      - name: Delivery
+    channel:
+      $ref: '#/channels/DeliveryStatusChannel'
+  onUpdateDeliveryStatusDeliveryStatusUpdated:
+    action: send
+    tags:
+      - name: Delivery
+    channel:
+      $ref: '#/channels/DeliveryStatusChannel'
+
+
+components:
+  messages:
+    DeliveryInputMessage:
+      messageId: DeliveryInputMessage
+      name: DeliveryInputMessage
+      title: ""
+      summary: ""
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/DeliveryInput"
+    DeliveryStatusUpdatedMessage:
+      messageId: DeliveryStatusUpdatedMessage
+      name: DeliveryStatusUpdatedMessage
+      title: ""
+      summary: ""
+      schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/DeliveryStatusUpdated"
+
+  messageTraits:
+    CommonHeaders:
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/id
+          tracingId:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $tracingIdSupplier
+
+  schemas:
+    DeliveryStatusUpdated:
+      type: "object"
+      x-business-entity: "DeliveryStatusUpdated"
+      required:
+      - "customerOrderId"
+      - "deliveryId"
+      - "status"
+      properties:
+        customerOrderId:
+          type: "string"
+        deliveryId:
+          type: "string"
+        status:
+          $ref: "#/components/schemas/DeliveryStatus"
+        message:
+          type: "string"
+    DeliveryInput:
+      type: "object"
+      x-business-entity: "DeliveryInput"
+      required:
+      - "orderId"
+      - "date"
+      - "restaurantId"
+      - "customer"
+      - "items"
+      properties:
+        orderId:
+          type: "string"
+        date:
+          type: "string"
+        restaurantId:
+          type: "string"
+        customer:
+          type: "string"
+        items:
+          type: "array"
+          items:
+            type: "string"
+    DeliveryStatus:
+      type: "string"
+      x-business-entity: "DeliveryStatus"
+      enum:
+      - "ACCEPTED"
+      - "REJECTED"
+      - "IN_PROGRESS"
+      - "READY"
+      - "DELIVERED"
+      - "CANCELLED"
+
