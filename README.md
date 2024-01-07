@@ -30,17 +30,17 @@ Then use REST APIs to create/update `customers`, `restaurants` and `orders`.
 
 #### AsyncAPI:
 
-* [customers/src/main/resources/apis/asyncapi.yml](customers/src/main/resources/apis/asyncapi.yml)
-* [orders/src/main/resources/apis/asyncapi.yml](orders/src/main/resources/apis/asyncapi.yml)
-* [restaurants/src/main/resources/apis/asyncapi.yml](restaurants/src/main/resources/apis/asyncapi.yml)
-* [delivery/src/main/resources/apis/asyncapi.yml](delivery/src/main/resources/apis/asyncapi.yml)
+* [modules/customers/src/main/resources/apis/asyncapi.yml](modules/customers/src/main/resources/apis/asyncapi.yml)
+* [modules/orders/src/main/resources/apis/asyncapi.yml](modules/orders/src/main/resources/apis/asyncapi.yml)
+* [modules/restaurants/src/main/resources/apis/asyncapi.yml](modules/restaurants/src/main/resources/apis/asyncapi.yml)
+* [modules/delivery/src/main/resources/apis/asyncapi.yml](modules/delivery/src/main/resources/apis/asyncapi.yml)
 
 #### OpenAPI:
 
-* [customers/src/main/resources/apis/openapi.yml](customers/src/main/resources/apis/openapi.yml)
-* [orders/src/main/resources/apis/openapi.yml](orders/src/main/resources/apis/openapi.yml)
-* [restaurants/src/main/resources/apis/openapi.yml](restaurants/src/main/resources/apis/openapi.yml)
-* [delivery/src/main/resources/apis/openapi.yml](delivery/src/main/resources/apis/openapi.yml)
+* [modules/customers/src/main/resources/apis/openapi.yml](modules/customers/src/main/resources/apis/openapi.yml)
+* [modules/orders/src/main/resources/apis/openapi.yml](modules/orders/src/main/resources/apis/openapi.yml)
+* [modules/restaurants/src/main/resources/apis/openapi.yml](modules/restaurants/src/main/resources/apis/openapi.yml)
+* [modules/delivery/src/main/resources/apis/openapi.yml](modules/delivery/src/main/resources/apis/openapi.yml)
 
 ### Create Order Async Channels
 
