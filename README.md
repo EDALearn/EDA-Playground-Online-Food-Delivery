@@ -46,6 +46,26 @@ Then use REST APIs to create/update `customers`, `restaurants` and `orders`.
 
 ![Online Food Delivery Service - Create Order Async Channels](models/diagrams/CreateOrderChannels.excalidraw.svg)
 
+#### OrderStatus (Happy Path)
+
+```mermaid
+stateDiagram-v2
+state fork <<fork>>
+state join <<join>>
+[*] --> RECEIVED
+RECEIVED --> fork
+fork --> KITCHEN_ACCEPTED
+fork --> DELIVERY_ACCEPTED
+KITCHEN_ACCEPTED --> join
+DELIVERY_ACCEPTED --> join
+join --> CONFIRMED
+CONFIRMED --> KITCHEN_IN_PROGRESS
+KITCHEN_IN_PROGRESS --> KITCHEN_READY
+KITCHEN_READY --> KITCHEN_DELIVERED
+KITCHEN_DELIVERED --> ON_DELIVERY
+ON_DELIVERY --> DELIVERED
+DELIVERED --> [*]
+```
 
 
 ### Bounded Contexts Entities
