@@ -62,6 +62,7 @@
                             <configOptions>
                                 <role>client</role>
                                 <style>imperative</style>
+                                <bindingPrefix>restaurants_</bindingPrefix>
                                 <modelPackage>${asyncapiOrdersClientPackage}.events.dtos</modelPackage>
                                 <producerApiPackage>${asyncapiOrdersClientPackage}.events.producer</producerApiPackage>
                                 <consumerApiPackage>${asyncapiOrdersClientPackage}.events.consumer</consumerApiPackage>

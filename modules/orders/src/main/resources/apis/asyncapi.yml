@@ -117,7 +117,7 @@ components:
       type: "object"
       x-business-entity: "OrderStatusUpdated"
       properties:
-        orderId:
+        id:
           type: "string"
         dateTime:
           type: "string"
@@ -130,7 +130,7 @@ components:
       type: "object"
       x-business-entity: "CancelOrderInput"
       properties:
-        orderId:
+        id:
           type: "string"
         reason:
           type: "string"

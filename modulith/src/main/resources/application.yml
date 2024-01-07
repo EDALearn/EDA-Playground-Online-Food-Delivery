@@ -22,34 +22,31 @@ spring:
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   cloud:
+    function:
+      definition: >-
+        on-order-event;on-order-status-updated;do-cancel-order;restaurants_on-order-event;
+        restaurants_on-order-status-updated;
+        delivery_on-order-event;delivery_on-order-status-updated;
     stream:
-      function:
-        definition: do-create-customer;on-create-customer-customer-event;on-create-customer-customer-created;on-create-customer-customer-created-failed;on-update-customer-customer-event;on-update-customer-customer-updated;on-delete-customer-customer-deleted
       bindings:
-        on-create-customer-customer-event-in-0:
-          destination: customer.events
-          content-type: application/json
-        on-create-customer-customer-created-out-0:
-          destination: customer.events
-          content-type: application/json
-        on-create-customer-customer-created-failed-out-0:
-          destination: customer.events
-          content-type: application/json
-        on-update-customer-customer-event-out-0:
-          destination: customer.events
-          content-type: application/json
-        on-update-customer-customer-updated-out-0:
-          destination: customer.events
-          content-type: application/json
-        on-delete-customer-customer-deleted-out-0:
-          destination: customer.events
-          content-type: application/json
-        do-create-customer-in-0:
-          destination: customer.requests
-          content-type: application/json
-          dead-letter-queue-error-map: >
-            {
-              'jakarta.validation.ValidationException': 'do-create-customer-validation-error-out-0',
-              'java.lang.Exception': 'do-create-customer-error-out-0'
-            }
-            
+        do-cancel-order-in-0:
+          destination: orders.cancel_orders
+          group: orders-consumer-0
+        on-order-event-out-0:
+          destination: orders.orders
+        on-order-status-updated-out-0:
+          destination: orders.order_updates
+
+        restaurants_on-order-event-in-0:
+          destination: orders.orders
+          group: restaurants_consumer
+        restaurants_on-order-status-updated-in-0:
+          destination: orders.order_updates
+          group: restaurants_consumer
+
+        delivery_on-order-event-in-0:
+          destination: orders.orders
+          group: delivery_consumer
+        delivery_on-order-status-updated-in-0:
+          destination: orders.order_updates
+          group: delivery_consumer

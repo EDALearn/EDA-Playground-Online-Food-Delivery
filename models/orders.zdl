@@ -115,7 +115,7 @@ input DeliveryStatusInput {
 }
 
 input CancelOrderInput {
-    orderId String
+    id String
     reason String
 }
 
@@ -160,7 +160,7 @@ event OrderEvent {
 
 @asyncapi({channel: "OrderUpdatesChannel", topic: "orders.order_updates"})
 event OrderStatusUpdated {
-    orderId String
+    id String
     dateTime Instant
     status OrderStatus
     previousStatus OrderStatus
