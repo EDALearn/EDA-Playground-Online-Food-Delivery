@@ -30,6 +30,7 @@ Then use REST APIs to create/update `customers`, `restaurants` and `orders`.
 
 #### AsyncAPI:
 
+* [asyncapi/asyncapi-channels-menu.yml](asyncapi/asyncapi-channels-menu.yml)
 * [customers/src/main/resources/apis/asyncapi.yml](modules/customers/src/main/resources/apis/asyncapi.yml)
 * [orders/src/main/resources/apis/asyncapi.yml](modules/orders/src/main/resources/apis/asyncapi.yml)
 * [restaurants/src/main/resources/apis/asyncapi.yml](modules/restaurants/src/main/resources/apis/asyncapi.yml)
