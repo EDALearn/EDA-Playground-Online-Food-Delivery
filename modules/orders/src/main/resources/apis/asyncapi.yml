@@ -26,15 +26,10 @@ channels:
         $ref: '#/components/messages/OrderStatusUpdatedMessage'
 # client channels
   KitchenOrdersStatusChannel:
-    address: "restaurants.kitchen_order_status"
-    messages:
-      KitchenOrderStatusUpdatedMessage:
-        $ref: '#/components/messages/KitchenOrderStatusUpdatedMessage'
+    $ref: "../../../../../../asyncapi/asyncapi-decentralized-channels.yml#/channels/KitchenOrdersStatusChannel"
   DeliveryStatusChannel:
-    address: "delivery.delivery_status"
-    messages:
-      DeliveryStatusUpdatedMessage:
-        $ref: '#/components/messages/DeliveryStatusUpdatedMessage'
+    $ref: "../../../../../../asyncapi/asyncapi-decentralized-channels.yml#/channels/DeliveryStatusChannel"
+
 
 operations:
   doCancelOrder:
@@ -102,27 +97,6 @@ components:
         schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
         schema:
           $ref: "#/components/schemas/OrderStatusUpdated"
-# client messages
-    KitchenOrderStatusUpdatedMessage:
-      name: KitchenOrderStatusUpdatedMessage
-      title: ""
-      summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/KitchenOrderStatusUpdated"
-    DeliveryStatusUpdatedMessage:
-      name: DeliveryStatusUpdatedMessage
-      title: ""
-      summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
-      payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/DeliveryStatusUpdated"
 
   messageTraits:
     CommonHeaders:
@@ -262,57 +236,3 @@ components:
         quantity:
           type: "integer"
           format: "int32"
-
-# client schemas
-    KitchenOrderStatusUpdated:
-      type: "object"
-      x-business-entity: "KitchenOrderStatusUpdated"
-      required:
-        - "customerOrderId"
-        - "kitchenOrderId"
-        - "status"
-      properties:
-        customerOrderId:
-          type: "string"
-        kitchenOrderId:
-          type: "string"
-        status:
-          $ref: "#/components/schemas/KitchenOrderStatus"
-        message:
-          type: "string"
-    KitchenOrderStatus:
-      type: "string"
-      x-business-entity: "KitchenOrderStatus"
-      enum:
-        - "ACCEPTED"
-        - "REJECTED"
-        - "IN_PROGRESS"
-        - "READY"
-        - "DELIVERED"
-        - "CANCELLED"
-    DeliveryStatusUpdated:
-      type: "object"
-      x-business-entity: "DeliveryStatusUpdated"
-      required:
-        - "customerOrderId"
-        - "deliveryId"
-        - "status"
-      properties:
-        customerOrderId:
-          type: "string"
-        deliveryId:
-          type: "string"
-        status:
-          $ref: "#/components/schemas/DeliveryStatus"
-        message:
-          type: "string"
-    DeliveryStatus:
-      type: "string"
-      x-business-entity: "DeliveryStatus"
-      enum:
-        - "ACCEPTED"
-        - "REJECTED"
-        - "IN_PROGRESS"
-        - "READY"
-        - "DELIVERED"
-        - "CANCELLED"
