@@ -10,12 +10,12 @@ defaultContentType: application/json
 
 channels:
   DeliveryStatusChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/DeliveryStatusChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/DeliveryStatusChannel"
   # client channels
   OrdersChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/OrdersChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/OrdersChannel"
   OrderUpdatesChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/OrderUpdatesChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/OrderUpdatesChannel"
 
 operations:
   onDeliveryStatusUpdated:

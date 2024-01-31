@@ -10,9 +10,9 @@ defaultContentType: application/json
 
 channels:
   CustomerEventsChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/CustomerEventsChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/CustomerEventsChannel"
   CustomerAddressEventsChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/CustomerAddressEventsChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/CustomerAddressEventsChannel"
 
 operations:
   onCustomerEvent:

@@ -10,16 +10,16 @@ defaultContentType: application/json
 
 channels:
   CancelOrdersChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/CancelOrdersChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/CancelOrdersChannel"
   OrdersChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/OrdersChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/OrdersChannel"
   OrderUpdatesChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/OrderUpdatesChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/OrderUpdatesChannel"
 # client channels
   KitchenOrdersStatusChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/KitchenOrdersStatusChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/KitchenOrdersStatusChannel"
   DeliveryStatusChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-channels-menu.yml#/channels/DeliveryStatusChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/feature/asyncapi-with-centralized-channels-local-refs/asyncapi/asyncapi-channels-menu.yml#/channels/DeliveryStatusChannel"
 
 operations:
   doCancelOrder:
