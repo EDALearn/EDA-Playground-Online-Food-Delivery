@@ -18,7 +18,8 @@ import java.util.Optional;
 @EnableMongoAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 public class MongoConfig {
 
-    @Bean @Profile("!local")
+    // @Profile("!local")
+    @Bean
     MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
         return new MongoTransactionManager(dbFactory);
     }
