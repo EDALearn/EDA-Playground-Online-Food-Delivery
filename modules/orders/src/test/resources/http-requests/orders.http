@@ -83,7 +83,7 @@ Content-Type: application/json
 
 ### Update Kitchen Order Status
 < {%
-    request.variables.set("orderId", "65e620ea5c11db258bfaf40b")
+    request.variables.set("orderId", "65e625476e17c17a3bd2a140")
 %}
 PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
 Authorization: {{Authorization}}

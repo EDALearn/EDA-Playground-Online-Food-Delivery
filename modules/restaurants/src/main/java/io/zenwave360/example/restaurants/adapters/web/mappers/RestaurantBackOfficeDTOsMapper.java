@@ -13,26 +13,27 @@ import org.springframework.data.domain.Page;
 @Mapper(uses = BaseMapper.class)
 public interface RestaurantBackOfficeDTOsMapper {
 
-  RestaurantBackOfficeDTOsMapper INSTANCE = Mappers.getMapper(RestaurantBackOfficeDTOsMapper.class);
+    RestaurantBackOfficeDTOsMapper INSTANCE = Mappers.getMapper(RestaurantBackOfficeDTOsMapper.class);
 
-  // request mappings
-  MenuItem asMenuItem(MenuItemDTO dto);
+    // request mappings
+    MenuItem asMenuItem(MenuItemDTO dto);
 
-  Restaurant asRestaurant(RestaurantDTO dto);
+    Restaurant asRestaurant(RestaurantDTO dto);
 
-  // response mappings
+    // response mappings
 
-  MenuItemDTO asMenuItemDTO(MenuItem entity);
+    MenuItemDTO asMenuItemDTO(MenuItem entity);
 
-  RestaurantDTO asRestaurantDTO(Restaurant entity);
+    RestaurantDTO asRestaurantDTO(Restaurant entity);
 
-  List<MenuItemDTO> asMenuItemDTOList(List<MenuItem> entityList);
+    List<MenuItemDTO> asMenuItemDTOList(List<MenuItem> entityList);
 
-  List<RestaurantDTO> asRestaurantDTOList(List<Restaurant> entityList);
+    List<RestaurantDTO> asRestaurantDTOList(List<Restaurant> entityList);
 
-  RestaurantPaginatedDTO asRestaurantPaginatedDTO(Page<Restaurant> page);
+    RestaurantPaginatedDTO asRestaurantPaginatedDTO(Page<Restaurant> page);
 
-  default Page<RestaurantDTO> asRestaurantDTOPage(Page<Restaurant> page) {
-    return page.map(this::asRestaurantDTO);
-  }
+    default Page<RestaurantDTO> asRestaurantDTOPage(Page<Restaurant> page) {
+        return page.map(this::asRestaurantDTO);
+    }
+
 }

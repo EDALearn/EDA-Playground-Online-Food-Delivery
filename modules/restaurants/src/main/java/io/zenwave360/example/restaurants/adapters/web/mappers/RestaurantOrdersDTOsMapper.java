@@ -13,22 +13,23 @@ import org.springframework.data.domain.Page;
 @Mapper(uses = BaseMapper.class)
 public interface RestaurantOrdersDTOsMapper {
 
-  RestaurantOrdersDTOsMapper INSTANCE = Mappers.getMapper(RestaurantOrdersDTOsMapper.class);
+    RestaurantOrdersDTOsMapper INSTANCE = Mappers.getMapper(RestaurantOrdersDTOsMapper.class);
 
-  // request mappings
-  KitchenOrdersFilter asKitchenOrdersFilter(KitchenOrdersFilterDTO dto);
+    // request mappings
+    KitchenOrdersFilter asKitchenOrdersFilter(KitchenOrdersFilterDTO dto);
 
-  KitchenOrderStatusInput asKitchenOrderStatusInput(KitchenOrderStatusInputDTO dto);
+    KitchenOrderStatusInput asKitchenOrderStatusInput(KitchenOrderStatusInputDTO dto);
 
-  // response mappings
+    // response mappings
 
-  List<KitchenOrderDTO> asKitchenOrderDTOList(List<KitchenOrder> entityList);
+    List<KitchenOrderDTO> asKitchenOrderDTOList(List<KitchenOrder> entityList);
 
-  KitchenOrderPaginatedDTO asKitchenOrderPaginatedDTO(Page<KitchenOrder> page);
+    KitchenOrderPaginatedDTO asKitchenOrderPaginatedDTO(Page<KitchenOrder> page);
 
-  default Page<KitchenOrderDTO> asKitchenOrderDTOPage(Page<KitchenOrder> page) {
-    return page.map(this::asKitchenOrderDTO);
-  }
+    default Page<KitchenOrderDTO> asKitchenOrderDTOPage(Page<KitchenOrder> page) {
+        return page.map(this::asKitchenOrderDTO);
+    }
 
-  KitchenOrderDTO asKitchenOrderDTO(KitchenOrder entity);
+    KitchenOrderDTO asKitchenOrderDTO(KitchenOrder entity);
+
 }

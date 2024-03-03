@@ -22,43 +22,46 @@ import org.springframework.web.context.request.NativeWebRequest;
 @RequestMapping("/api")
 public class RestaurantOrdersApiController implements RestaurantOrdersApi {
 
-  private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-  @Autowired private NativeWebRequest request;
+    @Autowired
+    private NativeWebRequest request;
 
-  private RestaurantOrdersService restaurantOrdersService;
+    private RestaurantOrdersService restaurantOrdersService;
 
-  @Autowired
-  public RestaurantOrdersApiController setRestaurantOrdersService(RestaurantOrdersService restaurantOrdersService) {
-    this.restaurantOrdersService = restaurantOrdersService;
-    return this;
-  }
+    @Autowired
+    public RestaurantOrdersApiController setRestaurantOrdersService(RestaurantOrdersService restaurantOrdersService) {
+        this.restaurantOrdersService = restaurantOrdersService;
+        return this;
+    }
 
-  private RestaurantOrdersDTOsMapper mapper = RestaurantOrdersDTOsMapper.INSTANCE;
+    private RestaurantOrdersDTOsMapper mapper = RestaurantOrdersDTOsMapper.INSTANCE;
 
-  @Override
-  public Optional<NativeWebRequest> getRequest() {
-    return Optional.ofNullable(request);
-  }
+    @Override
+    public Optional<NativeWebRequest> getRequest() {
+        return Optional.ofNullable(request);
+    }
 
-  @Override
-  public ResponseEntity<KitchenOrderDTO> updateKitchenOrderStatus(String orderId, KitchenOrderStatusInputDTO reqBody) {
-    var input = mapper.asKitchenOrderStatusInput(reqBody);
-    var kitchenOrder = restaurantOrdersService.updateKitchenOrderStatus(orderId, input);
-    KitchenOrderDTO responseDTO = mapper.asKitchenOrderDTO(kitchenOrder);
-    return ResponseEntity.status(200).body(responseDTO);
-  }
+    @Override
+    public ResponseEntity<KitchenOrderDTO> updateKitchenOrderStatus(String orderId,
+            KitchenOrderStatusInputDTO reqBody) {
+        var input = mapper.asKitchenOrderStatusInput(reqBody);
+        var kitchenOrder = restaurantOrdersService.updateKitchenOrderStatus(orderId, input);
+        KitchenOrderDTO responseDTO = mapper.asKitchenOrderDTO(kitchenOrder);
+        return ResponseEntity.status(200).body(responseDTO);
+    }
 
-  @Override
-  public ResponseEntity<KitchenOrderPaginatedDTO> searchKitchenOrders(
-      Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort, KitchenOrdersFilterDTO reqBody) {
-    var input = mapper.asKitchenOrdersFilter(reqBody);
-    var kitchenOrderPage = restaurantOrdersService.searchKitchenOrders(input, pageOf(page, limit, sort));
-    var responseDTO = mapper.asKitchenOrderPaginatedDTO(kitchenOrderPage);
-    return ResponseEntity.status(201).body(responseDTO);
-  }
+    @Override
+    public ResponseEntity<KitchenOrderPaginatedDTO> searchKitchenOrders(Optional<Integer> page, Optional<Integer> limit,
+            Optional<List<String>> sort, KitchenOrdersFilterDTO reqBody) {
+        var input = mapper.asKitchenOrdersFilter(reqBody);
+        var kitchenOrderPage = restaurantOrdersService.searchKitchenOrders(input, pageOf(page, limit, sort));
+        var responseDTO = mapper.asKitchenOrderPaginatedDTO(kitchenOrderPage);
+        return ResponseEntity.status(201).body(responseDTO);
+    }
 
-  protected Pageable pageOf(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {
-    return PageRequest.of(page.orElse(0), limit.orElse(10));
-  }
+    protected Pageable pageOf(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {
+        return PageRequest.of(page.orElse(0), limit.orElse(10));
+    }
+
 }
