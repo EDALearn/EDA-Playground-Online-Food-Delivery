@@ -1,7 +1,9 @@
 package io.zenwave360.example.customers.config;
 
+import io.zenwave360.example.customers.core.domain.*;
 import io.zenwave360.example.customers.core.implementation.*;
 import io.zenwave360.example.customers.core.outbound.events.*;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,6 +21,10 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
     @Bean
     public CustomerServiceImpl customerService() {
         return customerService;
+    }
+
+    public void reloadTestData() {
+        var testDataLoader = new TestDataLoader(List.of(Customer.class, Address.class));
     }
 
 }

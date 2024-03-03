@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ZenWave Online Food Delivery - Customers Module
+  title: "ZenWave Online Food Delivery - Customers Module"
   version: 0.0.1
   description: "ZenWave Online Food Delivery - Customers Module"
   contact:
@@ -56,7 +56,6 @@ paths:
           required: true
           schema:
             type: string
-            
       requestBody:
         content:
           application/json:
@@ -79,7 +78,6 @@ paths:
           required: true
           schema:
             type: string
-            
       responses:
         "204":
           description: "OK"
@@ -93,7 +91,6 @@ paths:
           required: true
           schema:
             type: string
-            
       responses:
         "200":
           description: "OK"
@@ -112,13 +109,11 @@ paths:
           required: true
           schema:
             type: string
-            
         - name: "identifier"
           in: path
           required: true
           schema:
             type: string
-            
       requestBody:
         content:
           application/json:
@@ -134,33 +129,6 @@ paths:
 
 components:
   schemas:
-    Address:
-      type: "object"
-      x-business-entity: "Address"
-      required:
-      - "identifier"
-      - "street"
-      - "type"
-      properties:
-        identifier:
-          type: "string"
-          description: "Description identifier for this Address"
-        street:
-          type: "string"
-        city:
-          type: "string"
-        state:
-          type: "string"
-        zip:
-          type: "string"
-        type:
-          $ref: "#/components/schemas/AddressType"
-    AddressType:
-      type: "string"
-      x-business-entity: "AddressType"
-      enum:
-      - "HOME"
-      - "WORK"
     Customer:
       type: "object"
       x-business-entity: "Customer"
@@ -203,24 +171,33 @@ components:
             type: "array"
             items:
               $ref: "#/components/schemas/Customer"
-    EventType:
-      type: "string"
-      x-business-entity: "EventType"
-      enum:
-      - "CREATED"
-      - "UPDATED"
-      - "DELETED"
-    AddressInput:
+    Address:
       type: "object"
-      x-business-entity: "AddressInput"
+      x-business-entity: "Address"
       required:
       - "identifier"
+      - "street"
+      - "type"
       properties:
         identifier:
           type: "string"
           description: "Description identifier for this Address"
-        address:
-          $ref: "#/components/schemas/Address"
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+        type:
+          $ref: "#/components/schemas/AddressType"
+    AddressType:
+      type: "string"
+      x-business-entity: "AddressType"
+      enum:
+      - "HOME"
+      - "WORK"
 
     Page:
       type: object

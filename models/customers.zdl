@@ -29,8 +29,6 @@ config {
         }
 
         OpenAPIControllersPlugin {
-            formatter google // comments in one line are better for demos
-            // TODO fix this: specFile "{{targetFolder}}/src/main/resources/apis/openapi.yml"
             specFile "modules/customers/src/main/resources/apis/openapi.yml"
             zdlFile "models/customers.zdl"
 
@@ -101,7 +99,7 @@ service CustomerService for (Customer) {
   @get("/{customerId}")
   getCustomer(id) Customer?
 
-  @get({params: {search: "string"}})
+  @get
   @paginated
   listCustomers() Customer[]
 }

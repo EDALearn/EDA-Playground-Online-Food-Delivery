@@ -44,9 +44,7 @@ components:
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/CustomerEvent"
+        $ref: "#/components/schemas/CustomerEvent"
     CustomerAddressUpdatedMessage:
       name: CustomerAddressUpdatedMessage
       title: ""
@@ -54,9 +52,7 @@ components:
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/CustomerAddressUpdated"
+        $ref: "#/components/schemas/CustomerAddressUpdated"
 
   messageTraits:
     CommonHeaders:

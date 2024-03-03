@@ -16,6 +16,7 @@ public interface CustomerServiceMapper {
 
     @Mapping(target = "id", ignore = true)
     Customer update(@MappingTarget Customer entity, Customer input);
+    // Customer asCustomer(String identifier, Address address);
 
     @Mapping(target = "id", ignore = true)
     default Customer update(@MappingTarget Customer entity, String identifier, Address address)  {

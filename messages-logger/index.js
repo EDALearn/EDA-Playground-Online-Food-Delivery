@@ -2,7 +2,7 @@ const chalk = require('chalk')
 const { Kafka, logLevel } = require('kafkajs')
 
 const kafka = new Kafka({
-  logLevel: logLevel.WARN,
+  logLevel: logLevel.INFO,
   brokers: [`localhost:9092`],
   clientId: 'logger-consumer',
   ssl: false,

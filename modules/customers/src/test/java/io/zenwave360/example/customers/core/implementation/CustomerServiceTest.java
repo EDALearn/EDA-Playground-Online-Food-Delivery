@@ -34,7 +34,7 @@ public class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        customerRepository.save(new Customer());
+        context.reloadTestData();
     }
 
     @Test

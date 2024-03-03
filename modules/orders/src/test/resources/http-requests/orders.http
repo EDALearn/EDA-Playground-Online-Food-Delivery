@@ -50,9 +50,9 @@ Content-Type: application/json
 
 ### Create Order
 < {%
-request.variables.set("customerId", "65e5ec6f19986b372f9a710a")
+request.variables.set("customerId", "65e5f5036838875837def37e")
 request.variables.set("addressIdentifier", "Home Address")
-request.variables.set("restaurantId", "65e5ec7f19986b372f9a710b")
+request.variables.set("restaurantId", "65e5f52a6838875837def37f")
 %}
 POST {{baseUrl}}/orders
 Authorization: {{Authorization}}
@@ -83,7 +83,7 @@ Content-Type: application/json
 
 ### Update Kitchen Order Status
 < {%
-    request.variables.set("orderId", "65e5ec9f19986b372f9a710e")
+    request.variables.set("orderId", "65e5f5486838875837def382")
 %}
 PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
 Authorization: {{Authorization}}
