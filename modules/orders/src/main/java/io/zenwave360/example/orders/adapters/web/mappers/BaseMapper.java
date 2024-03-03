@@ -8,11 +8,12 @@ import org.mapstruct.Mapper;
 @Mapper
 public abstract class BaseMapper {
 
-  public Instant asInstant(OffsetDateTime date) {
-    return date != null ? date.toInstant() : null;
-  }
+    public Instant asInstant(OffsetDateTime date) {
+        return date != null ? date.toInstant() : null;
+    }
 
-  public OffsetDateTime asOffsetDateTime(Instant date) {
-    return date != null ? OffsetDateTime.ofInstant(date, TimeZone.getTimeZone("UTC").toZoneId()) : null;
-  }
+    public OffsetDateTime asOffsetDateTime(Instant date) {
+        return date != null ? OffsetDateTime.ofInstant(date, TimeZone.getTimeZone("UTC").toZoneId()) : null;
+    }
+
 }

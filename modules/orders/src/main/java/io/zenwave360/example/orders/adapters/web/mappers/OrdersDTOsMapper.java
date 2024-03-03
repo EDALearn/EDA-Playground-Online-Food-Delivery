@@ -12,18 +12,19 @@ import org.mapstruct.factory.Mappers;
 @Mapper(uses = BaseMapper.class)
 public interface OrdersDTOsMapper {
 
-  OrdersDTOsMapper INSTANCE = Mappers.getMapper(OrdersDTOsMapper.class);
+    OrdersDTOsMapper INSTANCE = Mappers.getMapper(OrdersDTOsMapper.class);
 
-  // request mappings
-  OrdersFilter asOrdersFilter(OrdersFilterDTO dto);
+    // request mappings
+    OrdersFilter asOrdersFilter(OrdersFilterDTO dto);
 
-  CustomerOrderInput asCustomerOrderInput(CustomerOrderInputDTO dto);
+    CustomerOrderInput asCustomerOrderInput(CustomerOrderInputDTO dto);
 
-  CancelOrderInput asCancelOrderInput(CancelOrderInputDTO dto);
+    CancelOrderInput asCancelOrderInput(CancelOrderInputDTO dto);
 
-  // response mappings
+    // response mappings
 
-  CustomerOrderDTO asCustomerOrderDTO(CustomerOrder entity);
+    CustomerOrderDTO asCustomerOrderDTO(CustomerOrder entity);
 
-  List<CustomerOrderDTO> asCustomerOrderDTOList(List<CustomerOrder> entityList);
+    List<CustomerOrderDTO> asCustomerOrderDTOList(List<CustomerOrder> entityList);
+
 }
