@@ -15,7 +15,7 @@ public interface OrdersServiceMapper {
 
     OrdersServiceMapper INSTANCE = Mappers.getMapper(OrdersServiceMapper.class);
 
-    CustomerOrder asEntity(OrdersFilter input);
+    // CustomerOrder asCustomerOrder(OrdersFilter input);
 
     @Mapping(target = "id", ignore = true)
     CustomerOrder update(@MappingTarget CustomerOrder entity, OrdersFilter input);

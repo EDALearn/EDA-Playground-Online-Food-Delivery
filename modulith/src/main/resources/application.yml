@@ -52,6 +52,8 @@ spring:
           group: orders.consumer
 
         ## Restaurants Module Bindings
+        on-restaurant-event-out-0:
+          destination: restaurants.events
         restaurants_on-order-event-in-0:
           destination: orders.orders
           group: restaurants.consumer

@@ -1,9 +1,10 @@
 package io.zenwave360.example.orders.adapters.events.restaurants;
 
-import io.zenwave360.example.orders.client.restaurants.events.consumer.*;
-import io.zenwave360.example.orders.client.restaurants.events.dtos.*;
-import io.zenwave360.example.orders.core.domain.KitchenStatus;
+import io.zenwave360.example.orders.client.restaurants.events.consumer.IOnKitchenOrderStatusUpdatedConsumerService;
+import io.zenwave360.example.orders.client.restaurants.events.dtos.KitchenOrderStatus;
+import io.zenwave360.example.orders.client.restaurants.events.dtos.KitchenOrderStatusUpdated;
 import io.zenwave360.example.orders.core.inbound.OrdersService;
+import io.zenwave360.example.orders.core.inbound.dtos.KitchenStatus;
 import io.zenwave360.example.orders.core.inbound.dtos.KitchenStatusInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

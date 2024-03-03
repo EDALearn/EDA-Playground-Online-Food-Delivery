@@ -51,8 +51,7 @@ public class CustomerApiController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<CustomerPaginatedDTO> listCustomers(Optional<String> search, Optional<Integer> page,
-            Optional<Integer> limit, Optional<List<String>> sort) {
+    public ResponseEntity<CustomerPaginatedDTO> listCustomers(Optional<Integer> page, Optional<Integer> limit, Optional<List<String>> sort) {
         var customerPage = customerService.listCustomers(pageOf(page, limit, sort));
         var responseDTO = mapper.asCustomerPaginatedDTO(customerPage);
         return ResponseEntity.status(200).body(responseDTO);

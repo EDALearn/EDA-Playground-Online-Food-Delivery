@@ -28,8 +28,6 @@ config {
         }
 
         OpenAPIControllersPlugin {
-            formatter google // comments in one line are better for demos
-            // TODO fix this: specFile "{{targetFolder}}/src/main/resources/apis/openapi.yml"
             specFile "modules/orders/src/main/resources/apis/openapi.yml"
             zdlFile "models/orders.zdl"
 

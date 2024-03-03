@@ -26,7 +26,7 @@ config {
         BackendApplicationDefaultPlugin {
             useLombok true
             includeEmitEventsImplementation true
-            // --force // overwite all files
+//             --force // overwite all files
         }
 
         OpenAPIControllersPlugin {
@@ -115,7 +115,7 @@ input RestaurantIdInput {
 service RestaurantBackOfficeService for (Restaurant, MenuItem) {
 
   @post
-  createRestaurant(Restaurant) Restaurant
+  createRestaurant(Restaurant) Restaurant withEvents RestaurantEvent
 
   @get("/{restaurantId}")
   getRestaurant(id) Restaurant?
@@ -131,6 +131,12 @@ service RestaurantBackOfficeService for (Restaurant, MenuItem) {
 
   @get("/{restaurantId}/menuItems")
   listMenuItems(RestaurantIdInput) MenuItem[]
+}
+
+@asyncapi({channel: "RestaurantEventsChannel", topic: "restaurants.events"})
+@copy(Restaurant)
+event RestaurantEvent {
+    id String required
 }
 
 // == RestaurantOrdersService =============================

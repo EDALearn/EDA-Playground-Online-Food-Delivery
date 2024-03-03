@@ -34,11 +34,10 @@ public class CustomerApiControllerTest {
 
     @Test
     public void listCustomersTest() {
-        Optional<String> search = null;
         Optional<Integer> page = null;
         Optional<Integer> limit = null;
         Optional<List<String>> sort = null;
-        var response = controller.listCustomers(search, page, limit, sort);
+        var response = controller.listCustomers(page, limit, sort);
         Assertions.assertEquals(200, response.getStatusCode().value());
     }
 

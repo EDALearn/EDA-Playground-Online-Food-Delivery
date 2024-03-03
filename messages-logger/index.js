@@ -9,7 +9,7 @@ const kafka = new Kafka({
   sasl: false
 })
 
-const consumer = kafka.consumer({ groupId: 'logger-group' })
+const consumer = kafka.consumer({ groupId: 'logger' })
 
 const topics = {
     "customer.events": {
@@ -32,6 +32,10 @@ const topics = {
         server: "Orders",
         color: "red"
     },
+    "restaurants.events": {
+        server: "Restaurants",
+        color: "yellow"
+    },
     "restaurants.kitchen_order_status": {
         server: "Restaurants",
         color: "yellow"
@@ -45,7 +49,8 @@ const topics = {
 const run = async () => {
   await consumer.connect()
   for (const topic in topics) {
-    await consumer.subscribe({ topic, fromBeginning: true })
+      console.log(`Subscribing to ${topic}`)
+    await consumer.subscribe({ topic, fromBeginning: false })
   }
   await consumer.run({
     // eachBatch: async ({ batch }) => {

@@ -10,6 +10,11 @@ info:
 defaultContentType: application/json
 
 channels:
+  RestaurantEventsChannel:
+    address: "restaurants.events"
+    messages:
+      RestaurantEventMessage:
+        $ref: '#/components/messages/RestaurantEventMessage'
   KitchenOrdersStatusChannel:
     address: "restaurants.kitchen_order_status"
     messages:
@@ -17,6 +22,12 @@ channels:
         $ref: '#/components/messages/KitchenOrderStatusUpdatedMessage'
 
 operations:
+  onRestaurantEvent:
+    action: send
+    tags:
+      - name: RestaurantBackOffice
+    channel:
+      $ref: '#/channels/RestaurantEventsChannel'
   onKitchenOrderStatusUpdated:
     action: send
     tags:
@@ -27,6 +38,14 @@ operations:
 
 components:
   messages:
+    RestaurantEventMessage:
+      name: RestaurantEventMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/RestaurantEvent"
     KitchenOrderStatusUpdatedMessage:
       name: KitchenOrderStatusUpdatedMessage
       title: ""
@@ -34,9 +53,7 @@ components:
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/KitchenOrderStatusUpdated"
+        $ref: "#/components/schemas/KitchenOrderStatusUpdated"
 
   messageTraits:
     CommonHeaders:
@@ -49,6 +66,24 @@ components:
             x-runtime-expression: $tracingIdSupplier
 
   schemas:
+    RestaurantEvent:
+      type: "object"
+      x-business-entity: "RestaurantEvent"
+      required:
+      - "name"
+      - "phone"
+      - "id"
+      properties:
+        name:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+        id:
+          type: "string"
     KitchenOrderStatusUpdated:
       type: "object"
       x-business-entity: "KitchenOrderStatusUpdated"
@@ -75,4 +110,21 @@ components:
       - "READY"
       - "DELIVERED"
       - "CANCELLED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      - "city"
+      - "state"
+      - "zip"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
 

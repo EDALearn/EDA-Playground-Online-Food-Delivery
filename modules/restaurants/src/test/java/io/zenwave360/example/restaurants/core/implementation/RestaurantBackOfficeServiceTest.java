@@ -35,8 +35,7 @@ public class RestaurantBackOfficeServiceTest {
 
     @BeforeEach
     void setUp() {
-        restaurantRepository.save(new Restaurant());
-        menuItemRepository.save(new MenuItem());
+        context.reloadTestData();
     }
 
     @Test

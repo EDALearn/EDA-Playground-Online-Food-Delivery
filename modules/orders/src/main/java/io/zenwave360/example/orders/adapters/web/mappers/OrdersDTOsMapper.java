@@ -3,7 +3,9 @@ package io.zenwave360.example.orders.adapters.web.mappers;
 import io.zenwave360.example.orders.adapters.web.model.*;
 import io.zenwave360.example.orders.core.domain.*;
 import io.zenwave360.example.orders.core.inbound.dtos.*;
-import java.util.List;
+import java.math.*;
+import java.time.*;
+import java.util.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

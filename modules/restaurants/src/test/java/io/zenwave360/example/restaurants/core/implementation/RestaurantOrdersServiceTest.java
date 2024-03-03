@@ -33,7 +33,7 @@ public class RestaurantOrdersServiceTest {
 
     @BeforeEach
     void setUp() {
-        kitchenOrderRepository.save(new KitchenOrder());
+        context.reloadTestData();
     }
 
     @Test

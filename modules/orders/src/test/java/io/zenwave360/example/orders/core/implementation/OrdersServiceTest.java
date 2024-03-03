@@ -32,7 +32,7 @@ public class OrdersServiceTest {
 
     @BeforeEach
     void setUp() {
-        customerOrderRepository.save(new CustomerOrder());
+        context.reloadTestData();
     }
 
     @Test

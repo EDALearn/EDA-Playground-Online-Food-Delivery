@@ -13,6 +13,8 @@ public interface EventsMapper {
     io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
             OrderStatusUpdated input);
 
+    io.zenwave360.example.restaurants.core.domain.events.RestaurantEvent asRestaurantEvent(Restaurant restaurant);
+
     io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
             KitchenOrder kitchenOrder);
 

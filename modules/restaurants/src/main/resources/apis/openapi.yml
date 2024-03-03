@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ZenWave Online Food Delivery - Restaurants Module
+  title: "ZenWave Online Food Delivery - Restaurants Module"
   version: 0.0.1
   description: "ZenWave Online Food Delivery - Restaurants Module"
   contact:
@@ -57,7 +57,6 @@ paths:
           required: true
           schema:
             type: string
-            
       responses:
         "200":
           description: "OK"
@@ -76,7 +75,6 @@ paths:
           required: true
           schema:
             type: string
-            
       requestBody:
         content:
           application/json:
@@ -99,7 +97,6 @@ paths:
           required: true
           schema:
             type: string
-            
       responses:
         "200":
           description: "OK"
@@ -118,7 +115,6 @@ paths:
           required: true
           schema:
             type: string
-            
         - name: "name"
           in: path
           required: true
@@ -147,7 +143,6 @@ paths:
           required: true
           schema:
             type: string
-            
       requestBody:
         content:
           application/json:
@@ -184,43 +179,6 @@ paths:
 
 components:
   schemas:
-    KitchenOrder:
-      type: "object"
-      x-business-entity: "KitchenOrder"
-      required:
-      - "orderId"
-      - "restaurantId"
-      - "date"
-      - "items"
-      - "status"
-      properties:
-        id:
-          type: "string"
-        version:
-          type: "integer"
-        orderId:
-          type: "string"
-        restaurantId:
-          type: "string"
-        date:
-          type: "string"
-        items:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/MenuItem"
-        status:
-          $ref: "#/components/schemas/KitchenOrderStatus"
-        customer:
-          $ref: "#/components/schemas/CustomerDetails"
-    KitchenOrderPaginated:
-      allOf:
-      - $ref: "#/components/schemas/Page"
-      - x-business-entity-paginated: "KitchenOrder"
-      - properties:
-          content:
-            type: "array"
-            items:
-              $ref: "#/components/schemas/KitchenOrder"
     Restaurant:
       type: "object"
       x-business-entity: "Restaurant"
@@ -249,54 +207,6 @@ components:
             type: "array"
             items:
               $ref: "#/components/schemas/Restaurant"
-    KitchenOrderStatus:
-      type: "string"
-      x-business-entity: "KitchenOrderStatus"
-      enum:
-      - "ACCEPTED"
-      - "REJECTED"
-      - "IN_PROGRESS"
-      - "READY"
-      - "DELIVERED"
-      - "CANCELLED"
-    Address:
-      type: "object"
-      x-business-entity: "Address"
-      required:
-      - "street"
-      - "city"
-      - "state"
-      - "zip"
-      properties:
-        street:
-          type: "string"
-        city:
-          type: "string"
-        state:
-          type: "string"
-        zip:
-          type: "string"
-    OrderStatusUpdated:
-      type: "object"
-      x-business-entity: "OrderStatusUpdated"
-      properties:
-        orderId:
-          type: "string"
-        dateTime:
-          type: "string"
-          format: "date-time"
-        status:
-          type: "string"
-        previousStatus:
-          type: "string"
-    RestaurantIdInput:
-      type: "object"
-      x-business-entity: "RestaurantIdInput"
-      required:
-      - "restaurantId"
-      properties:
-        restaurantId:
-          type: "string"
     MenuItem:
       type: "object"
       x-business-entity: "MenuItem"
@@ -335,16 +245,28 @@ components:
           $ref: "#/components/schemas/KitchenOrderStatus"
         operatorName:
           type: "string"
-    KitchenOrderInput:
+    KitchenOrdersFilter:
       type: "object"
-      x-business-entity: "KitchenOrderInput"
+      x-business-entity: "KitchenOrdersFilter"
+      properties:
+        restaurantId:
+          type: "string"
+        status:
+          $ref: "#/components/schemas/KitchenOrderStatus"
+    KitchenOrder:
+      type: "object"
+      x-business-entity: "KitchenOrder"
       required:
       - "orderId"
       - "restaurantId"
       - "date"
       - "items"
-      - "customer"
+      - "status"
       properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
         orderId:
           type: "string"
         restaurantId:
@@ -355,16 +277,46 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/MenuItem"
-        customer:
-          $ref: "#/components/schemas/CustomerDetails"
-    KitchenOrdersFilter:
-      type: "object"
-      x-business-entity: "KitchenOrdersFilter"
-      properties:
-        restaurantId:
-          type: "string"
         status:
           $ref: "#/components/schemas/KitchenOrderStatus"
+        customer:
+          $ref: "#/components/schemas/CustomerDetails"
+    KitchenOrderPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "KitchenOrder"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/KitchenOrder"
+    KitchenOrderStatus:
+      type: "string"
+      x-business-entity: "KitchenOrderStatus"
+      enum:
+      - "ACCEPTED"
+      - "REJECTED"
+      - "IN_PROGRESS"
+      - "READY"
+      - "DELIVERED"
+      - "CANCELLED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      - "city"
+      - "state"
+      - "zip"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
     CustomerDetails:
       type: "object"
       x-business-entity: "CustomerDetails"

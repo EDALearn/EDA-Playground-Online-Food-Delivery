@@ -6,8 +6,9 @@ import io.zenwave360.example.restaurants.core.inbound.*;
 import io.zenwave360.example.restaurants.core.inbound.dtos.*;
 import io.zenwave360.example.restaurants.core.outbound.events.*;
 import io.zenwave360.example.restaurants.core.outbound.mongodb.*;
-import java.util.List;
-import java.util.Optional;
+import java.math.*;
+import java.time.*;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -29,11 +30,18 @@ public class RestaurantBackOfficeServiceImpl implements RestaurantBackOfficeServ
 
     private final MenuItemRepository menuItemRepository;
 
+    private final EventsMapper eventsMapper = EventsMapper.INSTANCE;
+
+    private final IRestaurantBackOfficeEventsProducer eventsProducer;
+
     @Transactional
     public Restaurant createRestaurant(Restaurant input) {
         log.debug("Request to save Restaurant: {}", input);
         var restaurant = restaurantBackOfficeServiceMapper.update(new Restaurant(), input);
         restaurant = restaurantRepository.save(restaurant);
+        // emit events
+        var restaurantEvent = eventsMapper.asRestaurantEvent(restaurant);
+        eventsProducer.onRestaurantEvent(restaurantEvent);
         return restaurant;
     }
 

@@ -1,7 +1,9 @@
 package io.zenwave360.example.orders.config;
 
+import io.zenwave360.example.orders.core.domain.*;
 import io.zenwave360.example.orders.core.implementation.*;
 import io.zenwave360.example.orders.core.outbound.events.*;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,6 +21,11 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
     @Bean
     public OrdersServiceImpl ordersService() {
         return ordersService;
+    }
+
+    public void reloadTestData() {
+        var testDataLoader = new TestDataLoader(
+                List.of(CustomerOrder.class, Customer.class, Address.class, Restaurant.class, OrderItemInput.class));
     }
 
 }

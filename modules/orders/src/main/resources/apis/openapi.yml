@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ZenWave Online Food Delivery - Orders Module
+  title: "ZenWave Online Food Delivery - Orders Module"
   version: 0.0.1
   description: "ZenWave Online Food Delivery - Orders Module"
   contact:
@@ -24,7 +24,6 @@ paths:
           required: true
           schema:
             type: string
-            
       responses:
         "200":
           description: "OK"
@@ -42,7 +41,6 @@ paths:
           required: true
           schema:
             type: string
-            
       requestBody:
         content:
           application/json:
@@ -83,7 +81,6 @@ paths:
           required: true
           schema:
             type: string
-            
       requestBody:
         content:
           application/json:
@@ -116,19 +113,36 @@ paths:
 
 components:
   schemas:
-    Address:
+    CustomerOrderInput:
       type: "object"
-      x-business-entity: "Address"
+      x-business-entity: "CustomerOrderInput"
       required:
-      - "street"
+      - "customerId"
+      - "restaurantId"
+      - "addressIdentifier"
       properties:
-        street:
+        orderTime:
           type: "string"
-        city:
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerId:
           type: "string"
-        state:
+        restaurantId:
           type: "string"
-        zip:
+        addressIdentifier:
+          type: "string"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+    CancelOrderInput:
+      type: "object"
+      x-business-entity: "CancelOrderInput"
+      properties:
+        id:
+          type: "string"
+        reason:
           type: "string"
     OrdersFilter:
       type: "object"
@@ -140,28 +154,6 @@ components:
           type: "string"
         restaurantName:
           type: "string"
-    Customer:
-      type: "object"
-      x-business-entity: "Customer"
-      required:
-      - "customerId"
-      - "firstName"
-      - "lastName"
-      - "email"
-      - "phone"
-      properties:
-        customerId:
-          type: "string"
-        firstName:
-          type: "string"
-        lastName:
-          type: "string"
-        email:
-          type: "string"
-        phone:
-          type: "string"
-        address:
-          $ref: "#/components/schemas/Address"
     CustomerOrder:
       type: "object"
       x-business-entity: "CustomerOrder"
@@ -187,29 +179,6 @@ components:
       type: "array"
       items:
         $ref: "#/components/schemas/CustomerOrder"
-    CustomerOrderInput:
-      type: "object"
-      x-business-entity: "CustomerOrderInput"
-      required:
-      - "customerId"
-      - "restaurantId"
-      - "addressIdentifier"
-      properties:
-        orderTime:
-          type: "string"
-          format: "date-time"
-        status:
-          $ref: "#/components/schemas/OrderStatus"
-        customerId:
-          type: "string"
-        restaurantId:
-          type: "string"
-        addressIdentifier:
-          type: "string"
-        orderItems:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/OrderItem"
     Restaurant:
       type: "object"
       x-business-entity: "Restaurant"
@@ -240,6 +209,42 @@ components:
       - "ON_DELIVERY"
       - "DELIVERED"
       - "CANCELLED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+      - "customerId"
+      - "firstName"
+      - "lastName"
+      - "email"
+      - "phone"
+      properties:
+        customerId:
+          type: "string"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
     OrderItem:
       type: "object"
       x-business-entity: "OrderItem"
@@ -261,41 +266,6 @@ components:
         quantity:
           type: "integer"
           format: "int32"
-    DeliveryStatusInput:
-      type: "object"
-      x-business-entity: "DeliveryStatusInput"
-      properties:
-        deliveryOrderId:
-          type: "string"
-        deliveryStatus:
-          $ref: "#/components/schemas/DeliveryStatus"
-    DeliveryStatus:
-      type: "string"
-      x-business-entity: "DeliveryStatus"
-      enum:
-      - "REJECTED"
-      - "ACCEPTED"
-      - "IN_PROGRESS"
-      - "DELIVERED"
-      - "CANCELLED"
-    KitchenStatusInput:
-      type: "object"
-      x-business-entity: "KitchenStatusInput"
-      properties:
-        kitchenOrderId:
-          type: "string"
-        kitchenStatus:
-          $ref: "#/components/schemas/KitchenStatus"
-    KitchenStatus:
-      type: "string"
-      x-business-entity: "KitchenStatus"
-      enum:
-      - "REJECTED"
-      - "ACCEPTED"
-      - "IN_PROGRESS"
-      - "READY"
-      - "DELIVERED"
-      - "CANCELLED"
     OrderItemInput:
       type: "object"
       x-business-entity: "OrderItemInput"
@@ -317,14 +287,6 @@ components:
         quantity:
           type: "integer"
           format: "int32"
-    CancelOrderInput:
-      type: "object"
-      x-business-entity: "CancelOrderInput"
-      properties:
-        id:
-          type: "string"
-        reason:
-          type: "string"
 
 
   securitySchemes:

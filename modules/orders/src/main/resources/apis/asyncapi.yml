@@ -55,9 +55,7 @@ components:
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/CancelOrderInput"
+        $ref: "#/components/schemas/CancelOrderInput"
     OrderEventMessage:
       name: OrderEventMessage
       title: ""
@@ -65,9 +63,7 @@ components:
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/OrderEvent"
+        $ref: "#/components/schemas/OrderEvent"
     OrderStatusUpdatedMessage:
       name: OrderStatusUpdatedMessage
       title: ""
@@ -75,9 +71,7 @@ components:
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
-        schema:
-          $ref: "#/components/schemas/OrderStatusUpdated"
+        $ref: "#/components/schemas/OrderStatusUpdated"
 
   messageTraits:
     CommonHeaders:

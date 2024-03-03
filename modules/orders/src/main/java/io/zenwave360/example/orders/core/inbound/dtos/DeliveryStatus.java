@@ -1,4 +1,4 @@
-package io.zenwave360.example.orders.core.domain;
+package io.zenwave360.example.orders.core.inbound.dtos;
 
 /** Enum for DeliveryStatus. */
 public enum DeliveryStatus {

@@ -1,10 +1,9 @@
 package io.zenwave360.example.orders.adapters.events.delivery;
 
 import io.zenwave360.example.orders.client.delivery.events.consumer.IOnDeliveryStatusUpdatedConsumerService;
-
 import io.zenwave360.example.orders.client.delivery.events.dtos.DeliveryStatusUpdated;
-import io.zenwave360.example.orders.core.domain.DeliveryStatus;
 import io.zenwave360.example.orders.core.inbound.OrdersService;
+import io.zenwave360.example.orders.core.inbound.dtos.DeliveryStatus;
 import io.zenwave360.example.orders.core.inbound.dtos.DeliveryStatusInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
