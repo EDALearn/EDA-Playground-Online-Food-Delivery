@@ -24,12 +24,18 @@ spring:
   cloud:
     function:
       definition: >-
+        on-customer-event;on-customer-address-event;
         on-order-event;on-order-status-updated;do-cancel-order;restaurants_on-order-event;
         restaurants_on-kitchen-order-status-updated;delivery_on-delivery-status-updated;
         restaurants_on-order-status-updated;on-kitchen-order-status-updated;
         delivery_on-order-event;delivery_on-order-status-updated;on-delivery-status-updated;
     stream:
       bindings:
+        ## Customer Module Bindings
+        on-customer-event-out-0:
+          destination: customer.events
+        on-customer-address-event-out-0:
+          destination: customer.address-events
         ## Orders Module Bindings
         do-cancel-order-in-0:
           destination: orders.cancel_orders

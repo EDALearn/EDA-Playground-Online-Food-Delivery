@@ -50,9 +50,9 @@ Content-Type: application/json
 
 ### Create Order
 < {%
-request.variables.set("customerId", "659d8831878ae4030afa2a6f")
+request.variables.set("customerId", "65e5ec6f19986b372f9a710a")
 request.variables.set("addressIdentifier", "Home Address")
-request.variables.set("restaurantId", "659d883c878ae4030afa2a70")
+request.variables.set("restaurantId", "65e5ec7f19986b372f9a710b")
 %}
 POST {{baseUrl}}/orders
 Authorization: {{Authorization}}
@@ -74,7 +74,7 @@ Content-Type: application/json
 
 ### Get Order
 < {%
-    request.variables.set("orderId", "65ba2ab4519c0f0fd3f88829")
+    request.variables.set("orderId", "65e5ec9f19986b372f9a710c")
 %}
 GET {{baseUrl}}/orders/{{orderId}}
 Authorization: {{Authorization}}
@@ -82,11 +82,27 @@ Content-Type: application/json
 
 
 ### Update Kitchen Order Status
+< {%
+    request.variables.set("orderId", "65e5ec9f19986b372f9a710e")
+%}
 PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 {
-  "status": "",
+  "status": "READY",
+  "operatorName": ""
+}
+
+### Update Kitchen Order Status
+< {%
+    request.variables.set("orderId", "65e5e9851909b760caa9d861")
+%}
+PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "status": "DELIVERED",
   "operatorName": ""
 }

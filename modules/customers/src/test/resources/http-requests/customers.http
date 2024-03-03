@@ -7,6 +7,7 @@ Content-Type: application/json
   "firstName": "Ivan",
   "lastName": "Garcia Sainz-Aja",
   "email": "ivangsa@gmail.com",
+  "phone": "123456789",
   "addresses": [
     {
       "identifier": "Home",

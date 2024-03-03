@@ -3,6 +3,7 @@ package io.zenwave360.example.delivery.adapters.events.orders;
 import io.zenwave360.example.delivery.client.orders.events.dtos.OrderEvent;
 import io.zenwave360.example.delivery.core.domain.OrderItem;
 import io.zenwave360.example.delivery.core.inbound.dtos.DeliveryInput;
+import io.zenwave360.example.delivery.core.inbound.dtos.OrderStatusUpdated;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -40,4 +41,6 @@ public interface EventsMapper {
     default LocalDateTime map(OffsetDateTime value) {
         return value != null ? value.toLocalDateTime() : null;
     }
+
+    OrderStatusUpdated orderStatusUpdated(io.zenwave360.example.delivery.client.orders.events.dtos.OrderStatusUpdated payload);
 }

@@ -70,6 +70,15 @@ public class DeliveryServiceImpl implements DeliveryService {
                     .withStatus(DeliveryOrderStatus.CANCELLED);
             eventsProducer.onDeliveryStatusUpdated(deliveryUpdateStatus);
         }
+        if ("KITCHEN_READY".equals(input.getStatus())) {
+            delivery.setStatus(io.zenwave360.example.delivery.core.domain.DeliveryOrderStatus.IN_PROGRESS);
+            deliveryRepository.save(delivery);
+            var deliveryUpdateStatus = new DeliveryStatusUpdated() //
+                    .withDeliveryId(delivery.getId())
+                    .withCustomerOrderId(input.getOrderId())
+                    .withStatus(DeliveryOrderStatus.IN_PROGRESS);
+            eventsProducer.onDeliveryStatusUpdated(deliveryUpdateStatus);
+        }
         return delivery;
     }
 

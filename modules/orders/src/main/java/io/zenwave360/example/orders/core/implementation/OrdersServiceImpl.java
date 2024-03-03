@@ -93,7 +93,7 @@ public class OrdersServiceImpl implements OrdersService {
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
-        if( Objects.equals(previousStatus, customerOrder.getStatus())) {
+        if(!Objects.equals(previousStatus, customerOrder.getStatus())) {
             var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
             eventsProducer.onOrderStatusUpdated(orderStatusEvent);
         }
@@ -114,7 +114,7 @@ public class OrdersServiceImpl implements OrdersService {
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
-        if( Objects.equals(previousStatus, customerOrder.getStatus())) {
+        if(!Objects.equals(previousStatus, customerOrder.getStatus())) {
             var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
             eventsProducer.onOrderStatusUpdated(orderStatusEvent);
         }

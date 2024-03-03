@@ -57,6 +57,16 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
     @Transactional
     public void onOrderStatusUpdated(OrderStatusUpdated input) {
         log.debug("Request onOrderStatusUpdated: {}", input);
+        if ("CONFIRMED".equals(input.getStatus())) {
+            var kitchenOrder = kitchenOrderRepository.findByOrderId(input.getOrderId()).orElseThrow();
+            kitchenOrder.setStatus(KitchenOrderStatus.IN_PROGRESS);
+            kitchenOrderRepository.save(kitchenOrder);
+            var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
+                    .withKitchenOrderId(kitchenOrder.getId())
+                    .withCustomerOrderId(input.getOrderId())
+                    .withStatus(io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus.IN_PROGRESS);
+            eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
+        }
         if ("CANCELLED".equals(input.getStatus())) {
             var kitchenOrder = kitchenOrderRepository.findByOrderId(input.getOrderId()).orElseThrow();
             kitchenOrder.setStatus(KitchenOrderStatus.CANCELLED);
