@@ -24,8 +24,4 @@ public interface DeliveryServiceMapper {
 
     @Mapping(target = "id", ignore = true)
     Delivery update(@MappingTarget Delivery entity, DeliveryInput input);
-
-    default io.zenwave360.example.delivery.core.domain.events.DeliveryOrderStatus asDeliveryStatus(DeliveryOrderStatus status) {
-        return io.zenwave360.example.delivery.core.domain.events.DeliveryOrderStatus.valueOf(status.name());
-    }
 }

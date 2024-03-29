@@ -1,7 +1,7 @@
 package io.zenwave360.example.restaurants.core.implementation;
 
 import io.zenwave360.example.restaurants.core.domain.*;
-import io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatusUpdated;
+import io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatusUpdated;
 import io.zenwave360.example.restaurants.core.implementation.mappers.*;
 import io.zenwave360.example.restaurants.core.inbound.*;
 import io.zenwave360.example.restaurants.core.inbound.dtos.*;
@@ -44,13 +44,13 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
             var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
                     .withKitchenOrderId(kitchenOrder.getId())
                     .withCustomerOrderId(input.getOrderId())
-                    .withStatus(io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus.ACCEPTED);
+                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.ACCEPTED);
             eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
             return kitchenOrder;
         } else {
             var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
                     .withCustomerOrderId(input.getOrderId())
-                    .withStatus(io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus.REJECTED);
+                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.REJECTED);
             eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
             return null;
         }
@@ -66,7 +66,7 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
             var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
                     .withKitchenOrderId(kitchenOrder.getId())
                     .withCustomerOrderId(input.getOrderId())
-                    .withStatus(io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus.IN_PROGRESS);
+                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.IN_PROGRESS);
             eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
         }
         if ("CANCELLED".equals(input.getStatus())) {
@@ -76,7 +76,7 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
             var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
                     .withKitchenOrderId(kitchenOrder.getId())
                     .withCustomerOrderId(input.getOrderId())
-                    .withStatus(io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus.CANCELLED);
+                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.CANCELLED);
             eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
         }
     }

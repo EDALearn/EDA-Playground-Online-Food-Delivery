@@ -10,15 +10,15 @@ public interface EventsMapper {
 
     EventsMapper INSTANCE = Mappers.getMapper(EventsMapper.class);
 
-    io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
+    io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
             OrderStatusUpdated input);
 
-    io.zenwave360.example.restaurants.core.domain.events.RestaurantEvent asRestaurantEvent(Restaurant restaurant);
+    io.zenwave360.example.restaurants.core.outbound.events.dtos.RestaurantEvent asRestaurantEvent(Restaurant restaurant);
 
-    io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
+    io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
             KitchenOrder kitchenOrder);
 
-    io.zenwave360.example.restaurants.core.domain.events.KitchenOrderStatus asKitchenOrderStatus(
+    io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus asKitchenOrderStatus(
             KitchenOrderStatus kitchenOrderStatus);
 
 }

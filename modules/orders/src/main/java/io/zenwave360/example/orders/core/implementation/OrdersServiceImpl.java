@@ -91,10 +91,8 @@ public class OrdersServiceImpl implements OrdersService {
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
-        if(!Objects.equals(previousStatus, customerOrder.getStatus())) {
-            var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
-            eventsProducer.onOrderStatusUpdated(orderStatusEvent);
-        }
+        var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
+        eventsProducer.onOrderStatusUpdated(orderStatusEvent);
 
         return customerOrder;
     }
@@ -112,10 +110,8 @@ public class OrdersServiceImpl implements OrdersService {
         customerOrder = customerOrderRepository.save(customerOrder);
 
         // emit events
-        if(!Objects.equals(previousStatus, customerOrder.getStatus())) {
-            var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
-            eventsProducer.onOrderStatusUpdated(orderStatusEvent);
-        }
+        var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
+        eventsProducer.onOrderStatusUpdated(orderStatusEvent);
 
         return customerOrder;
     }
@@ -124,6 +120,10 @@ public class OrdersServiceImpl implements OrdersService {
         log.debug("Request cancelOrder: {}", id);
         var customerOrder = customerOrderRepository.findById(id).orElseThrow();
         var previousStatus = customerOrder.getStatus();
+        if(OrderStatus.CANCELLED.equals(previousStatus)) {
+            // do nothing
+            return customerOrder;
+        }
 
         customerOrder.setStatus(OrderStatus.CANCELLED);
         customerOrder = customerOrderRepository.save(customerOrder);

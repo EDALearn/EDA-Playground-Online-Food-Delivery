@@ -10,15 +10,15 @@ public interface EventsMapper {
 
     EventsMapper INSTANCE = Mappers.getMapper(EventsMapper.class);
 
-    io.zenwave360.example.customers.core.domain.events.Address asAddress(Address address);
+    io.zenwave360.example.customers.core.outbound.events.dtos.Address asAddress(Address address);
 
-    io.zenwave360.example.customers.core.domain.events.CustomerEvent asCustomerEvent(Customer customer);
+    io.zenwave360.example.customers.core.outbound.events.dtos.CustomerEvent asCustomerEvent(Customer customer);
 
-    io.zenwave360.example.customers.core.domain.events.Customer asCustomer(Customer customer);
+    io.zenwave360.example.customers.core.outbound.events.dtos.Customer asCustomer(Customer customer);
 
-    io.zenwave360.example.customers.core.domain.events.CustomerEvent asCustomerEvent(String id);
+    io.zenwave360.example.customers.core.outbound.events.dtos.CustomerEvent asCustomerEvent(String id);
 
-    io.zenwave360.example.customers.core.domain.events.CustomerAddressUpdated asCustomerAddressUpdated(
+    io.zenwave360.example.customers.core.outbound.events.dtos.CustomerAddressUpdated asCustomerAddressUpdated(
             Customer customer);
 
 }

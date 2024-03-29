@@ -33,7 +33,7 @@ public class DeliveryServiceTest {
 
     @BeforeEach
     void setUp() {
-        deliveryRepository.save(new Delivery());
+        context.reloadTestData();
     }
 
     @Test

@@ -14,11 +14,11 @@ const consumer = kafka.consumer({ groupId: 'logger' })
 const topics = {
     "customer.events": {
         server: "Customers",
-        color: "red"
+        color: "magenta"
     },
     "customer.address-events": {
         server: "Customers",
-        color: "red"
+        color: "magenta"
     },
     "orders.cancel_orders": {
         server: "Orders",

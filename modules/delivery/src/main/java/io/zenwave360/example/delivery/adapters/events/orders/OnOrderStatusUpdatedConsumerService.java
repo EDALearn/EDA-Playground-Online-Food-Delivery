@@ -9,7 +9,7 @@ public class OnOrderStatusUpdatedConsumerService extends AbstractBaseConsumer im
 
     public void onOrderStatusUpdated(OrderStatusUpdated payload, OrderStatusUpdatedHeaders headers) {
         log.debug("Received command request for onOrderStatusUpdated: {} with headers {}", payload, headers);
-        deliveryService.onOrderStatusUpdated(payload.getId(), mapper.orderStatusUpdated(payload));
+        deliveryService.onOrderStatusUpdated(mapper.orderStatusUpdated(payload));
     };
 
 }

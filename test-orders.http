@@ -50,9 +50,9 @@ Content-Type: application/json
 
 ### Create Order
 < {%
-request.variables.set("customerId", "65e620c55c11db258bfaf407")
+request.variables.set("customerId", "66067f7e69c34b4f2f0db2d2")
 request.variables.set("addressIdentifier", "Home Address")
-request.variables.set("restaurantId", "65e620d05c11db258bfaf408")
+request.variables.set("restaurantId", "66067f8269c34b4f2f0db2d3")
 %}
 POST {{baseUrl}}/orders
 Authorization: {{Authorization}}
@@ -83,7 +83,7 @@ Content-Type: application/json
 
 ### Update Kitchen Order Status
 < {%
-    request.variables.set("orderId", "65e625476e17c17a3bd2a140")
+    request.variables.set("orderId", "660680af97a9b50fb8a314d3")
 %}
 PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
 Authorization: {{Authorization}}
@@ -94,15 +94,16 @@ Content-Type: application/json
   "operatorName": ""
 }
 
-### Update Kitchen Order Status
+
+### Cancel Order
 < {%
-    request.variables.set("orderId", "65e5e9851909b760caa9d861")
+    request.variables.set("orderId", "660680af97a9b50fb8a314d2")
 %}
-PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
+PUT http://localhost:8080/api/orders/{{orderId}}/cancel
 Authorization: {{Authorization}}
 Content-Type: application/json
 
 {
-  "status": "DELIVERED",
-  "operatorName": ""
+  "id": "{{orderId}}",
+  "reason": "What do you get if you multiply six by nine?"
 }

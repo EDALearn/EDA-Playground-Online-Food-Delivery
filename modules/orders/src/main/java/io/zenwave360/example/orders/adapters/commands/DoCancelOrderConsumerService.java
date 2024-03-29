@@ -5,7 +5,7 @@ import io.zenwave360.example.orders.adapters.commands.IDoCancelOrderConsumerServ
 import io.zenwave360.example.orders.adapters.commands.IDoCancelOrderConsumerService;
 
 
-import io.zenwave360.example.orders.core.domain.events.CancelOrderInput;
+import io.zenwave360.example.orders.core.outbound.events.dtos.CancelOrderInput;
 import io.zenwave360.example.orders.core.inbound.OrdersService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

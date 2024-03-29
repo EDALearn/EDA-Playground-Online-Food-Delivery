@@ -42,5 +42,6 @@ public interface EventsMapper {
         return value != null ? value.toLocalDateTime() : null;
     }
 
+    @Mapping(source = "id", target = "orderId")
     OrderStatusUpdated orderStatusUpdated(io.zenwave360.example.delivery.client.orders.events.dtos.OrderStatusUpdated payload);
 }

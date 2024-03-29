@@ -1,8 +1,8 @@
 package io.zenwave360.example.orders.core.implementation.mappers;
 
 import io.zenwave360.example.orders.core.domain.*;
-import io.zenwave360.example.orders.core.domain.events.OrderEvent;
-import io.zenwave360.example.orders.core.domain.events.OrderStatusUpdated;
+import io.zenwave360.example.orders.core.outbound.events.dtos.OrderEvent;
+import io.zenwave360.example.orders.core.outbound.events.dtos.OrderStatusUpdated;
 import io.zenwave360.example.orders.core.inbound.dtos.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.mapstruct.Mapper;
@@ -68,6 +68,6 @@ public interface EventsMapper {
         return ObjectUtils.firstNonNull(asOrderStatus(deliveryStatus), originalStatus);
     }
 
-    io.zenwave360.example.orders.core.domain.events.OrderStatus asOrderStatus(OrderStatus status);
+    io.zenwave360.example.orders.core.outbound.events.dtos.OrderStatus asOrderStatus(OrderStatus status);
 
 }

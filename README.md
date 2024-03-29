@@ -14,7 +14,7 @@ docker-compose -f modulith/src/main/docker/docker-compose.yml up -d
 mvn clean install -DskipTests
 mvn spring-boot:run -f modulith
 ```
-Then use REST APIs to create/update `customers`, `restaurants` and `orders`.
+Then use REST APIs to create/update `customers`, `restaurants`, `orders` and `delivery`.
 
 ### Bounded Contexts
 ![Online Food Delivery Service - Bounded Contexts](models/diagrams/BoundedContexts.excalidraw.svg)
@@ -22,6 +22,8 @@ Then use REST APIs to create/update `customers`, `restaurants` and `orders`.
 ### APIs and Models
 
 #### ZenWave ZDL Models:
+
+Visit [ZenWave Getting Started](https://www.zenwave360.io/docs/getting-started/) page to learn more about ZenWave ZDL, who to design and run it to generate different software artifacts.
 
 * [models/customers.zdl](models/customers.zdl)
 * [models/orders.zdl](models/orders.zdl)
