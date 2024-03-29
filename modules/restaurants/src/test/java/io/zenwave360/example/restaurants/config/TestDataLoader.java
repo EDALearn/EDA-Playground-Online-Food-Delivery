@@ -26,6 +26,7 @@ public class TestDataLoader {
 
     public TestDataLoader(List<? extends Class<?>> mongoManagedTypes) {
         this.mongoManagedTypes = mongoManagedTypes;
+        mappingConverter = mappingConverter();
     }
 
     public <T> List<T> loadCollectionTestDataAsObjects(Class<T> collectionClass) {
@@ -66,7 +67,7 @@ public class TestDataLoader {
         return mappingConverter.read(type, org.bson.Document.parse(json));
     }
 
-    MappingMongoConverter mappingConverter = mappingConverter();
+    MappingMongoConverter mappingConverter;
 
     MappingMongoConverter mappingConverter() {
         MappingMongoConverter mappingConverter = new MappingMongoConverter(NoOpDbRefResolver.INSTANCE,

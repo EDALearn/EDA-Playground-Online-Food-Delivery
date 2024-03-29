@@ -36,24 +36,15 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
     @Transactional
     public KitchenOrder createKitchenOrder(KitchenOrderInput input) {
         log.debug("Request to save KitchenOrder: {}", input);
-        var isKitchenAvailability = true;
-        if(isKitchenAvailability) {
-            var kitchenOrder = restaurantOrdersServiceMapper.update(new KitchenOrder(), input);
-            kitchenOrder.setStatus(KitchenOrderStatus.ACCEPTED);
-            kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
-            var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
-                    .withKitchenOrderId(kitchenOrder.getId())
-                    .withCustomerOrderId(input.getOrderId())
-                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.ACCEPTED);
-            eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
-            return kitchenOrder;
-        } else {
-            var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
-                    .withCustomerOrderId(input.getOrderId())
-                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.REJECTED);
-            eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
-            return null;
-        }
+        var kitchenOrder = restaurantOrdersServiceMapper.update(new KitchenOrder(), input);
+        kitchenOrder.setStatus(KitchenOrderStatus.ACCEPTED);
+        kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
+        var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
+                .withKitchenOrderId(kitchenOrder.getId())
+                .withCustomerOrderId(input.getOrderId())
+                .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.ACCEPTED);
+        eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
+        return kitchenOrder;
     }
 
     @Transactional
