@@ -48,7 +48,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Transactional
-    public CustomerOrder createOrder(CustomerOrderInput input) {
+    public CustomerOrder createCustomerOrder(CustomerOrderInput input) {
         log.debug("Request createOrder: {}", input);
 
         var restaurant = restaurantBackOfficeApi.getRestaurant(input.getRestaurantId()).getBody();

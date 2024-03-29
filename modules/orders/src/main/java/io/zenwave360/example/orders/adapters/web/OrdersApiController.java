@@ -2,11 +2,8 @@ package io.zenwave360.example.orders.adapters.web;
 
 import io.zenwave360.example.orders.adapters.web.mappers.*;
 import io.zenwave360.example.orders.adapters.web.model.*;
-import io.zenwave360.example.orders.core.domain.*;
 import io.zenwave360.example.orders.core.inbound.*;
-import io.zenwave360.example.orders.core.inbound.dtos.*;
-import java.math.*;
-import java.time.*;
+
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +62,7 @@ public class OrdersApiController implements OrdersApi {
     @Override
     public ResponseEntity<CustomerOrderDTO> createOrder(CustomerOrderInputDTO reqBody) {
         var input = mapper.asCustomerOrderInput(reqBody);
-        var customerOrder = ordersService.createOrder(input);
+        var customerOrder = ordersService.createCustomerOrder(input);
         CustomerOrderDTO responseDTO = mapper.asCustomerOrderDTO(customerOrder);
         return ResponseEntity.status(201).body(responseDTO);
     }
