@@ -50,7 +50,12 @@ const run = async () => {
   await consumer.connect()
   for (const topic in topics) {
       console.log(`Subscribing to ${topic}`)
-    await consumer.subscribe({ topic, fromBeginning: false })
+      try {
+          await consumer.subscribe({ topic, fromBeginning: false })
+      } catch (e) {
+          console.error(`Error subscribing to ${topic}: ${e.message}`)
+      }
+
   }
   await consumer.run({
     // eachBatch: async ({ batch }) => {

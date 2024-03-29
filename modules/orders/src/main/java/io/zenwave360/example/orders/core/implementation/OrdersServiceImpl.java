@@ -6,14 +6,16 @@ import io.zenwave360.example.orders.core.inbound.*;
 import io.zenwave360.example.orders.core.inbound.dtos.*;
 import io.zenwave360.example.orders.core.outbound.events.*;
 import io.zenwave360.example.orders.core.outbound.mongodb.*;
-import java.math.*;
+
 import java.time.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.zenwave360.example.orders.customers.client.CustomerApi;
 import io.zenwave360.example.orders.restaurants.client.RestaurantBackOfficeApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,12 +38,16 @@ public class OrdersServiceImpl implements OrdersService {
     private final RestaurantBackOfficeApi restaurantBackOfficeApi;
     private final CustomerApi customerApi;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    @Transactional
     public Optional<CustomerOrder> getCustomerOrder(String id) {
-        log.debug("Request to get CustomerOrder : {}", id);
+        log.debug("[CRUD] Request to get CustomerOrder : {}", id);
         var customerOrder = customerOrderRepository.findById(id);
         return customerOrder;
     }
 
+    @Transactional
     public CustomerOrder createOrder(CustomerOrderInput input) {
         log.debug("Request createOrder: {}", input);
 
@@ -58,28 +64,30 @@ public class OrdersServiceImpl implements OrdersService {
         // emit events
         var orderEvent = eventsMapper.asOrderEvent(customerOrder);
         eventsProducer.onOrderEvent(orderEvent);
-
         return customerOrder;
     }
 
+    @Transactional
     public CustomerOrder updateOrder(String id, CustomerOrderInput input) {
-        log.debug("Request updateOrder: {}", id);
-        var customerOrder = customerOrderRepository.findById(id).orElseThrow();
-        var previousStatus = customerOrder.getStatus();
-        customerOrder = ordersServiceMapper.update(customerOrder, input);
-        customerOrder = customerOrderRepository.save(customerOrder);
-
+        log.debug("Request updateOrder: {} {}", id, input);
+        AtomicReference<OrderStatus> previousStatus = new AtomicReference<>();
+        var customerOrder = customerOrderRepository.findById(id).map(existingCustomerOrder -> {
+            previousStatus.set(existingCustomerOrder.getStatus());
+            return ordersServiceMapper.update(existingCustomerOrder, input);
+        }).map(customerOrderRepository::save).orElseThrow();
         // emit events
-        if( Objects.equals(previousStatus, customerOrder.getStatus())) {
-            var orderStatusEvent = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus);
-            eventsProducer.onOrderStatusUpdated(orderStatusEvent);
+        var orderEvent = eventsMapper.asOrderEvent(customerOrder);
+        eventsProducer.onOrderEvent(orderEvent);
+        if (Objects.equals(previousStatus.get(), customerOrder.getStatus())) {
+            var orderStatusUpdated = eventsMapper.asOrderStatusUpdated(customerOrder, previousStatus.get());
+            eventsProducer.onOrderStatusUpdated(orderStatusUpdated);
         }
-
         return customerOrder;
     }
 
+    @Transactional
     public CustomerOrder updateKitchenStatus(String id, KitchenStatusInput input) {
-        log.debug("Request updateKitchenStatus: {}", id);
+        log.debug("Request updateKitchenStatus: {} {}", id, input);
         var customerOrder = customerOrderRepository.findById(id).orElseThrow();
         var previousStatus = customerOrder.getStatus();
 
@@ -97,8 +105,9 @@ public class OrdersServiceImpl implements OrdersService {
         return customerOrder;
     }
 
+    @Transactional
     public CustomerOrder updateDeliveryStatus(String id, DeliveryStatusInput input) {
-        log.debug("Request updateDeliveryStatus: {}", id);
+        log.debug("Request updateDeliveryStatus: {} {}", id, input);
         var customerOrder = customerOrderRepository.findById(id).orElseThrow();
         var previousStatus = customerOrder.getStatus();
 
@@ -116,8 +125,9 @@ public class OrdersServiceImpl implements OrdersService {
         return customerOrder;
     }
 
+    @Transactional
     public CustomerOrder cancelOrder(String id, CancelOrderInput input) {
-        log.debug("Request cancelOrder: {}", id);
+        log.debug("Request cancelOrder: {} {}", id, input);
         var customerOrder = customerOrderRepository.findById(id).orElseThrow();
         var previousStatus = customerOrder.getStatus();
         if(OrderStatus.CANCELLED.equals(previousStatus)) {
@@ -136,8 +146,9 @@ public class OrdersServiceImpl implements OrdersService {
 
     public List<CustomerOrder> searchOrders(OrdersFilter input) {
         log.debug("Request searchOrders: {}", input);
-        var results = customerOrderRepository.findAll(); // TODO: implement this filter
-        return results;
+
+        var customerOrders = customerOrderRepository.findAll();
+        return customerOrders;
     }
 
 }

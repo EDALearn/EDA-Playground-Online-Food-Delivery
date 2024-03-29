@@ -11,6 +11,7 @@ import java.time.*;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final ICustomerEventsProducer eventsProducer;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+
     @Transactional
     public Customer createCustomer(Customer input) {
-        log.debug("Request to save Customer: {}", input);
+        log.debug("[CRUD] Request to save Customer: {}", input);
         var customer = customerServiceMapper.update(new Customer(), input);
         customer = customerRepository.save(customer);
         // emit events
@@ -45,7 +48,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     public Optional<Customer> updateCustomer(String id, Customer input) {
-        log.debug("Request to update Customer : {}", input);
+        log.debug("Request updateCustomer: {} {}", id, input);
+
         var customer = customerRepository.findById(id).map(existingCustomer -> {
             return customerServiceMapper.update(existingCustomer, input);
         }).map(customerRepository::save);
@@ -57,8 +61,10 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
+    @Transactional
     public Optional<Customer> updateCustomerAddress(String id, String identifier, Address address) {
-        log.debug("Request updateCustomerAddress: {}", id);
+        log.debug("Request updateCustomerAddress: {} {} {}", id, identifier, address);
+
         var customer = customerRepository.findById(id).map(existingCustomer -> {
             return customerServiceMapper.update(existingCustomer, identifier, address);
         }).map(customerRepository::save);
@@ -74,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     public void deleteCustomer(String id) {
-        log.debug("Request to delete Customer : {}", id);
+        log.debug("[CRUD] Request to delete Customer : {}", id);
         customerRepository.deleteById(id);
         // emit events
         var customerEvent = eventsMapper.asCustomerEvent(id);
@@ -82,15 +88,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public Optional<Customer> getCustomer(String id) {
-        log.debug("Request to get Customer : {}", id);
+        log.debug("[CRUD] Request to get Customer : {}", id);
         var customer = customerRepository.findById(id);
         return customer;
     }
 
     public Page<Customer> listCustomers(Pageable pageable) {
-        log.debug("Request list of Customers: {}", pageable);
-        var page = customerRepository.findAll(pageable);
-        return page;
+        log.debug("Request listCustomers: {}", pageable);
+
+        var customers = customerRepository.findAll(pageable);
+        return customers;
     }
 
 }

@@ -41,32 +41,16 @@ public class DeliveryAggregate {
 
     /** set Events: [DeliveryStatusUpdated]. */
     public void createDelivery(DeliveryInput input) {
-        var isDeliveryAvailable = true; // :D
-        if(isDeliveryAvailable) {
-            mapper.update(rootEntity, input);
-            var delivery = mapper.update(rootEntity, input);
-            rootEntity.setId(UUID.randomUUID().toString()); // XXX: User Assigned ID necessary for sending events
-            var deliveryUpdateStatus = new DeliveryStatusUpdated() //
-                    .setDeliveryId(delivery.getId())
-                    .setCustomerOrderId(input.getOrderId())
-                    .setStatus(DeliveryOrderStatus.ACCEPTED);
-            // sleep 1 second to avoid race conditions on orders (TB FIXED)
-            sleep(1000);
-            events.add(deliveryUpdateStatus);
-        } else {
-            var deliveryUpdateStatus = new DeliveryStatusUpdated() //
-                    .setCustomerOrderId(input.getOrderId())
-                    .setStatus(DeliveryOrderStatus.REJECTED);
-            events.add(deliveryUpdateStatus);
-        }
-    }
-
-    void sleep(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        mapper.update(rootEntity, input);
+        var delivery = mapper.update(rootEntity, input);
+        rootEntity.setId(UUID.randomUUID().toString()); // XXX: User Assigned ID necessary for sending events
+        var deliveryUpdateStatus = new DeliveryStatusUpdated() //
+                .setDeliveryId(delivery.getId())
+                .setCustomerOrderId(input.getOrderId())
+                .setStatus(DeliveryOrderStatus.ACCEPTED);
+        // sleep 1 second to avoid race conditions on orders (TB FIXED)
+        sleep(1000);
+        events.add(deliveryUpdateStatus);
     }
 
     /** set Events: [DeliveryStatusUpdated]. */
@@ -114,5 +98,13 @@ public class DeliveryAggregate {
 
         DeliveryStatusUpdated asDeliveryStatusUpdated(Delivery entity);
 
+    }
+
+    void sleep(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
