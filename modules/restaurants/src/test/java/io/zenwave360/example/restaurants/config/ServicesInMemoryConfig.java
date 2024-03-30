@@ -26,11 +26,10 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
 
     protected final RestaurantBackOfficeServiceImpl restaurantBackOfficeService = new RestaurantBackOfficeServiceImpl(
             restaurantRepository(), menuItemRepository(),
-            eventsProducerInMemoryContext.restaurantBackOfficeEventsProducer(), applicationEventPublisher);
+            eventsProducerInMemoryContext.restaurantBackOfficeEventsProducer());
 
     protected final RestaurantOrdersServiceImpl restaurantOrdersService = new RestaurantOrdersServiceImpl(
-            kitchenOrderRepository(), eventsProducerInMemoryContext.restaurantOrdersEventsProducer(),
-            applicationEventPublisher);
+            kitchenOrderRepository(), eventsProducerInMemoryContext.restaurantOrdersEventsProducer());
 
     @Bean
     public RestaurantBackOfficeServiceImpl restaurantBackOfficeService() {
@@ -45,6 +44,10 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
     public void reloadTestData() {
         var testDataLoader = new TestDataLoader(List.of(Restaurant.class, Address.class, MenuItem.class,
                 KitchenOrder.class, CustomerDetails.class, CustomerAddress.class));
+    }
+
+    public EventsProducerInMemoryContext getEventsProducerInMemoryContext() {
+        return eventsProducerInMemoryContext;
     }
 
     private List<Object> publishedEvents = new ArrayList<>();

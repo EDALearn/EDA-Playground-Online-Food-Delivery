@@ -12,7 +12,7 @@ public interface EventsMapper {
     EventsMapper INSTANCE = Mappers.getMapper(EventsMapper.class);
 
     io.zenwave360.example.delivery.core.outbound.events.dtos.DeliveryStatusUpdated asDeliveryStatusUpdated(
-            OrderStatusUpdated input);
+            DeliveryInput input);
 
     io.zenwave360.example.delivery.core.outbound.events.dtos.DeliveryStatusUpdated asDeliveryStatusUpdated(String id,
             DeliveryStatusInput input);

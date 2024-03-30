@@ -29,4 +29,7 @@ public interface RestaurantOrdersServiceMapper {
     @Mapping(target = "id", ignore = true)
     KitchenOrder update(@MappingTarget KitchenOrder entity, KitchenOrdersFilter input);
 
+    default io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus asKitchenOrderStatus(io.zenwave360.example.restaurants.core.domain.KitchenOrderStatus input){
+        return io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.valueOf(input.name());
+    }
 }

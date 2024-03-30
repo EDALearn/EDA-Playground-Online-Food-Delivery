@@ -25,7 +25,7 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
     };
 
     protected final OrdersServiceImpl ordersService = new OrdersServiceImpl(customerOrderRepository(),
-            eventsProducerInMemoryContext.ordersEventsProducer(), applicationEventPublisher);
+            eventsProducerInMemoryContext.ordersEventsProducer(), null, null, applicationEventPublisher);
 
     @Bean
     public OrdersServiceImpl ordersService() {
@@ -35,6 +35,10 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
     public void reloadTestData() {
         var testDataLoader = new TestDataLoader(
                 List.of(CustomerOrder.class, Customer.class, Address.class, Restaurant.class, OrderItemInput.class));
+    }
+
+    public EventsProducerInMemoryContext getEventsProducerInMemoryContext() {
+        return eventsProducerInMemoryContext;
     }
 
     private List<Object> publishedEvents = new ArrayList<>();

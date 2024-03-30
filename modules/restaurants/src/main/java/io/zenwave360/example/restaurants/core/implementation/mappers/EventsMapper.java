@@ -13,7 +13,7 @@ public interface EventsMapper {
     io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
             OrderStatusUpdated input);
 
-    io.zenwave360.example.restaurants.core.outbound.events.dtos.RestaurantEvent asRestaurantEvent(Restaurant input);
+    io.zenwave360.example.restaurants.core.outbound.events.dtos.RestaurantEvent asRestaurantEvent(Restaurant restaurant);
 
     io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatusUpdated asKitchenOrderStatusUpdated(
             KitchenOrder kitchenOrder);

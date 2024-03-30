@@ -17,12 +17,6 @@ public class OnOrderEventConsumerService extends BaseConsumerTest {
     @Test
     public void onOrderEventTest() {
         OrderEvent payload = new OrderEvent();
-        payload.setOrderTime(null);
-        payload.setStatus(null);
-        payload.setCustomerDetails(null);
-        payload.setRestaurantDetails(null);
-        payload.setOrderItems(null);
-        payload.setId(null);
 
         OrderEventHeaders headers = new OrderEventHeaders();
 

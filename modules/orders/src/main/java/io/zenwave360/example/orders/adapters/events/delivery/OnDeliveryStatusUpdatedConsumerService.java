@@ -1,25 +1,39 @@
 package io.zenwave360.example.orders.adapters.events.delivery;
 
-import io.zenwave360.example.orders.client.delivery.events.consumer.*;
-import io.zenwave360.example.orders.client.delivery.events.consumer.IOnDeliveryStatusUpdatedConsumerService.DeliveryStatusUpdatedHeaders;
-import io.zenwave360.example.orders.client.delivery.events.dtos.*;
+import io.zenwave360.example.orders.client.delivery.events.consumer.IOnDeliveryStatusUpdatedConsumerService;
+import io.zenwave360.example.orders.client.delivery.events.dtos.DeliveryStatusUpdated;
+import io.zenwave360.example.orders.core.inbound.OrdersService;
+import io.zenwave360.example.orders.core.inbound.dtos.DeliveryStatus;
+import io.zenwave360.example.orders.core.inbound.dtos.DeliveryStatusInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OnDeliveryStatusUpdatedConsumerService implements IOnDeliveryStatusUpdatedConsumerService {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private EventsMapper mapper = EventsMapper.INSTANCE;
+    private OrdersService ordersService;
 
-    // TODO: private EntityService service;
+    @Autowired
+    public void setOrdersService(OrdersService ordersService) {
+        this.ordersService = ordersService;
+    }
 
     /** */
-    public void onDeliveryStatusUpdated(DeliveryStatusUpdated payload, DeliveryStatusUpdatedHeaders headers) {
+    public void onDeliveryStatusUpdated(DeliveryStatusUpdated payload,
+            IOnDeliveryStatusUpdatedConsumerService.DeliveryStatusUpdatedHeaders headers) {
         log.debug("Received command request for onDeliveryStatusUpdated: {} with headers {}", payload, headers);
-        // TODO: service.onDeliveryStatusUpdated(mapper.asEntity(payload));
+        DeliveryStatusInput input = new DeliveryStatusInput() //
+            .setDeliveryOrderId(payload.getDeliveryId())
+            .setDeliveryStatus(map(payload.getStatus()));
+        ordersService.updateDeliveryStatus(payload.getCustomerOrderId(), input);
     };
+
+    private DeliveryStatus map(io.zenwave360.example.orders.client.delivery.events.dtos.DeliveryOrderStatus status) {
+        return DeliveryStatus.valueOf(status.name());
+    }
 
 }

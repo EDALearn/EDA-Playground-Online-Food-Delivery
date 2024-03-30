@@ -36,6 +36,10 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
         var testDataLoader = new TestDataLoader(List.of(Customer.class, Address.class));
     }
 
+    public EventsProducerInMemoryContext getEventsProducerInMemoryContext() {
+        return eventsProducerInMemoryContext;
+    }
+
     private List<Object> publishedEvents = new ArrayList<>();
 
     public List<Object> getPublishedEvents() {

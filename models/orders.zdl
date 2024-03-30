@@ -24,7 +24,7 @@ config {
         BackendApplicationDefaultPlugin {
             useLombok true
             includeEmitEventsImplementation true
-            // --force // overwite all files
+             --force // overwite all files
         }
 
         OpenAPIControllersPlugin {
@@ -165,7 +165,7 @@ service OrdersService for (CustomerOrder) {
     @get("/{orderId}")
     getCustomerOrder(id) CustomerOrder?
     @post
-    createOrder(CustomerOrderInput) CustomerOrder withEvents OrderEvent
+    createCustomerOrder(CustomerOrderInput) CustomerOrder withEvents OrderEvent
     @put("/{orderId}")
     updateOrder(id, CustomerOrderInput) CustomerOrder withEvents OrderEvent OrderStatusUpdated
 

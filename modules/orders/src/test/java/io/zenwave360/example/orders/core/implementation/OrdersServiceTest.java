@@ -1,5 +1,6 @@
 package io.zenwave360.example.orders.core.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -65,7 +66,17 @@ public class OrdersServiceTest {
 
     @Test
     @Order(1)
-    void createOrderTest() { // TODO: implement this test
+    void createCustomerOrderTest() {
+        var input = new CustomerOrderInput();
+        // TODO fill input data
+        // input.setOrderTime(Instant.now());
+        // input.setStatus(OrderStatus.values()[0]);
+        // input.setCustomerDetails(new Customer());
+        // input.setRestaurantDetails(new Restaurant());
+        // input.setOrderItems(new OrderItemInput());
+        var customerOrder = ordersService.createCustomerOrder(input);
+        assertNotNull(customerOrder.getId());
+        assertTrue(customerOrderRepository.containsEntity(customerOrder));
     }
 
     @Test

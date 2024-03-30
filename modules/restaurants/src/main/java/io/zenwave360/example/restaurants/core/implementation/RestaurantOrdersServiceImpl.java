@@ -1,6 +1,7 @@
 package io.zenwave360.example.restaurants.core.implementation;
 
 import io.zenwave360.example.restaurants.core.domain.*;
+import io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatusUpdated;
 import io.zenwave360.example.restaurants.core.implementation.mappers.*;
 import io.zenwave360.example.restaurants.core.inbound.*;
 import io.zenwave360.example.restaurants.core.inbound.dtos.*;
@@ -11,7 +12,6 @@ import java.time.*;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,47 +33,63 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService {
 
     private final IRestaurantOrdersEventsProducer eventsProducer;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     @Transactional
     public KitchenOrder createKitchenOrder(KitchenOrderInput input) {
-        log.debug("[CRUD] Request to save KitchenOrder: {}", input);
+        log.debug("Request to save KitchenOrder: {}", input);
         var kitchenOrder = restaurantOrdersServiceMapper.update(new KitchenOrder(), input);
+        kitchenOrder.setStatus(KitchenOrderStatus.ACCEPTED);
         kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
-        // emit events
-        var kitchenOrderStatusUpdated = eventsMapper.asKitchenOrderStatusUpdated(kitchenOrder);
-        eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderStatusUpdated);
+        var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
+                .withKitchenOrderId(kitchenOrder.getId())
+                .withCustomerOrderId(input.getOrderId())
+                .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.ACCEPTED);
+        eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
         return kitchenOrder;
     }
 
+    @Transactional
     public void onOrderStatusUpdated(OrderStatusUpdated input) {
         log.debug("Request onOrderStatusUpdated: {}", input);
-
-        var kitchenOrder = new KitchenOrder();
-        // TODO: implement this method
-        // emit events
-        var kitchenOrderStatusUpdated = eventsMapper.asKitchenOrderStatusUpdated(input);
-        eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderStatusUpdated);
+        if ("CONFIRMED".equals(input.getStatus())) {
+            var kitchenOrder = kitchenOrderRepository.findByOrderId(input.getOrderId()).orElseThrow();
+            kitchenOrder.setStatus(KitchenOrderStatus.IN_PROGRESS);
+            kitchenOrderRepository.save(kitchenOrder);
+            var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
+                    .withKitchenOrderId(kitchenOrder.getId())
+                    .withCustomerOrderId(input.getOrderId())
+                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.IN_PROGRESS);
+            eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
+        }
+        if ("CANCELLED".equals(input.getStatus())) {
+            var kitchenOrder = kitchenOrderRepository.findByOrderId(input.getOrderId()).orElseThrow();
+            kitchenOrder.setStatus(KitchenOrderStatus.CANCELLED);
+            kitchenOrderRepository.save(kitchenOrder);
+            var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
+                    .withKitchenOrderId(kitchenOrder.getId())
+                    .withCustomerOrderId(input.getOrderId())
+                    .withStatus(io.zenwave360.example.restaurants.core.outbound.events.dtos.KitchenOrderStatus.CANCELLED);
+            eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
+        }
     }
 
-    @Transactional
     public KitchenOrder updateKitchenOrderStatus(String id, KitchenOrderStatusInput input) {
-        log.debug("Request updateKitchenOrderStatus: {} {}", id, input);
-
-        var kitchenOrder = kitchenOrderRepository.findById(id).map(existingKitchenOrder -> {
-            return restaurantOrdersServiceMapper.update(existingKitchenOrder, input);
-        }).map(kitchenOrderRepository::save).orElseThrow();
-        // emit events
-        var kitchenOrderStatusUpdated = eventsMapper.asKitchenOrderStatusUpdated(kitchenOrder);
-        eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderStatusUpdated);
+        log.debug("Request updateKitchenOrderStatus: {}", id);
+        var kitchenOrder = kitchenOrderRepository.findById(id).orElseThrow();
+        kitchenOrder = restaurantOrdersServiceMapper.update(kitchenOrder, input);
+        var kitchenOrderUpdateStatus = new KitchenOrderStatusUpdated() //
+                .withKitchenOrderId(kitchenOrder.getId())
+                .withCustomerOrderId(kitchenOrder.getOrderId())
+                .withStatus(restaurantOrdersServiceMapper.asKitchenOrderStatus(kitchenOrder.getStatus()));
+        eventsProducer.onKitchenOrderStatusUpdated(kitchenOrderUpdateStatus);
+        kitchenOrder = kitchenOrderRepository.save(kitchenOrder);
         return kitchenOrder;
     }
 
     public Page<KitchenOrder> searchKitchenOrders(KitchenOrdersFilter input, Pageable pageable) {
-        log.debug("Request searchKitchenOrders: {} {}", input, pageable);
-
-        var kitchenOrders = kitchenOrderRepository.findAll(pageable);
-        return kitchenOrders;
+        log.debug("Request to search KitchenOrders: {} - {}", input, pageable);
+        // TODO implement this search by criteria
+        var page = kitchenOrderRepository.findAll(pageable);
+        return page;
     }
 
 }

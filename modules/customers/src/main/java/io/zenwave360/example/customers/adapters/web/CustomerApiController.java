@@ -73,7 +73,7 @@ public class CustomerApiController implements CustomerApi {
 
     @Override
     public ResponseEntity<Void> deleteCustomer(String customerId) {
-        // TODO: customerService.deleteCustomer(customerId);
+        customerService.deleteCustomer(customerId);
         return ResponseEntity.status(204).build();
     }
 

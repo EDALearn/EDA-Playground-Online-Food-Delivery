@@ -17,10 +17,6 @@ public class OnOrderStatusUpdatedConsumerService extends BaseConsumerTest {
     @Test
     public void onOrderStatusUpdatedTest() {
         OrderStatusUpdated payload = new OrderStatusUpdated();
-        payload.setId(null);
-        payload.setDateTime(null);
-        payload.setStatus(null);
-        payload.setPreviousStatus(null);
 
         OrderStatusUpdatedHeaders headers = new OrderStatusUpdatedHeaders();
 

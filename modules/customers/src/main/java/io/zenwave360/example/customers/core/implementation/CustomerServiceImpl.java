@@ -87,7 +87,6 @@ public class CustomerServiceImpl implements CustomerService {
         eventsProducer.onCustomerEvent(customerEvent);
     }
 
-    @Transactional
     public Optional<Customer> getCustomer(String id) {
         log.debug("[CRUD] Request to get Customer : {}", id);
         var customer = customerRepository.findById(id);

@@ -24,5 +24,4 @@ public interface DeliveryServiceMapper {
 
     @Mapping(target = "id", ignore = true)
     Delivery update(@MappingTarget Delivery entity, DeliveryInput input);
-
 }

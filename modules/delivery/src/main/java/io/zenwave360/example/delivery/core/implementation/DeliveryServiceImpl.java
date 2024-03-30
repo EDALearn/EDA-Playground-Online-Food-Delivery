@@ -45,12 +45,14 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryAggregate.getRootEntity();
     }
 
+    @Transactional
     public Delivery onOrderStatusUpdated(OrderStatusUpdated input) {
         log.debug("Request onOrderStatusUpdated: {}", input);
-        var deliveryAggregate = new DeliveryAggregate();
-        deliveryAggregate.onOrderStatusUpdated(input);
-        persistAndEmitEvents(deliveryAggregate);
-        return deliveryAggregate.getRootEntity();
+        return deliveryRepository.findDeliveryAggregateByOrderId(input.getOrderId()).map(deliveryAggregate -> {
+            deliveryAggregate.onOrderStatusUpdated(input);
+            persistAndEmitEvents(deliveryAggregate);
+            return deliveryAggregate.getRootEntity();
+        }).orElse(null);
     }
 
     @Transactional
@@ -64,7 +66,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     public Page<Delivery> listDeliveries(Pageable pageable) {
         log.debug("Request listDeliveries: {}", pageable);
-
         var deliveries = deliveryRepository.findAll(pageable);
         return deliveries;
     }

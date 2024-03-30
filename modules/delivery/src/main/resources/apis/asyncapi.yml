@@ -33,7 +33,9 @@ components:
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
-        $ref: "#/components/schemas/DeliveryStatusUpdated"
+        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/DeliveryStatusUpdated"
 
   messageTraits:
     CommonHeaders:

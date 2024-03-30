@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: "ZenWave Online Food Delivery - Delivery Module"
+  title: ZenWave Online Food Delivery - Delivery Module
   version: 0.0.1
   description: "ZenWave Online Food Delivery - Delivery Module"
   contact:
@@ -24,6 +24,7 @@ paths:
           required: true
           schema:
             type: string
+            
       requestBody:
         content:
           application/json:
@@ -55,49 +56,6 @@ paths:
 
 components:
   schemas:
-    DeliveryStatusInput:
-      type: "object"
-      x-business-entity: "DeliveryStatusInput"
-      required:
-      - "status"
-      - "operatorName"
-      properties:
-        status:
-          $ref: "#/components/schemas/DeliveryOrderStatus"
-        operatorName:
-          type: "string"
-    Delivery:
-      type: "object"
-      x-business-entity: "Delivery"
-      required:
-      - "orderId"
-      - "status"
-      properties:
-        id:
-          type: "string"
-        version:
-          type: "integer"
-        orderId:
-          type: "string"
-        customer:
-          $ref: "#/components/schemas/Customer"
-        restaurant:
-          $ref: "#/components/schemas/Restaurant"
-        orderItems:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/OrderItem"
-        status:
-          $ref: "#/components/schemas/DeliveryOrderStatus"
-    DeliveryPaginated:
-      allOf:
-      - $ref: "#/components/schemas/Page"
-      - x-business-entity-paginated: "Delivery"
-      - properties:
-          content:
-            type: "array"
-            items:
-              $ref: "#/components/schemas/Delivery"
     Restaurant:
       type: "object"
       x-business-entity: "Restaurant"
@@ -117,6 +75,19 @@ components:
         street:
           type: "string"
         zip:
+          type: "string"
+    OrderStatusUpdated:
+      type: "object"
+      x-business-entity: "OrderStatusUpdated"
+      properties:
+        orderId:
+          type: "string"
+        dateTime:
+          type: "string"
+          format: "date-time"
+        status:
+          type: "string"
+        previousStatus:
           type: "string"
     Customer:
       type: "object"
@@ -155,6 +126,17 @@ components:
         quantity:
           type: "integer"
           format: "int32"
+    DeliveryStatusInput:
+      type: "object"
+      x-business-entity: "DeliveryStatusInput"
+      required:
+      - "status"
+      - "operatorName"
+      properties:
+        status:
+          $ref: "#/components/schemas/DeliveryOrderStatus"
+        operatorName:
+          type: "string"
     DeliveryOrderStatus:
       type: "string"
       x-business-entity: "DeliveryOrderStatus"
@@ -165,6 +147,60 @@ components:
       - "READY"
       - "DELIVERED"
       - "CANCELLED"
+    Delivery:
+      type: "object"
+      x-business-entity: "Delivery"
+      required:
+      - "orderId"
+      - "status"
+      properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
+        orderId:
+          type: "string"
+        customer:
+          $ref: "#/components/schemas/Customer"
+        restaurant:
+          $ref: "#/components/schemas/Restaurant"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        status:
+          $ref: "#/components/schemas/DeliveryOrderStatus"
+    DeliveryPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "Delivery"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/Delivery"
+    DeliveryInput:
+      type: "object"
+      x-business-entity: "DeliveryInput"
+      required:
+      - "orderId"
+      - "date"
+      - "restaurantId"
+      - "customerId"
+      - "items"
+      properties:
+        orderId:
+          type: "string"
+        date:
+          type: "string"
+        restaurantId:
+          type: "string"
+        customerId:
+          type: "string"
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
 
     Page:
       type: object

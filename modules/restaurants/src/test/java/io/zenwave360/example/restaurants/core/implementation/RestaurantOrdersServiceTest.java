@@ -1,5 +1,6 @@
 package io.zenwave360.example.restaurants.core.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -9,6 +10,7 @@ import io.zenwave360.example.restaurants.core.domain.*;
 import io.zenwave360.example.restaurants.core.implementation.mappers.*;
 import io.zenwave360.example.restaurants.core.inbound.*;
 import io.zenwave360.example.restaurants.core.inbound.dtos.*;
+import io.zenwave360.example.restaurants.core.outbound.events.RestaurantOrdersEventsProducerCaptor;
 import io.zenwave360.example.restaurants.core.outbound.mongodb.*;
 import io.zenwave360.example.restaurants.infrastructure.mongodb.inmemory.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 /** Acceptance Test for RestaurantOrdersService. */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -30,6 +37,8 @@ public class RestaurantOrdersServiceTest {
     RestaurantOrdersServiceImpl restaurantOrdersService = context.restaurantOrdersService();
 
     KitchenOrderRepositoryInMemory kitchenOrderRepository = context.kitchenOrderRepository();
+
+    RestaurantOrdersEventsProducerCaptor restaurantOrdersEventsProducer = context.getEventsProducerInMemoryContext().restaurantOrdersEventsProducer();
 
     @BeforeEach
     void setUp() {
@@ -61,16 +70,23 @@ public class RestaurantOrdersServiceTest {
     @Order(0)
     void createKitchenOrderTest() {
         var input = new KitchenOrderInput();
-        // TODO fill input data
-        // input.setOrderId("");
-        // input.setRestaurantId("");
-        // input.setDate(new LocalDateTime());
-        // input.setItems(new MenuItem());
-        // input.setStatus(KitchenOrderStatus.values()[0]);
-        // input.setCustomer(new CustomerDetails());
+         input.setOrderId(UUID.randomUUID().toString());
+         input.setRestaurantId("1");
+         input.setDate(LocalDateTime.now());
+         input.setItems(List.of( //
+                 new MenuItem().setId("1").setName("Pan Galactic Gargle Blaster").setPrice(BigDecimal.valueOf(10.0))
+         ));
+         input.setCustomer(new CustomerDetails() //
+                .setName("Rompetechos")
+                .setAddress(new CustomerAddress().setStreet("Rua del Percebe, 13"))
+         );
         var kitchenOrder = restaurantOrdersService.createKitchenOrder(input);
+
         assertNotNull(kitchenOrder.getId());
         assertTrue(kitchenOrderRepository.containsEntity(kitchenOrder));
+        var capturedMessages = restaurantOrdersEventsProducer
+                .getCapturedMessages(restaurantOrdersEventsProducer.onKitchenOrderStatusUpdatedBindingName);
+        assertEquals(1, capturedMessages.size());
     }
 
     @Test

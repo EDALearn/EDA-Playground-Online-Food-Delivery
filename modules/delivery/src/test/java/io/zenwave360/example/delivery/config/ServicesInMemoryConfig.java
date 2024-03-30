@@ -37,6 +37,10 @@ public class ServicesInMemoryConfig extends RepositoriesInMemoryConfig {
                 List.of(Delivery.class, Customer.class, Address.class, Restaurant.class, OrderItem.class));
     }
 
+    public EventsProducerInMemoryContext getEventsProducerInMemoryContext() {
+        return eventsProducerInMemoryContext;
+    }
+
     private List<Object> publishedEvents = new ArrayList<>();
 
     public List<Object> getPublishedEvents() {
