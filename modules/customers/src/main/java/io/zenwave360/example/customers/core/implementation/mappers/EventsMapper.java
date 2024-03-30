@@ -3,6 +3,7 @@ package io.zenwave360.example.customers.core.implementation.mappers;
 import io.zenwave360.example.customers.core.domain.*;
 import io.zenwave360.example.customers.core.inbound.dtos.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = { BaseMapper.class })
@@ -12,6 +13,8 @@ public interface EventsMapper {
 
     io.zenwave360.example.customers.core.outbound.events.dtos.Address asAddress(Address address);
 
+    @Mapping(target = "customerId", source = "customer.id")
+    @Mapping(target = "customer", source = "customer")
     io.zenwave360.example.customers.core.outbound.events.dtos.CustomerEvent asCustomerEvent(Customer customer);
 
     io.zenwave360.example.customers.core.outbound.events.dtos.Customer asCustomer(Customer customer);

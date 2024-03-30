@@ -8,6 +8,12 @@ info:
 
 defaultContentType: application/json
 
+servers:
+  development:
+    host: localhost:9092
+    description: Development AMQP broker.
+    protocol: kafka
+
 channels:
   CancelOrdersChannel:
     address: "orders.cancel_orders"
@@ -82,6 +88,10 @@ components:
             type: string
             description: This header value can be populated automatically at runtime (when using ZenWave code generator)
             x-runtime-expression: $tracingIdSupplier
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/id
 
   schemas:
     OrderEvent:

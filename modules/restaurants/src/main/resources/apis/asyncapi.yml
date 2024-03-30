@@ -9,6 +9,12 @@ info:
 
 defaultContentType: application/json
 
+servers:
+  development:
+    host: localhost:9092
+    description: Development AMQP broker.
+    protocol: kafka
+
 channels:
   RestaurantEventsChannel:
     address: "restaurants.events"
@@ -44,6 +50,13 @@ components:
       summary: ""
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/id
       payload:
         $ref: "#/components/schemas/RestaurantEvent"
     KitchenOrderStatusUpdatedMessage:
@@ -52,6 +65,13 @@ components:
       summary: ""
       traits:
         - $ref: '#/components/messageTraits/CommonHeaders'
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/customerOrderId
       payload:
         $ref: "#/components/schemas/KitchenOrderStatusUpdated"
 
