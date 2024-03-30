@@ -65,6 +65,12 @@ apis {
     asyncapi(client) DeliveryAsyncAPI {
         uri "delivery/src/main/resources/apis/asyncapi.yml"
     }
+    openapi(client) CustomersOpenAPI {
+        uri "customers/src/main/resources/apis/openapi.yml"
+    }
+    openapi(client) RestaurantsOpenAPI {
+        uri "restaurants/src/main/resources/apis/openapi.yml"
+    }
 }
 
 // == Entities =============================
@@ -164,8 +170,10 @@ enum DeliveryStatus {
 service OrdersService for (CustomerOrder) {
     @get("/{orderId}")
     getCustomerOrder(id) CustomerOrder?
+
     @post
     createCustomerOrder(CustomerOrderInput) CustomerOrder withEvents OrderEvent
+
     @put("/{orderId}")
     updateOrder(id, CustomerOrderInput) CustomerOrder withEvents OrderEvent OrderStatusUpdated
 
