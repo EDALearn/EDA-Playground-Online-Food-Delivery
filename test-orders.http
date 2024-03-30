@@ -1,0 +1,109 @@
+### List Customers
+GET {{baseUrl}}/customers
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+### List Restaurants
+GET {{baseUrl}}/restaurants
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### Create Customer
+POST {{baseUrl}}/customers
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+    "firstName": "Ivan",
+    "lastName": "Garcia Sainz-Aja",
+    "email": "email@domain.com",
+    "phone": "(505) 503-4455",
+    "addresses": [
+      {
+        "identifier": "Home Address",
+        "street": "Calle del Percebe, 13",
+        "city": "Madrid",
+        "state": "Madrid",
+        "zip": "28001",
+        "type": "HOME"
+      }
+    ]
+}
+
+### Create Restaurant
+POST {{baseUrl}}/restaurants
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "name": "The Restaurant at the End of the Universe",
+  "phone": "0-345-39181-0",
+  "address": {
+    "street": "Frogstar World B",
+    "city": "Madrid",
+    "state": "Madrid",
+    "zip": "28001"
+  }
+}
+
+
+### Create Order
+< {%
+request.variables.set("customerId", "6606944c92a3d1621f1d2fc9")
+request.variables.set("addressIdentifier", "Home Address")
+request.variables.set("restaurantId", "6606947992a3d1621f1d2fcb")
+%}
+POST {{baseUrl}}/orders
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "customerId": "{{customerId}}",
+  "restaurantId": "{{restaurantId}}",
+  "addressIdentifier": "{{addressIdentifier}}",
+  "orderItems": [
+    {
+      "menuItemId": "1",
+      "name": "Pan Galactic Gargle Blaster",
+      "price": 5.95,
+      "quantity": 2
+    }
+  ]
+}
+
+### Get Order
+< {%
+    request.variables.set("orderId", "65e5ec9f19986b372f9a710c")
+%}
+GET {{baseUrl}}/orders/{{orderId}}
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+
+### Update Kitchen Order Status
+< {%
+    request.variables.set("orderId", "6606a31ba0e881391a8306ad")
+%}
+PUT {{baseUrl}}/restaurants-orders/{{orderId}}/status
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "status": "READY",
+  "operatorName": ""
+}
+
+
+### Cancel Order
+< {%
+    request.variables.set("orderId", "6606a31ba0e881391a8306ac")
+%}
+PUT http://localhost:8080/api/orders/{{orderId}}/cancel
+Authorization: {{Authorization}}
+Content-Type: application/json
+
+{
+  "id": "{{orderId}}",
+  "reason": "What do you get if you multiply six by nine?"
+}
