@@ -1,0 +1,230 @@
+openapi: 3.0.1
+info:
+  title: "ZenWave Online Food Delivery - Delivery Module"
+  version: 0.0.1
+  description: "ZenWave Online Food Delivery - Delivery Module"
+  contact:
+    email: email@domain.com
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: "Default"
+  - name: "Delivery"
+
+
+paths:
+  /delivery/{orderId}/status:
+    put:
+      operationId: updateDeliveryStatus
+      description: "updateDeliveryStatus"
+      tags: [Delivery]
+      parameters:
+        - name: "orderId"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryStatusInput"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delivery"
+  /delivery:
+    get:
+      operationId: listDeliveries
+      description: "listDeliveries"
+      tags: [Delivery]
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryPaginated"
+
+components:
+  schemas:
+    DeliveryStatusInput:
+      type: "object"
+      x-business-entity: "DeliveryStatusInput"
+      required:
+      - "status"
+      - "operatorName"
+      properties:
+        status:
+          $ref: "#/components/schemas/DeliveryOrderStatus"
+        operatorName:
+          type: "string"
+    Delivery:
+      type: "object"
+      x-business-entity: "Delivery"
+      required:
+      - "orderId"
+      - "status"
+      properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
+        orderId:
+          type: "string"
+        customer:
+          $ref: "#/components/schemas/Customer"
+        restaurant:
+          $ref: "#/components/schemas/Restaurant"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        status:
+          $ref: "#/components/schemas/DeliveryOrderStatus"
+    DeliveryPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "Delivery"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/Delivery"
+    Restaurant:
+      type: "object"
+      x-business-entity: "Restaurant"
+      properties:
+        restaurantId:
+          type: "string"
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      properties:
+        street:
+          type: "string"
+        zip:
+          type: "string"
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+      - "customerId"
+      - "name"
+      - "phone"
+      properties:
+        customerId:
+          type: "string"
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+    OrderItem:
+      type: "object"
+      x-business-entity: "OrderItem"
+      required:
+      - "menuItemId"
+      - "name"
+      - "price"
+      - "quantity"
+      properties:
+        menuItemId:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          type: "number"
+          format: "double"
+        quantity:
+          type: "integer"
+          format: "int32"
+    DeliveryOrderStatus:
+      type: "string"
+      x-business-entity: "DeliveryOrderStatus"
+      enum:
+      - "ACCEPTED"
+      - "REJECTED"
+      - "IN_PROGRESS"
+      - "READY"
+      - "DELIVERED"
+      - "CANCELLED"
+
+    Page:
+      type: object
+      required:
+        - "content"
+        - "totalElements"
+        - "totalPages"
+        - "size"
+        - "number"
+      properties:
+        number:
+          type: integer
+          minimum: 0
+        numberOfElements:
+          type: integer
+          minimum: 0
+        size:
+          type: integer
+          minimum: 0
+          maximum: 200
+          multipleOf: 25
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The number of results page
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: The number of results in a single page
+      schema:
+        type: integer
+        format: int32
+        default: 20
+    sort:
+      name: sort
+      in: query
+      description: The number of results page
+      schema:
+        type: array
+        items:
+          type: string
+
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+    bearerAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+security:
+  - basicAuth: []  # <-- use the same name here
+  - bearerAuth: []  # <-- use the same name here
