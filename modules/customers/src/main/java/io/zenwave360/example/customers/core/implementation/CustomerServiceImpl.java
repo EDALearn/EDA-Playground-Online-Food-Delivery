@@ -5,6 +5,7 @@ import io.zenwave360.example.customers.core.implementation.mappers.*;
 import io.zenwave360.example.customers.core.inbound.*;
 import io.zenwave360.example.customers.core.inbound.dtos.*;
 import io.zenwave360.example.customers.core.outbound.events.*;
+import io.zenwave360.example.customers.core.outbound.events.dtos.EventType;
 import io.zenwave360.example.customers.core.outbound.mongodb.*;
 import java.math.*;
 import java.time.*;
@@ -41,7 +42,8 @@ public class CustomerServiceImpl implements CustomerService {
         var customer = customerServiceMapper.update(new Customer(), input);
         customer = customerRepository.save(customer);
         // emit events
-        var customerEvent = eventsMapper.asCustomerEvent(customer);
+        var customerEvent = eventsMapper.asCustomerEvent(customer)
+                .withEventType(EventType.CREATED);
         eventsProducer.onCustomerEvent(customerEvent);
         return customer;
     }
@@ -55,7 +57,8 @@ public class CustomerServiceImpl implements CustomerService {
         }).map(customerRepository::save);
         if (customer.isPresent()) {
             // emit events
-            var customerEvent = eventsMapper.asCustomerEvent(customer.get());
+            var customerEvent = eventsMapper.asCustomerEvent(customer.get())
+                    .withEventType(EventType.UPDATED);
             eventsProducer.onCustomerEvent(customerEvent);
         }
         return customer;
