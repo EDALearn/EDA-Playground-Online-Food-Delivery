@@ -44,7 +44,7 @@
                         <phase>generate-sources</phase>
                         <goals><goal>generate</goal></goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/../restaurants/src/main/resources/apis/asyncapi.yml</inputSpec>
+                            <inputSpec>classpath:/apis/restaurants-asyncapi.yml</inputSpec>
                             <generatorName>jsonschema2pojo</generatorName>
                             <configOptions>
                                 <modelPackage>${asyncapiRestaurantsClientPackage}.events.dtos</modelPackage>
@@ -58,7 +58,7 @@
                         <phase>generate-sources</phase>
                         <goals><goal>generate</goal></goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/../restaurants/src/main/resources/apis/asyncapi.yml</inputSpec>
+                            <inputSpec>classpath:/apis/restaurants-asyncapi.yml</inputSpec>
                             <generatorName>spring-cloud-streams3</generatorName>
                             <configOptions>
                                 <role>client</role>
@@ -78,7 +78,7 @@
                         <phase>generate-sources</phase>
                         <goals><goal>generate</goal></goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/../delivery/src/main/resources/apis/asyncapi.yml</inputSpec>
+                            <inputSpec>classpath:/apis/delivery-asyncapi.yml</inputSpec>
                             <generatorName>jsonschema2pojo</generatorName>
                             <configOptions>
                                 <modelPackage>${asyncapiDeliveryClientPackage}.events.dtos</modelPackage>
@@ -92,7 +92,7 @@
                         <phase>generate-sources</phase>
                         <goals><goal>generate</goal></goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/../delivery/src/main/resources/apis/asyncapi.yml</inputSpec>
+                            <inputSpec>classpath:/apis/delivery-asyncapi.yml</inputSpec>
                             <generatorName>spring-cloud-streams3</generatorName>
                             <configOptions>
                                 <role>client</role>
@@ -107,6 +107,18 @@
                     </execution>
                 </executions>
 
+                <dependencies>
+                    <dependency>
+                        <groupId>io.zenwave360.example.apis</groupId>
+                        <artifactId>restaurants-api</artifactId>
+                        <version>0.0.1-SNAPSHOT</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>io.zenwave360.example.apis</groupId>
+                        <artifactId>delivery-api</artifactId>
+                        <version>0.0.1-SNAPSHOT</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>

@@ -1,0 +1,90 @@
+asyncapi: 3.0.0
+info:
+  title: "ZenWave Online Food Delivery - Delivery Module"
+  version: 0.0.1
+  tags:
+    - name: "Default"
+    - name: "Delivery"
+
+defaultContentType: application/json
+
+servers:
+  development:
+    host: localhost:9092
+    description: Development AMQP broker.
+    protocol: kafka
+
+channels:
+  DeliveryStatusChannel:
+    address: "delivery.delivery_status"
+    messages:
+      DeliveryStatusUpdatedMessage:
+        $ref: '#/components/messages/DeliveryStatusUpdatedMessage'
+
+operations:
+  onDeliveryStatusUpdated:
+    action: send
+    tags:
+      - name: Delivery
+    channel:
+      $ref: '#/channels/DeliveryStatusChannel'
+
+
+components:
+  messages:
+    DeliveryStatusUpdatedMessage:
+      name: DeliveryStatusUpdatedMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/customerOrderId
+      payload:
+        schemaFormat: application/vnd.aai.asyncapi;version=3.0.0
+        schema:
+          $ref: "#/components/schemas/DeliveryStatusUpdated"
+
+  messageTraits:
+    CommonHeaders:
+      headers:
+        type: object
+        properties:
+          tracingId:
+            type: string
+            description: This header value can be populated automatically at runtime (when using ZenWave code generator)
+            x-runtime-expression: $tracingIdSupplier
+
+  schemas:
+    DeliveryStatusUpdated:
+      type: "object"
+      x-business-entity: "DeliveryStatusUpdated"
+      required:
+      - "customerOrderId"
+      - "deliveryId"
+      - "status"
+      properties:
+        customerOrderId:
+          type: "string"
+        deliveryId:
+          type: "string"
+        status:
+          $ref: "#/components/schemas/DeliveryOrderStatus"
+        message:
+          type: "string"
+    DeliveryOrderStatus:
+      type: "string"
+      x-business-entity: "DeliveryOrderStatus"
+      enum:
+      - "ACCEPTED"
+      - "REJECTED"
+      - "IN_PROGRESS"
+      - "READY"
+      - "DELIVERED"
+      - "CANCELLED"
+
