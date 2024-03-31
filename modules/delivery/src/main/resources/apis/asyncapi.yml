@@ -16,12 +16,12 @@ servers:
 
 channels:
   DeliveryStatusChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/DeliveryStatusChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/DeliveryStatusChannel"
   # client channels
   OrdersChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/OrdersChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/OrdersChannel"
   OrderUpdatesChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/OrderUpdatesChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/OrderUpdatesChannel"
 
 operations:
   onDeliveryStatusUpdated:

@@ -16,9 +16,9 @@ servers:
 
 channels:
   CustomerEventsChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/CustomerEventsChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/CustomerEventsChannel"
   CustomerAddressEventsChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/CustomerAddressEventsChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/CustomerAddressEventsChannel"
 
 operations:
   onCustomerEvent:

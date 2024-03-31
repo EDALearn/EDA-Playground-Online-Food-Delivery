@@ -17,14 +17,14 @@ servers:
 
 channels:
   RestaurantEventsChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/RestaurantEventsChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/RestaurantEventsChannel"
   KitchenOrdersStatusChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/KitchenOrdersStatusChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/KitchenOrdersStatusChannel"
   # client channels
   OrdersChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/OrdersChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/OrdersChannel"
   OrderUpdatesChannel:
-    $ref: "../../../../../../asyncapi/asyncapi-centralized-channels.yml#/channels/OrderUpdatesChannel"
+    $ref: "https://raw.githubusercontent.com/EDALearn/FoodDeliveryService-KIT-AsyncAPI-In-Action/asyncapi/2-centralized-channels-http-refs/asyncapi/asyncapi-centralized-channels.yml#/channels/OrderUpdatesChannel"
 
 operations:
   onRestaurantEvent:
