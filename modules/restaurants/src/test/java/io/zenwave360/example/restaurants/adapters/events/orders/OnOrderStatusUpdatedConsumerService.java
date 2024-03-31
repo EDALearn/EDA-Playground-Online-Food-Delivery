@@ -1,9 +1,8 @@
 package io.zenwave360.example.restaurants.adapters.events.orders;
 
+import io.zenwave360.example.restaurants.adapters.commands.IOnOrderStatusUpdatedConsumerService;
 import io.zenwave360.example.restaurants.adapters.events.BaseConsumerTest;
-import io.zenwave360.example.restaurants.client.orders.events.consumer.*;
-import io.zenwave360.example.restaurants.client.orders.events.consumer.IOnOrderStatusUpdatedConsumerService.OrderStatusUpdatedHeaders;
-import io.zenwave360.example.restaurants.client.orders.events.dtos.*;
+import io.zenwave360.example.restaurants.core.outbound.events.dtos.OrderStatusUpdated;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +17,7 @@ public class OnOrderStatusUpdatedConsumerService extends BaseConsumerTest {
     public void onOrderStatusUpdatedTest() {
         OrderStatusUpdated payload = new OrderStatusUpdated();
 
-        OrderStatusUpdatedHeaders headers = new OrderStatusUpdatedHeaders();
+        IOnOrderStatusUpdatedConsumerService.OrderStatusUpdatedHeaders headers = new IOnOrderStatusUpdatedConsumerService.OrderStatusUpdatedHeaders();
 
         // invoke the method under test
         consumerService.onOrderStatusUpdated(payload, headers);

@@ -1,9 +1,9 @@
 package io.zenwave360.example.restaurants.adapters.events.orders;
 
-import io.zenwave360.example.restaurants.client.orders.events.dtos.Customer;
-import io.zenwave360.example.restaurants.client.orders.events.dtos.OrderEvent;
 import io.zenwave360.example.restaurants.core.domain.CustomerDetails;
 import io.zenwave360.example.restaurants.core.inbound.dtos.KitchenOrderInput;
+import io.zenwave360.example.restaurants.core.outbound.events.dtos.Customer;
+import io.zenwave360.example.restaurants.core.outbound.events.dtos.OrderEvent;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

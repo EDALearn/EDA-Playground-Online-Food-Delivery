@@ -30,6 +30,17 @@ channels:
     messages:
       OrderStatusUpdatedMessage:
         $ref: '#/components/messages/OrderStatusUpdatedMessage'
+  # client channels
+  KitchenOrdersStatusChannel:
+    address: "restaurants.kitchen_order_status"
+    messages:
+      KitchenOrderStatusUpdatedMessage:
+        $ref: '#/components/messages/KitchenOrderStatusUpdatedMessage'
+  DeliveryStatusChannel:
+    address: "delivery.delivery_status"
+    messages:
+      DeliveryStatusUpdatedMessage:
+        $ref: '#/components/messages/DeliveryStatusUpdatedMessage'
 
 operations:
   doCancelOrder:
@@ -50,7 +61,19 @@ operations:
       - name: Orders
     channel:
       $ref: '#/channels/OrderUpdatesChannel'
-
+  # client operations
+  onKitchenOrderStatusUpdated:
+    action: receive
+    tags:
+      - name: RestaurantOrders
+    channel:
+      $ref: '#/channels/KitchenOrdersStatusChannel'
+  onDeliveryStatusUpdated:
+    action: receive
+    tags:
+      - name: Delivery
+    channel:
+      $ref: '#/channels/DeliveryStatusChannel'
 
 components:
   messages:
@@ -78,6 +101,23 @@ components:
         - $ref: '#/components/messageTraits/CommonHeaders'
       payload:
         $ref: "#/components/schemas/OrderStatusUpdated"
+    # client messages
+    KitchenOrderStatusUpdatedMessage:
+      name: KitchenOrderStatusUpdatedMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/KitchenOrderStatusUpdated"
+    DeliveryStatusUpdatedMessage:
+      name: DeliveryStatusUpdatedMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/DeliveryStatusUpdated"
 
   messageTraits:
     CommonHeaders:
@@ -222,3 +262,56 @@ components:
           type: "integer"
           format: "int32"
 
+    # client schemas
+    KitchenOrderStatusUpdated:
+      type: "object"
+      x-business-entity: "KitchenOrderStatusUpdated"
+      required:
+        - "customerOrderId"
+        - "kitchenOrderId"
+        - "status"
+      properties:
+        customerOrderId:
+          type: "string"
+        kitchenOrderId:
+          type: "string"
+        status:
+          $ref: "#/components/schemas/KitchenOrderStatus"
+        message:
+          type: "string"
+    KitchenOrderStatus:
+      type: "string"
+      x-business-entity: "KitchenOrderStatus"
+      enum:
+        - "ACCEPTED"
+        - "REJECTED"
+        - "IN_PROGRESS"
+        - "READY"
+        - "DELIVERED"
+        - "CANCELLED"
+    DeliveryStatusUpdated:
+      type: "object"
+      x-business-entity: "DeliveryStatusUpdated"
+      required:
+        - "customerOrderId"
+        - "deliveryId"
+        - "status"
+      properties:
+        customerOrderId:
+          type: "string"
+        deliveryId:
+          type: "string"
+        status:
+          $ref: "#/components/schemas/DeliveryStatus"
+        message:
+          type: "string"
+    DeliveryStatus:
+      type: "string"
+      x-business-entity: "DeliveryStatus"
+      enum:
+        - "ACCEPTED"
+        - "REJECTED"
+        - "IN_PROGRESS"
+        - "READY"
+        - "DELIVERED"
+        - "CANCELLED"

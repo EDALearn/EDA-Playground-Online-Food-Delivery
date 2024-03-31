@@ -29,6 +29,7 @@ spring:
         restaurants_on-kitchen-order-status-updated;delivery_on-delivery-status-updated;
         restaurants_on-order-status-updated;on-kitchen-order-status-updated;
         delivery_on-order-event;delivery_on-order-status-updated;on-delivery-status-updated;
+        restaurants_on-restaurant-event;delivery_on-delivery-status-updated;
     stream:
       bindings:
         ## Customer Module Bindings
@@ -44,6 +45,12 @@ spring:
           destination: orders.orders
         on-order-status-updated-out-0:
           destination: orders.order_updates
+        on-kitchen-order-status-updated-in-0:
+          destination: restaurants.kitchen_order_status
+          group: orders.consumer
+        on-delivery-status-updated-in-0:
+          destination: delivery.delivery_status
+          group: orders.consumer
         restaurants_on-kitchen-order-status-updated-in-0:
           destination: restaurants.kitchen_order_status
           group: orders.consumer
@@ -54,6 +61,8 @@ spring:
         ## Restaurants Module Bindings
         on-restaurant-event-out-0:
           destination: restaurants.events
+        restaurants_on-restaurant-event-out-0:
+          destination: restaurants.events
         restaurants_on-order-event-in-0:
           destination: orders.orders
           group: restaurants.consumer
@@ -61,6 +70,8 @@ spring:
           destination: orders.order_updates
           group: restaurants.consumer
         on-kitchen-order-status-updated-out-0:
+          destination: restaurants.kitchen_order_status
+        restaurants_on-kitchen-order-status-updated-out-0:
           destination: restaurants.kitchen_order_status
 
         ## Delivery Module Bindings
@@ -71,4 +82,6 @@ spring:
           destination: orders.order_updates
           group: delivery.consumer
         on-delivery-status-updated-out-0:
+          destination: delivery.delivery_status
+        delivery_on-delivery-status-updated-out-0:
           destination: delivery.delivery_status

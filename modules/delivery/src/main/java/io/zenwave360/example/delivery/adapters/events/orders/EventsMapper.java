@@ -1,9 +1,9 @@
 package io.zenwave360.example.delivery.adapters.events.orders;
 
-import io.zenwave360.example.delivery.client.orders.events.dtos.OrderEvent;
 import io.zenwave360.example.delivery.core.domain.OrderItem;
 import io.zenwave360.example.delivery.core.inbound.dtos.DeliveryInput;
 import io.zenwave360.example.delivery.core.inbound.dtos.OrderStatusUpdated;
+import io.zenwave360.example.delivery.core.outbound.events.dtos.OrderEvent;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -34,14 +34,14 @@ public interface EventsMapper {
     @Mapping(source = "orderTime", target = "date")
     DeliveryInput asDeliveryInput(OrderEvent payload);
 
-    OrderItem aOrderItem(io.zenwave360.example.delivery.client.orders.events.dtos.OrderItemInput orderItem);
+    OrderItem aOrderItem(io.zenwave360.example.delivery.core.outbound.events.dtos.OrderItem orderItem);
 
-    List<OrderItem> asOrderItemList(List<io.zenwave360.example.delivery.client.orders.events.dtos.OrderItemInput> orderItems);
+    List<OrderItem> asOrderItemList(List<io.zenwave360.example.delivery.core.outbound.events.dtos.OrderItem> orderItems);
 
     default LocalDateTime map(OffsetDateTime value) {
         return value != null ? value.toLocalDateTime() : null;
     }
 
     @Mapping(source = "id", target = "orderId")
-    OrderStatusUpdated orderStatusUpdated(io.zenwave360.example.delivery.client.orders.events.dtos.OrderStatusUpdated payload);
+    OrderStatusUpdated orderStatusUpdated(io.zenwave360.example.delivery.core.outbound.events.dtos.OrderStatusUpdated payload);
 }

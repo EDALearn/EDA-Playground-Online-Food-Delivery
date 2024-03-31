@@ -26,6 +26,17 @@ channels:
     messages:
       KitchenOrderStatusUpdatedMessage:
         $ref: '#/components/messages/KitchenOrderStatusUpdatedMessage'
+  # client channels
+  OrdersChannel:
+    address: "orders.orders"
+    messages:
+      OrderEventMessage:
+        $ref: '#/components/messages/OrderEventMessage'
+  OrderUpdatesChannel:
+    address: "orders.order_updates"
+    messages:
+      OrderStatusUpdatedMessage:
+        $ref: '#/components/messages/OrderStatusUpdatedMessage'
 
 operations:
   onRestaurantEvent:
@@ -40,7 +51,19 @@ operations:
       - name: RestaurantOrders
     channel:
       $ref: '#/channels/KitchenOrdersStatusChannel'
-
+  # client operations
+  onOrderEvent:
+    action: receive
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrdersChannel'
+  onOrderStatusUpdated:
+    action: receive
+    tags:
+      - name: Orders
+    channel:
+      $ref: '#/channels/OrderUpdatesChannel'
 
 components:
   messages:
@@ -74,6 +97,23 @@ components:
             x-runtime-expression: $message.payload#/customerOrderId
       payload:
         $ref: "#/components/schemas/KitchenOrderStatusUpdated"
+    # client messages
+    OrderEventMessage:
+      name: OrderEventMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/OrderEvent"
+    OrderStatusUpdatedMessage:
+      name: OrderStatusUpdatedMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/OrderStatusUpdated"
 
   messageTraits:
     CommonHeaders:
@@ -148,3 +188,131 @@ components:
         zip:
           type: "string"
 
+    # client schemas
+    OrderEvent:
+      type: "object"
+      x-business-entity: "OrderEvent"
+      properties:
+        orderTime:
+          type: "string"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerDetails:
+          $ref: "#/components/schemas/Customer"
+        restaurantDetails:
+          $ref: "#/components/schemas/Restaurant"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        id:
+          type: "string"
+    OrderStatusUpdated:
+      type: "object"
+      x-business-entity: "OrderStatusUpdated"
+      properties:
+        id:
+          type: "string"
+        dateTime:
+          type: "string"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        previousStatus:
+          $ref: "#/components/schemas/OrderStatus"
+    CancelOrderInput:
+      type: "object"
+      x-business-entity: "CancelOrderInput"
+      properties:
+        id:
+          type: "string"
+        reason:
+          type: "string"
+    Restaurant:
+      type: "object"
+      x-business-entity: "Restaurant"
+      required:
+        - "restaurantId"
+        - "name"
+        - "phone"
+      properties:
+        restaurantId:
+          type: "string"
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        addresses:
+          $ref: "#/components/schemas/Address"
+    OrderStatus:
+      type: "string"
+      x-business-entity: "OrderStatus"
+      enum:
+        - "RECEIVED"
+        - "KITCHEN_ACCEPTED"
+        - "DELIVERY_ACCEPTED"
+        - "CONFIRMED"
+        - "KITCHEN_IN_PROGRESS"
+        - "KITCHEN_READY"
+        - "KITCHEN_DELIVERED"
+        - "ON_DELIVERY"
+        - "DELIVERED"
+        - "CANCELLED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+        - "street"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+        - "customerId"
+        - "firstName"
+        - "lastName"
+        - "email"
+        - "phone"
+      properties:
+        customerId:
+          type: "string"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+    OrderItem:
+      type: "object"
+      x-business-entity: "OrderItem"
+      required:
+        - "menuItemId"
+        - "name"
+        - "price"
+        - "quantity"
+      properties:
+        menuItemId:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          type: "number"
+          format: "double"
+        quantity:
+          type: "integer"
+          format: "int32"

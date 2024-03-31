@@ -34,38 +34,8 @@
                         <id>generate-asyncapi-provider-implementation</id>
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/apis/asyncapi.yml</inputSpec>
-                        </configuration>
-                    </execution>
-
-                    <!-- Generate AsyncAPI CLIENT for Orders API -->
-                    <execution>
-                        <id>generate-asyncapi-orders-dtos</id>
-                        <phase>generate-sources</phase>
-                        <goals><goal>generate</goal></goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/../orders/src/main/resources/apis/asyncapi.yml</inputSpec>
-                            <generatorName>jsonschema2pojo</generatorName>
                             <configOptions>
-                                <modelPackage>${asyncapiOrdersClientPackage}.events.dtos</modelPackage>
-                                <jsonschema2pojo.isUseJakartaValidation>true</jsonschema2pojo.isUseJakartaValidation>
-                                <jsonschema2pojo.useLongIntegers>true</jsonschema2pojo.useLongIntegers>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>generate-asyncapi-orders-client</id>
-                        <phase>generate-sources</phase>
-                        <goals><goal>generate</goal></goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/../orders/src/main/resources/apis/asyncapi.yml</inputSpec>
-                            <generatorName>spring-cloud-streams3</generatorName>
-                            <configOptions>
-                                <role>client</role>
-                                <style>imperative</style>
                                 <bindingPrefix>restaurants_</bindingPrefix>
-                                <modelPackage>${asyncapiOrdersClientPackage}.events.dtos</modelPackage>
-                                <producerApiPackage>${asyncapiOrdersClientPackage}.events.producer</producerApiPackage>
-                                <consumerApiPackage>${asyncapiOrdersClientPackage}.events.consumer</consumerApiPackage>
                             </configOptions>
                         </configuration>
                     </execution>

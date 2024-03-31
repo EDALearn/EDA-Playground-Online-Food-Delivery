@@ -1,13 +1,12 @@
 package io.zenwave360.example.restaurants.adapters.events.orders;
 
+import io.zenwave360.example.restaurants.adapters.commands.IOnOrderEventConsumerService;
 import io.zenwave360.example.restaurants.adapters.events.BaseConsumerTest;
-import io.zenwave360.example.restaurants.client.orders.events.consumer.*;
-import io.zenwave360.example.restaurants.client.orders.events.consumer.IOnOrderEventConsumerService.OrderEventHeaders;
-import io.zenwave360.example.restaurants.client.orders.events.dtos.*;
+import io.zenwave360.example.restaurants.core.outbound.events.dtos.OrderEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/** Integration tests for {@link IOnOrderEventConsumerService}. */
+/** Integration tests for {@link io.zenwave360.example.restaurants.adapters.commands.IOnOrderEventConsumerService}. */
 public class OnOrderEventConsumerService extends BaseConsumerTest {
 
     @Autowired
@@ -18,7 +17,7 @@ public class OnOrderEventConsumerService extends BaseConsumerTest {
     public void onOrderEventTest() {
         OrderEvent payload = new OrderEvent();
 
-        OrderEventHeaders headers = new OrderEventHeaders();
+        IOnOrderEventConsumerService.OrderEventHeaders headers = new IOnOrderEventConsumerService.OrderEventHeaders();
 
         // invoke the method under test
         consumerService.onOrderEvent(payload, headers);
