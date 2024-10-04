@@ -1,0 +1,130 @@
+asyncapi: 3.0.0
+info:
+  title: "ZenWave Online Food Delivery - Restaurants Module"
+  version: 0.0.1
+  tags:
+    - name: "Default"
+    - name: "RestaurantBackOffice"
+    - name: "RestaurantOrders"
+
+defaultContentType: application/json
+
+channels:
+  RestaurantEventsChannel:
+    address: "restaurants.events"
+    messages:
+      RestaurantEventMessage:
+        $ref: '#/components/messages/RestaurantEventMessage'
+  KitchenOrdersStatusChannel:
+    address: "restaurants.kitchen_order_status"
+    messages:
+      KitchenOrderStatusUpdatedMessage:
+        $ref: '#/components/messages/KitchenOrderStatusUpdatedMessage'
+
+operations:
+  onRestaurantEvent:
+    action: send
+    tags:
+      - name: RestaurantBackOffice
+    channel:
+      $ref: '#/channels/RestaurantEventsChannel'
+  onKitchenOrderStatusUpdated:
+    action: send
+    tags:
+      - name: RestaurantOrders
+    channel:
+      $ref: '#/channels/KitchenOrdersStatusChannel'
+
+
+components:
+  messages:
+    RestaurantEventMessage:
+      name: RestaurantEventMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/RestaurantEvent"
+    KitchenOrderStatusUpdatedMessage:
+      name: KitchenOrderStatusUpdatedMessage
+      title: ""
+      summary: ""
+      traits:
+        - $ref: '#/components/messageTraits/CommonHeaders'
+      payload:
+        $ref: "#/components/schemas/KitchenOrderStatusUpdated"
+
+  messageTraits:
+    CommonHeaders:
+      headers:
+        type: object
+        properties:
+          tracingId:
+            type: string
+            description: This header value can be populated automatically at runtime (when using ZenWave code generator)
+            x-runtime-expression: $tracingIdSupplier
+
+  schemas:
+    RestaurantEvent:
+      type: "object"
+      x-business-entity: "RestaurantEvent"
+      required:
+      - "name"
+      - "phone"
+      - "id"
+      properties:
+        name:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+        id:
+          type: "string"
+    KitchenOrderStatusUpdated:
+      type: "object"
+      x-business-entity: "KitchenOrderStatusUpdated"
+      required:
+      - "customerOrderId"
+      - "kitchenOrderId"
+      - "status"
+      properties:
+        customerOrderId:
+          type: "string"
+        kitchenOrderId:
+          type: "string"
+        status:
+          $ref: "#/components/schemas/KitchenOrderStatus"
+        message:
+          type: "string"
+    KitchenOrderStatus:
+      type: "string"
+      x-business-entity: "KitchenOrderStatus"
+      enum:
+      - "ACCEPTED"
+      - "REJECTED"
+      - "IN_PROGRESS"
+      - "READY"
+      - "DELIVERED"
+      - "CANCELLED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      - "city"
+      - "state"
+      - "zip"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+

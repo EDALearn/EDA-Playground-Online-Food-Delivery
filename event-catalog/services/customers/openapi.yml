@@ -1,0 +1,263 @@
+openapi: 3.0.1
+info:
+  title: "ZenWave Online Food Delivery - Customers Module"
+  version: 0.0.1
+  description: "ZenWave Online Food Delivery - Customers Module"
+  contact:
+    email: email@domain.com
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: "Default"
+  - name: "Customer"
+
+
+paths:
+  /customers:
+    post:
+      operationId: createCustomer
+      description: "Create customer javadoc comment"
+      tags: [Customer]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      responses:
+        "201":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    get:
+      operationId: listCustomers
+      description: "listCustomers"
+      tags: [Customer]
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/sort"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerPaginated"
+  /customers/{customerId}:
+    put:
+      operationId: updateCustomer
+      description: "updateCustomer"
+      tags: [Customer]
+      parameters:
+        - name: "customerId"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    delete:
+      operationId: deleteCustomer
+      description: "deleteCustomer"
+      tags: [Customer]
+      parameters:
+        - name: "customerId"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: "OK"
+    get:
+      operationId: getCustomer
+      description: "getCustomer"
+      tags: [Customer]
+      parameters:
+        - name: "customerId"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+  /customers/{customerId}/address/{identifier}:
+    put:
+      operationId: updateCustomerAddress
+      description: "Updates a the customer address identified by address.identifier"
+      tags: [Customer]
+      parameters:
+        - name: "customerId"
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: "identifier"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Address"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+
+components:
+  schemas:
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+      - "firstName"
+      - "lastName"
+      - "email"
+      - "phone"
+      properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
+        firstName:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+          description: "first name javadoc comment"
+        lastName:
+          type: "string"
+          minLength: 2
+          maxLength: 250
+          description: "last name javadoc comment"
+        email:
+          type: "string"
+          description: "email javadoc comment"
+        phone:
+          type: "string"
+          description: ""
+        addresses:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Address"
+    CustomerPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "Customer"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/Customer"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "identifier"
+      - "street"
+      - "type"
+      properties:
+        identifier:
+          type: "string"
+          description: "Description identifier for this Address"
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+        type:
+          $ref: "#/components/schemas/AddressType"
+    AddressType:
+      type: "string"
+      x-business-entity: "AddressType"
+      enum:
+      - "HOME"
+      - "WORK"
+
+    Page:
+      type: object
+      required:
+        - "content"
+        - "totalElements"
+        - "totalPages"
+        - "size"
+        - "number"
+      properties:
+        number:
+          type: integer
+          minimum: 0
+        numberOfElements:
+          type: integer
+          minimum: 0
+        size:
+          type: integer
+          minimum: 0
+          maximum: 200
+          multipleOf: 25
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The number of results page
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: The number of results in a single page
+      schema:
+        type: integer
+        format: int32
+        default: 20
+    sort:
+      name: sort
+      in: query
+      description: The number of results page
+      schema:
+        type: array
+        items:
+          type: string
+
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+    bearerAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+security:
+  - basicAuth: []  # <-- use the same name here
+  - bearerAuth: []  # <-- use the same name here

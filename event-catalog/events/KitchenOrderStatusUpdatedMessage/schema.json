@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "x-business-entity": "KitchenOrderStatusUpdated",
+    "required": [
+        "customerOrderId",
+        "kitchenOrderId",
+        "status"
+    ],
+    "properties": {
+        "customerOrderId": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-15>"
+        },
+        "kitchenOrderId": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-16>"
+        },
+        "status": {
+            "type": "string",
+            "x-business-entity": "KitchenOrderStatus",
+            "enum": [
+                "ACCEPTED",
+                "REJECTED",
+                "IN_PROGRESS",
+                "READY",
+                "DELIVERED",
+                "CANCELLED"
+            ],
+            "x-parser-schema-id": "<anonymous-schema-17>"
+        },
+        "message": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-18>"
+        }
+    },
+    "x-parser-schema-id": "<anonymous-schema-14>"
+}

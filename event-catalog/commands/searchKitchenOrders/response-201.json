@@ -1,0 +1,162 @@
+{
+  "allOf": [
+    {
+      "type": "object",
+      "required": [
+        "content",
+        "totalElements",
+        "totalPages",
+        "size",
+        "number"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "numberOfElements": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 200,
+          "multipleOf": 25
+        },
+        "totalElements": {
+          "type": "integer"
+        },
+        "totalPages": {
+          "type": "integer"
+        }
+      }
+    },
+    {
+      "x-business-entity-paginated": "KitchenOrder"
+    },
+    {
+      "properties": {
+        "content": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "x-business-entity": "KitchenOrder",
+            "required": [
+              "orderId",
+              "restaurantId",
+              "date",
+              "items",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "version": {
+                "type": "integer"
+              },
+              "orderId": {
+                "type": "string"
+              },
+              "restaurantId": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "x-business-entity": "MenuItem",
+                  "required": [
+                    "restaurantId",
+                    "name",
+                    "price"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "integer"
+                    },
+                    "restaurantId": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 250
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  }
+                }
+              },
+              "status": {
+                "type": "string",
+                "x-business-entity": "KitchenOrderStatus",
+                "enum": [
+                  "ACCEPTED",
+                  "REJECTED",
+                  "IN_PROGRESS",
+                  "READY",
+                  "DELIVERED",
+                  "CANCELLED"
+                ]
+              },
+              "customer": {
+                "type": "object",
+                "x-business-entity": "CustomerDetails",
+                "required": [
+                  "name",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "x-business-entity": "CustomerAddress",
+                    "required": [
+                      "street",
+                      "city",
+                      "state",
+                      "zip"
+                    ],
+                    "properties": {
+                      "street": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "zip": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "isSchema": true
+}

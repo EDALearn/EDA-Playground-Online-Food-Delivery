@@ -14,7 +14,7 @@ export default {
   trailingSlash: false,
   // Change to make the base url of the site different, by default https://{website}.com/docs,
   // changing to /company would be https://{website}.com/company/docs,
-  base: '/',
+  base: 'https://github.com/EDALearn/EDA-Playground-Online-Food-Delivery/blob/main/event-catalog/dist/',
   // Customize the logo, add your logo to public/ folder
   logo: {
     alt: 'EventCatalog Logo',
@@ -35,9 +35,28 @@ export default {
       '@eventcatalog/generator-asyncapi',
       {
         services: [
-          { path: path.join(__dirname, '../modules/orders/src/main/resources/apis/asyncapi.yml')}
+          { path: path.win32.join(__dirname, '../modules/orders/src/main/resources/apis/asyncapi.yml'), id: 'orders'},
+          { path: path.win32.join(__dirname, '../modules/customers/src/main/resources/apis/asyncapi.yml'), id: 'customers'},
+          { path: path.win32.join(__dirname, '../modules/restaurants/src/main/resources/apis/asyncapi.yml'), id: 'restaurants'},
+          { path: path.win32.join(__dirname, '../modules/delivery/src/main/resources/apis/asyncapi.yml'), id: 'delivery'},
         ],
-        domain: { id: 'orders', name: 'Orders', version: '0.0.1' },
+        domain: { id: 'online-food-delivery', name: 'Online Food Delivery', version: '0.0.1' },
+
+        // Run in debug mode, for extra output, if your AsyncAPI fails to parse, it will tell you why
+        debug: true
+      },
+    ],
+    // Add single OpenAPI file to a domain
+    [
+      '@eventcatalog/generator-openapi',
+      {
+        services: [
+          { path: path.win32.join(__dirname, '../modules/orders/src/main/resources/apis/openapi.yml'), id: 'orders'},
+          { path: path.win32.join(__dirname, '../modules/customers/src/main/resources/apis/openapi.yml'), id: 'customers'},
+          { path: path.win32.join(__dirname, '../modules/restaurants/src/main/resources/apis/openapi.yml'), id: 'restaurants'},
+          { path: path.win32.join(__dirname, '../modules/delivery/src/main/resources/apis/openapi.yml'), id: 'delivery'},
+        ],
+        domain: { id: 'online-food-delivery', name: 'Online Food Delivery', version: '0.0.1' },
 
         // Run in debug mode, for extra output, if your AsyncAPI fails to parse, it will tell you why
         debug: true
