@@ -1,0 +1,199 @@
+arazzo 1.0.0
+
+info {
+    title "Orders Workflows"
+    version "0.0.1"
+    contact {
+        name "Ivan Garcia Sainz-Aja"
+        email "ivangsa@gmail.com"
+    }
+}
+
+sourceDescriptions {
+    OrdersREST openapi("../modules/orders/src/main/resources/apis/openapi.yml")
+    OrdersAsyncAPI asyncapi("../modules/orders/src/main/resources/apis/asyncapi.yml")
+    RestaurantsAsyncAPI asyncapi("../modules/restaurants/src/main/resources/apis/asyncapi.yml")
+    DeliveryAsyncAPI asyncapi("../modules/restaurants/src/main/resources/apis/asyncapi.yml")
+    CustomersOpenAPI openapi("../modules/customers/src/main/resources/apis/openapi.yml")
+    RestaurantsOpenAPI openapi("../modules/restaurants/src/main/resources/apis/openapi.yml")
+}
+
+workflows {
+    /**
+    * Place Order Workflow
+    * Describes all steps when a Customer places an order.
+    */
+    order_lifecycle_workflow {
+        inputs {
+            customerId String  = 1
+            restaurant String  = 1
+            /** Customer Address Identifier */
+            addressIdentifier String  = "Home Address"
+            menuItem MenuItem {
+                id String  = 1
+                name String  = "Pan Galactic Gargle Blaster"
+                price float  = 5.95
+                quantity Integer  = 2
+            }
+        }
+        steps {
+            /** Place Order using the REST API */
+            place_order (OrdersREST, createOrder) {
+                requestBody (application/json) {
+                    {
+                        "customerId" : "{$inputs.customerId}",
+                        "restaurantId" : "{$inputs.restaurantId}",
+                        "addressIdentifier" : "{$inputs.addressIdentifier}",
+                        "orderItems" : [ {
+                            "menuItemId" : "{$inputs.menuItem.id}",
+                            "name" : "{$inputs.menuItem.name}",
+                            "price" : "{$inputs.menuItem.price}",
+                            "quantity" : "{$inputs.menuItem.quantity}"
+                        } ]
+                    }
+                }
+                successCriteria {
+                    statusCode 201
+                }
+                outputs {
+                    orderId $response.body.id
+                    order $response.body
+                }
+            }
+            fetch_customer_details (CustomersOpenAPI, getCustomer) {
+                parameters {
+                    path(customerId: $inputs.customerId)
+                }
+                outputs {
+                    customer $response.body
+                }
+            }
+            fetch_restaurant_details (RestaurantsOpenAPI, getRestaurant) {
+                parameters {
+                    path(restaurantId: $inputs.restaurantId)
+                }
+                outputs {
+                    restaurant $response.body
+                }
+            }
+            send_order_received (OrdersAsyncAPI, onOrderEvent) {
+                requestBody (application/json) {"""
+                {
+                    "id": "{$steps.place_order.outputs.orderId}",
+                    "orderTime": "{$steps.place_order.outputs.order.orderTime}",
+                    "status": "RECEIVED",
+                    "customerDetails": {$steps.fetch_customer_details.outputs.customer},
+                    "restaurantDetails": {$steps.fetch_restaurant_details.outputs.restaurant},
+                    "orderItems": [
+                    {$inputs.menuItem}
+                    ]
+                }
+                """}
+                onSuccess {
+                    wait_for_downstream ->  fork step(wait_RestaurantsStatusChannel_accepted) step(wait_DeliveryStatusChannel_accepted)
+                }
+            }
+            wait_KitchenOrdersStatusChannel_accepted (source: RestaurantsOpenAPI, channel: "KitchenOrdersStatusChannel" , action: receive) {
+                successCriteria {
+                    "$message.body.customerOrderId == $steps.place_order.outputs.orderId"
+                }
+                onSuccess {
+                    Restaurant_ACCEPTED -> when("$message.body.status == ACCEPTED") join step(send_acknowledge_restaurant_ACCEPTED)
+                }
+                onFailure {
+                    Restaurant_REJECTED -> when("$message.body.status == REJECTED") goto workflow(cancel_order)
+                }
+                outputs {
+                    kitchenOrderId $message.body.kitchenOrderId
+                }
+            }
+            wait_DeliveryStatusChannel_accepted (source: DeliveryAsyncAPI, channel: "DeliveryStatusChannel" , action: receive) {
+                successCriteria {
+                    jsonpath($message.body, "customerOrderId == {$steps.place_order.outputs.orderId}")
+                }
+                onSuccess {
+                    Delivery_ACCEPTED -> when("$message.body.status == ACCEPTED") join step(send_acknowledge_delivery_ACCEPTED)
+                }
+                onFailure {
+                    Delivery_REJECTED -> when("$message.body.status == REJECTED") goto workflow(cancel_order)
+                }
+            }
+            send_acknowledge_restaurant_ACCEPTED (OrdersAsyncAPI, onOrderStatusUpdated) {
+                requestBody (application/json) {"""
+                {
+                    "id": "{$steps.place_order.outputs.orderId}",
+                    "dateTime": "2023-10-01T12:34:56Z",
+                    "status": "KITCHEN_ACCEPTED",
+                    "previousStatus": "RECEIVED"
+                }
+                """}
+            }
+            post_restaurant_order_ready (RestaurantsOpenAPI, updateKitchenOrderStatus) {
+                parameters {
+                    path(orderId: $steps.wait_KitchenOrdersStatusChannel_accepted.outputs.kitchenOrderId)
+                }
+                requestBody (application/json) {
+                    {
+                        "status" : "READY"
+                    }
+                }
+                successCriteria {
+                    statusCode 200
+                }
+            }
+        }
+        
+    }
+    /**
+    * Cancels and Order
+    * Sends a message informing an order was cancelled and waits for ack from restaurants and delivery.
+    */
+    cancel_order_workflow {
+        inputs {
+            orderId String
+            reason String
+        }
+        steps {
+            send_order_cancelled (OrdersAsyncAPI, cancelOrder) {
+                requestBody (application/json) {"""
+                {
+                    "id": "{$inputs.orderId}",
+                    "reason": "{$inputs.reason}"
+                }
+                """}
+                onSuccess {
+                    wait_for_downstream ->  fork step(wait_KitchenOrdersStatusChannel_cancelled) step(wait_DeliveryOrdersStatusChannel_cancelled)
+                }
+            }
+            wait_KitchenOrdersStatusChannel_cancelled (source: RestaurantsOpenAPI, channel: "KitchenOrdersStatusChannel" , action: receive) {
+                successCriteria {
+                    jsonpath($message.body, "customerOrderId == {$inputs.orderId}")
+                }
+                onSuccess {
+                    cancelled -> when("$message.body.status == CANCELLED") end
+                }
+            }
+            wait_DeliveryOrdersStatusChannel_cancelled (source: DeliveryOpenAPI, channel: "DeliveryOrdersStatusChannel" , action: receive) {
+                successCriteria {
+                    jsonpath($message.body, "customerOrderId == {$inputs.orderId}")
+                }
+                onSuccess {
+                    cancelled -> when("$message.body.status == CANCELLED") end
+                }
+            }
+        }
+        
+    }
+}
+components {
+    
+    @ref("../modules/orders/src/main/resources/apis/openapi.yml#/components/schemas/CustomerOrderInput")
+    input CustomerOrderInput
+    @ref("../modules/restaurants/src/main/resources/apis/openapi.yml#/components/schemas/KitchenOrderStatusInput")
+    input KitchenOrderStatusInput
+    @ref("../modules/delivery/src/main/resources/apis/openapi.yml#/components/schemas/KitchenOrderStatusInput")
+    input DeliveryStatusInput
+    
+    
+    
+}
