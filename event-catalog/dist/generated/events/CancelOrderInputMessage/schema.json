@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "x-business-entity": "CancelOrderInput",
+    "properties": {
+        "id": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-4>"
+        },
+        "reason": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-5>"
+        }
+    },
+    "x-parser-schema-id": "<anonymous-schema-3>"
+}

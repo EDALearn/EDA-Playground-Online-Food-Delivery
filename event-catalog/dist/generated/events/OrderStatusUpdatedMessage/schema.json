@@ -1,0 +1,50 @@
+{
+    "type": "object",
+    "x-business-entity": "OrderStatusUpdated",
+    "properties": {
+        "id": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-42>"
+        },
+        "dateTime": {
+            "type": "string",
+            "format": "date-time",
+            "x-parser-schema-id": "<anonymous-schema-43>"
+        },
+        "status": {
+            "type": "string",
+            "x-business-entity": "OrderStatus",
+            "enum": [
+                "RECEIVED",
+                "KITCHEN_ACCEPTED",
+                "DELIVERY_ACCEPTED",
+                "CONFIRMED",
+                "KITCHEN_IN_PROGRESS",
+                "KITCHEN_READY",
+                "KITCHEN_DELIVERED",
+                "ON_DELIVERY",
+                "DELIVERED",
+                "CANCELLED"
+            ],
+            "x-parser-schema-id": "<anonymous-schema-44>"
+        },
+        "previousStatus": {
+            "type": "string",
+            "x-business-entity": "OrderStatus",
+            "enum": [
+                "RECEIVED",
+                "KITCHEN_ACCEPTED",
+                "DELIVERY_ACCEPTED",
+                "CONFIRMED",
+                "KITCHEN_IN_PROGRESS",
+                "KITCHEN_READY",
+                "KITCHEN_DELIVERED",
+                "ON_DELIVERY",
+                "DELIVERED",
+                "CANCELLED"
+            ],
+            "x-parser-schema-id": "<anonymous-schema-45>"
+        }
+    },
+    "x-parser-schema-id": "<anonymous-schema-41>"
+}

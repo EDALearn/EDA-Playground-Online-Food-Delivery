@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "x-business-entity": "OrdersFilter",
+  "properties": {
+    "status": {
+      "type": "string",
+      "x-business-entity": "OrderStatus",
+      "enum": [
+        "RECEIVED",
+        "KITCHEN_ACCEPTED",
+        "DELIVERY_ACCEPTED",
+        "CONFIRMED",
+        "KITCHEN_IN_PROGRESS",
+        "KITCHEN_READY",
+        "KITCHEN_DELIVERED",
+        "ON_DELIVERY",
+        "DELIVERED",
+        "CANCELLED"
+      ]
+    },
+    "customerName": {
+      "type": "string"
+    },
+    "restaurantName": {
+      "type": "string"
+    }
+  }
+}

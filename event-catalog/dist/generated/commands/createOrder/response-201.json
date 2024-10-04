@@ -1,0 +1,155 @@
+{
+  "type": "object",
+  "x-business-entity": "CustomerOrder",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "orderTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "x-business-entity": "OrderStatus",
+      "enum": [
+        "RECEIVED",
+        "KITCHEN_ACCEPTED",
+        "DELIVERY_ACCEPTED",
+        "CONFIRMED",
+        "KITCHEN_IN_PROGRESS",
+        "KITCHEN_READY",
+        "KITCHEN_DELIVERED",
+        "ON_DELIVERY",
+        "DELIVERED",
+        "CANCELLED"
+      ]
+    },
+    "customerDetails": {
+      "type": "object",
+      "x-business-entity": "Customer",
+      "required": [
+        "customerId",
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "properties": {
+        "customerId": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "object",
+          "x-business-entity": "Address",
+          "required": [
+            "street"
+          ],
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "restaurantDetails": {
+      "type": "object",
+      "x-business-entity": "Restaurant",
+      "required": [
+        "restaurantId",
+        "name",
+        "phone"
+      ],
+      "properties": {
+        "restaurantId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "addresses": {
+          "type": "object",
+          "x-business-entity": "Address",
+          "required": [
+            "street"
+          ],
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "orderItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "x-business-entity": "OrderItemInput",
+        "required": [
+          "menuItemId",
+          "name",
+          "price",
+          "quantity"
+        ],
+        "properties": {
+          "menuItemId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  },
+  "isSchema": true
+}
