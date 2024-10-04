@@ -18,7 +18,7 @@ Then use REST APIs to create/update `customers`, `restaurants`, `orders` and `de
 
 ### Event Catalog
 
-https://github.com/EDALearn/EDA-Playground-Online-Food-Delivery/blob/main/event-catalog/dist/index.html
+https://edalearn.github.io/EDA-Playground-Online-Food-Delivery/index.html
 
 ### Bounded Contexts
 ![Online Food Delivery Service - Bounded Contexts](models/diagrams/BoundedContexts.excalidraw.svg)
