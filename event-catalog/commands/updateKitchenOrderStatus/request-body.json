@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "x-business-entity": "KitchenOrderStatusInput",
+  "required": [
+    "status",
+    "operatorName"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "x-business-entity": "KitchenOrderStatus",
+      "enum": [
+        "ACCEPTED",
+        "REJECTED",
+        "IN_PROGRESS",
+        "READY",
+        "DELIVERED",
+        "CANCELLED"
+      ]
+    },
+    "operatorName": {
+      "type": "string"
+    }
+  }
+}

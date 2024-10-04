@@ -1,0 +1,18 @@
+{
+  "name": "event-catalog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "eventcatalog dev",
+    "build": "eventcatalog build",
+    "start": "eventcatalog start",
+    "preview": "eventcatalog preview",
+    "generate": "eventcatalog generate",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@eventcatalog/core": "2.8.2",
+    "@eventcatalog/generator-asyncapi": "^2.1.1",
+    "@eventcatalog/generator-openapi": "^2.1.1"
+  }
+}

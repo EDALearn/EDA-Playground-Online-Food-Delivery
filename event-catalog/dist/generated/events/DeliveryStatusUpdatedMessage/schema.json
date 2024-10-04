@@ -1,0 +1,40 @@
+{
+    "schemaFormat": "application/vnd.aai.asyncapi;version=3.0.0",
+    "schema": {
+        "type": "object",
+        "x-business-entity": "DeliveryStatusUpdated",
+        "required": [
+            "customerOrderId",
+            "deliveryId",
+            "status"
+        ],
+        "properties": {
+            "customerOrderId": {
+                "type": "string",
+                "x-parser-schema-id": "<anonymous-schema-4>"
+            },
+            "deliveryId": {
+                "type": "string",
+                "x-parser-schema-id": "<anonymous-schema-5>"
+            },
+            "status": {
+                "type": "string",
+                "x-business-entity": "DeliveryOrderStatus",
+                "enum": [
+                    "ACCEPTED",
+                    "REJECTED",
+                    "IN_PROGRESS",
+                    "READY",
+                    "DELIVERED",
+                    "CANCELLED"
+                ],
+                "x-parser-schema-id": "<anonymous-schema-6>"
+            },
+            "message": {
+                "type": "string",
+                "x-parser-schema-id": "<anonymous-schema-7>"
+            }
+        },
+        "x-parser-schema-id": "<anonymous-schema-3>"
+    }
+}

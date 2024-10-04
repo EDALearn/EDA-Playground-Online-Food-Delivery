@@ -1,0 +1,302 @@
+openapi: 3.0.1
+info:
+  title: "ZenWave Online Food Delivery - Orders Module"
+  version: 0.0.1
+  description: "ZenWave Online Food Delivery - Orders Module"
+  contact:
+    email: email@domain.com
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: "Default"
+  - name: "Orders"
+
+
+paths:
+  /orders/{orderId}:
+    get:
+      operationId: getCustomerOrder
+      description: "getCustomerOrder"
+      tags: [Orders]
+      parameters:
+        - name: "orderId"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerOrder"
+    put:
+      operationId: updateOrder
+      description: "updateOrder"
+      tags: [Orders]
+      parameters:
+        - name: "orderId"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerOrderInput"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerOrder"
+  /orders:
+    post:
+      operationId: createOrder
+      description: "createOrder"
+      tags: [Orders]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerOrderInput"
+      responses:
+        "201":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerOrder"
+  /orders/{orderId}/cancel:
+    put:
+      operationId: cancelOrder
+      description: "cancelOrder"
+      tags: [Orders]
+      parameters:
+        - name: "orderId"
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelOrderInput"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerOrder"
+  /orders/search:
+    post:
+      operationId: searchOrders
+      description: "searchOrders"
+      tags: [Orders]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrdersFilter"
+      responses:
+        "201":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerOrderList"
+
+components:
+  schemas:
+    CustomerOrderInput:
+      type: "object"
+      x-business-entity: "CustomerOrderInput"
+      required:
+      - "customerId"
+      - "restaurantId"
+      - "addressIdentifier"
+      properties:
+        orderTime:
+          type: "string"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerId:
+          type: "string"
+        restaurantId:
+          type: "string"
+        addressIdentifier:
+          type: "string"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItem"
+    CancelOrderInput:
+      type: "object"
+      x-business-entity: "CancelOrderInput"
+      properties:
+        id:
+          type: "string"
+        reason:
+          type: "string"
+    OrdersFilter:
+      type: "object"
+      x-business-entity: "OrdersFilter"
+      properties:
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerName:
+          type: "string"
+        restaurantName:
+          type: "string"
+    CustomerOrder:
+      type: "object"
+      x-business-entity: "CustomerOrder"
+      properties:
+        id:
+          type: "string"
+        version:
+          type: "integer"
+        orderTime:
+          type: "string"
+          format: "date-time"
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        customerDetails:
+          $ref: "#/components/schemas/Customer"
+        restaurantDetails:
+          $ref: "#/components/schemas/Restaurant"
+        orderItems:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OrderItemInput"
+    CustomerOrderList:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/CustomerOrder"
+    Restaurant:
+      type: "object"
+      x-business-entity: "Restaurant"
+      required:
+      - "restaurantId"
+      - "name"
+      - "phone"
+      properties:
+        restaurantId:
+          type: "string"
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        addresses:
+          $ref: "#/components/schemas/Address"
+    OrderStatus:
+      type: "string"
+      x-business-entity: "OrderStatus"
+      enum:
+      - "RECEIVED"
+      - "KITCHEN_ACCEPTED"
+      - "DELIVERY_ACCEPTED"
+      - "CONFIRMED"
+      - "KITCHEN_IN_PROGRESS"
+      - "KITCHEN_READY"
+      - "KITCHEN_DELIVERED"
+      - "ON_DELIVERY"
+      - "DELIVERED"
+      - "CANCELLED"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      properties:
+        street:
+          type: "string"
+        city:
+          type: "string"
+        state:
+          type: "string"
+        zip:
+          type: "string"
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+      - "customerId"
+      - "firstName"
+      - "lastName"
+      - "email"
+      - "phone"
+      properties:
+        customerId:
+          type: "string"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+        phone:
+          type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+    OrderItem:
+      type: "object"
+      x-business-entity: "OrderItem"
+      required:
+      - "menuItemId"
+      - "name"
+      - "price"
+      - "quantity"
+      properties:
+        menuItemId:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          type: "number"
+          format: "double"
+        quantity:
+          type: "integer"
+          format: "int32"
+    OrderItemInput:
+      type: "object"
+      x-business-entity: "OrderItemInput"
+      required:
+      - "menuItemId"
+      - "name"
+      - "price"
+      - "quantity"
+      properties:
+        menuItemId:
+          type: "string"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          type: "number"
+          format: "double"
+        quantity:
+          type: "integer"
+          format: "int32"
+
+
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+    bearerAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+security:
+  - basicAuth: []  # <-- use the same name here
+  - bearerAuth: []  # <-- use the same name here

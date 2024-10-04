@@ -1,0 +1,72 @@
+{
+  "type": "object",
+  "x-business-entity": "CustomerOrderInput",
+  "required": [
+    "customerId",
+    "restaurantId",
+    "addressIdentifier"
+  ],
+  "properties": {
+    "orderTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "x-business-entity": "OrderStatus",
+      "enum": [
+        "RECEIVED",
+        "KITCHEN_ACCEPTED",
+        "DELIVERY_ACCEPTED",
+        "CONFIRMED",
+        "KITCHEN_IN_PROGRESS",
+        "KITCHEN_READY",
+        "KITCHEN_DELIVERED",
+        "ON_DELIVERY",
+        "DELIVERED",
+        "CANCELLED"
+      ]
+    },
+    "customerId": {
+      "type": "string"
+    },
+    "restaurantId": {
+      "type": "string"
+    },
+    "addressIdentifier": {
+      "type": "string"
+    },
+    "orderItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "x-business-entity": "OrderItem",
+        "required": [
+          "menuItemId",
+          "name",
+          "price",
+          "quantity"
+        ],
+        "properties": {
+          "menuItemId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+    "type": "object",
+    "x-business-entity": "RestaurantEvent",
+    "required": [
+        "name",
+        "phone",
+        "id"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 250,
+            "x-parser-schema-id": "<anonymous-schema-4>"
+        },
+        "phone": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-5>"
+        },
+        "address": {
+            "type": "object",
+            "x-business-entity": "Address",
+            "required": [
+                "street",
+                "city",
+                "state",
+                "zip"
+            ],
+            "properties": {
+                "street": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-7>"
+                },
+                "city": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-8>"
+                },
+                "state": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-9>"
+                },
+                "zip": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-10>"
+                }
+            },
+            "x-parser-schema-id": "<anonymous-schema-6>"
+        },
+        "id": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-11>"
+        }
+    },
+    "x-parser-schema-id": "<anonymous-schema-3>"
+}

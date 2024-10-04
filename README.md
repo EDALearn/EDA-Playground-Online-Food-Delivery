@@ -16,6 +16,10 @@ mvn spring-boot:run -f modulith
 ```
 Then use REST APIs to create/update `customers`, `restaurants`, `orders` and `delivery`.
 
+### Event Catalog
+
+https://github.com/EDALearn/EDA-Playground-Online-Food-Delivery/blob/main/event-catalog/dist/index.html
+
 ### Bounded Contexts
 ![Online Food Delivery Service - Bounded Contexts](models/diagrams/BoundedContexts.excalidraw.svg)
 

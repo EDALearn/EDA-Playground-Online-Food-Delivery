@@ -1,0 +1,99 @@
+{
+    "type": "object",
+    "x-business-entity": "CustomerAddressUpdated",
+    "properties": {
+        "customerId": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-23>"
+        },
+        "addressDescription": {
+            "type": "string",
+            "x-parser-schema-id": "<anonymous-schema-24>"
+        },
+        "originalAddress": {
+            "type": "object",
+            "x-business-entity": "Address",
+            "required": [
+                "identifier",
+                "street",
+                "type"
+            ],
+            "properties": {
+                "identifier": {
+                    "type": "string",
+                    "description": "Description identifier for this Address",
+                    "x-parser-schema-id": "<anonymous-schema-26>"
+                },
+                "street": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-27>"
+                },
+                "city": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-28>"
+                },
+                "state": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-29>"
+                },
+                "zip": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-30>"
+                },
+                "type": {
+                    "type": "string",
+                    "x-business-entity": "AddressType",
+                    "enum": [
+                        "HOME",
+                        "WORK"
+                    ],
+                    "x-parser-schema-id": "<anonymous-schema-31>"
+                }
+            },
+            "x-parser-schema-id": "<anonymous-schema-25>"
+        },
+        "newAddress": {
+            "type": "object",
+            "x-business-entity": "Address",
+            "required": [
+                "identifier",
+                "street",
+                "type"
+            ],
+            "properties": {
+                "identifier": {
+                    "type": "string",
+                    "description": "Description identifier for this Address",
+                    "x-parser-schema-id": "<anonymous-schema-33>"
+                },
+                "street": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-34>"
+                },
+                "city": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-35>"
+                },
+                "state": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-36>"
+                },
+                "zip": {
+                    "type": "string",
+                    "x-parser-schema-id": "<anonymous-schema-37>"
+                },
+                "type": {
+                    "type": "string",
+                    "x-business-entity": "AddressType",
+                    "enum": [
+                        "HOME",
+                        "WORK"
+                    ],
+                    "x-parser-schema-id": "<anonymous-schema-38>"
+                }
+            },
+            "x-parser-schema-id": "<anonymous-schema-32>"
+        }
+    },
+    "x-parser-schema-id": "<anonymous-schema-22>"
+}

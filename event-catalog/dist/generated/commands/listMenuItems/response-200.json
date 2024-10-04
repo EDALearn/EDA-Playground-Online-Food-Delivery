@@ -1,0 +1,36 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "x-business-entity": "MenuItem",
+    "required": [
+      "restaurantId",
+      "name",
+      "price"
+    ],
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      },
+      "restaurantId": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 250
+      },
+      "description": {
+        "type": "string"
+      },
+      "price": {
+        "type": "number",
+        "format": "double"
+      }
+    }
+  },
+  "isSchema": true
+}

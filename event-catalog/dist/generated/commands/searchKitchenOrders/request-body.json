@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "x-business-entity": "KitchenOrdersFilter",
+  "properties": {
+    "restaurantId": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "x-business-entity": "KitchenOrderStatus",
+      "enum": [
+        "ACCEPTED",
+        "REJECTED",
+        "IN_PROGRESS",
+        "READY",
+        "DELIVERED",
+        "CANCELLED"
+      ]
+    }
+  }
+}

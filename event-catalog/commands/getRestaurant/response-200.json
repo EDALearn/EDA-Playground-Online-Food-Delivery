@@ -1,0 +1,49 @@
+{
+  "type": "object",
+  "x-business-entity": "Restaurant",
+  "required": [
+    "name",
+    "phone"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 250
+    },
+    "phone": {
+      "type": "string"
+    },
+    "address": {
+      "type": "object",
+      "x-business-entity": "Address",
+      "required": [
+        "street",
+        "city",
+        "state",
+        "zip"
+      ],
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "isSchema": true
+}

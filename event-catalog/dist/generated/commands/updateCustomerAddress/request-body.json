@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "x-business-entity": "Address",
+  "required": [
+    "identifier",
+    "street",
+    "type"
+  ],
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "description": "Description identifier for this Address"
+    },
+    "street": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "x-business-entity": "AddressType",
+      "enum": [
+        "HOME",
+        "WORK"
+      ]
+    }
+  }
+}

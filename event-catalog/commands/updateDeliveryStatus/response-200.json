@@ -1,0 +1,123 @@
+{
+  "type": "object",
+  "x-business-entity": "Delivery",
+  "required": [
+    "orderId",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "orderId": {
+      "type": "string"
+    },
+    "customer": {
+      "type": "object",
+      "x-business-entity": "Customer",
+      "required": [
+        "customerId",
+        "name",
+        "phone"
+      ],
+      "properties": {
+        "customerId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "object",
+          "x-business-entity": "Address",
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "restaurant": {
+      "type": "object",
+      "x-business-entity": "Restaurant",
+      "properties": {
+        "restaurantId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "object",
+          "x-business-entity": "Address",
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "orderItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "x-business-entity": "OrderItem",
+        "required": [
+          "menuItemId",
+          "name",
+          "price",
+          "quantity"
+        ],
+        "properties": {
+          "menuItemId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "x-business-entity": "DeliveryOrderStatus",
+      "enum": [
+        "ACCEPTED",
+        "REJECTED",
+        "IN_PROGRESS",
+        "READY",
+        "DELIVERED",
+        "CANCELLED"
+      ]
+    }
+  },
+  "isSchema": true
+}

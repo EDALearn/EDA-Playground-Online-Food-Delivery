@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "x-business-entity": "CancelOrderInput",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}
