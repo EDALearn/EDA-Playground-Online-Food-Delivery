@@ -7,7 +7,7 @@
 # Generated files
 .astro
 out
-#dist
+dist
 
 
 # Misc
