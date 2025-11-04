@@ -42,8 +42,13 @@ components:
       name: RestaurantEventMessage
       title: ""
       summary: ""
-      traits:
-        - $ref: '#/components/messageTraits/CommonHeaders'
+      headers:
+        type: object
+        properties:
+          kafka_messageKey:
+            type: string
+            description: This header value will be populated automatically at runtime
+            x-runtime-expression: $message.payload#/id
       payload:
         $ref: "#/components/schemas/RestaurantEvent"
     KitchenOrderStatusUpdatedMessage:
